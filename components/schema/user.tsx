@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { ZodError, z } from 'zod';
 
 export function UserRegisterSchema(data: object) {
     const schema = z.object({
@@ -7,15 +7,18 @@ export function UserRegisterSchema(data: object) {
         password: z.string().min(8).max(30)
     });
 
-    const { error } = schema.safeParse(data);
-    if (error) {
-        const msg = error.errors.reduce((acc, curr) => {
+    const result = schema.safeParse(data);
+
+    if (result.success) {
+        return undefined;
+    } else {
+        const error: ZodError<any> = result.error;
+        const msg = error.errors.reduce((acc:any, curr:any) => {
             acc[curr.path[0]] = curr.message;
             return acc;
         }, {});
         return msg;
     }
-    return undefined;
 }
 
 export function UserLoginSchema(data: object) {
@@ -24,13 +27,16 @@ export function UserLoginSchema(data: object) {
         password: z.string().min(8).max(30)
     });
 
-    const { error } = schema.safeParse(data);
-    if (error) {
-        const msg = error.errors.reduce((acc, curr) => {
+    const result = schema.safeParse(data);
+
+    if (result.success) {
+        return undefined;
+    } else {
+        const error: ZodError<any> = result.error;
+        const msg = error.errors.reduce((acc:any, curr:any) => {
             acc[curr.path[0]] = curr.message;
             return acc;
         }, {});
         return msg;
     }
-    return undefined;
 }
