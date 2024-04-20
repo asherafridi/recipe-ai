@@ -13,7 +13,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import Link from "next/link"
-import { signIn, signOut } from "next-auth/react"
+import { signIn, signOut, useSession } from "next-auth/react"
 import toast from "react-hot-toast"
 import { CircleDashed } from "lucide-react"
 import { UserLoginSchema } from "@/components/schema/user"
@@ -30,6 +30,12 @@ const Page = () => {
   const [submit,setSubmit] = useState(false);
   const [errors, setErrors] = useState<ErrorType>({});
   const router = useRouter();
+
+  
+  const session = useSession();
+  if(session.status=='authenticated'){
+    router.push('/dashboard');
+  }
 
   const submitHandler = async () => {
       const data:object = {

@@ -3,8 +3,9 @@ import prisma from "./db";
 import { isSamePass } from "./hash";
 import CredentialsProvider, { CredentialsConfig } from 'next-auth/providers/credentials';
 import { AuthOptions } from "next-auth";
+import GoogleProvider,{GoogleProfile} from "next-auth/providers/google";
 
-export const authOption:AuthOptions = {
+export const authOption: AuthOptions = {
     adapter: PrismaAdapter(prisma),
     session: {
         strategy: 'jwt'
@@ -49,10 +50,9 @@ export const authOption:AuthOptions = {
             },
         })
     ],
-    callbacks:{
+    callbacks: {
 
     },
     secret: process.env.NEXTAUTH_SECRET,
-
 }
 
