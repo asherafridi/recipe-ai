@@ -19,11 +19,16 @@ import { CircleDashed } from "lucide-react"
 import { UserLoginSchema } from "@/components/schema/user"
 import { useRouter } from 'next/navigation'
 
+interface ErrorType {
+  email? : string,
+  password? :string
+}
+
 const Page = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [submit,setSubmit] = useState(false);
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState<ErrorType>({});
   const router = useRouter();
 
   const submitHandler = async () => {
@@ -69,7 +74,7 @@ const Page = () => {
             <div className="flex flex-col w-full space-y-1.5">
               <Label htmlFor="name">Email</Label>
               <Input type="email" id="name" name="email" placeholder="Email..." className="outline-none" value={email} onChange={(e) => (setEmail(e.target.value))} />
-              {errors?.email ? <span className="text-destructive">{errors.email}</span> : ''}
+              {errors?.email ? (<span className="text-destructive">{errors?.email}</span>) : ('')}
             </div>
             <div className="h-1">
             </div>
