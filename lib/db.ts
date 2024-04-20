@@ -1,5 +1,10 @@
 import { PrismaClient } from '@prisma/client';
 
+// Define a custom type for the global object
+declare const global: {
+    prisma?: PrismaClient; // Specify the shape of the global object
+};
+
 let prisma: PrismaClient;
 
 if (process.env.NODE_ENV === 'production') {
