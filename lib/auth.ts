@@ -2,16 +2,9 @@ import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import prisma from "./db";
 import { isSamePass } from "./hash";
 import CredentialsProvider, { CredentialsConfig } from 'next-auth/providers/credentials';
+import { AuthOptions } from "next-auth";
 
-interface SessionType{
-    adapter?:object,
-    providers?:any,
-    session?:object,
-    pages?:object,
-    callbacks?:object,
-    secret?:string
-  }
-export const authOption:SessionType = {
+export const authOption:AuthOptions = {
     adapter: PrismaAdapter(prisma),
     session: {
         strategy: 'jwt'
