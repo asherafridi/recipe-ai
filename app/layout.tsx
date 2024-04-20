@@ -6,6 +6,9 @@ import { Montserrat as FontSans } from "next/font/google"
 import { Toaster } from "react-hot-toast";
 
 import { cn } from "@/lib/utils"
+import { Session } from "inspector";
+import { SessionProvider } from "next-auth/react";
+import Provider from "@/components/Provider";
  
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -30,7 +33,11 @@ export default function RootLayout({
       <body className={inter.className}>
         
       <Toaster position="top-right" />
-        {children}
+      <Provider>
+
+      {children}
+      </Provider>
+
         </body>
     </html>
   );

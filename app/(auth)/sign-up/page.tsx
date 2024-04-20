@@ -17,8 +17,9 @@ import { CircleDashed } from "lucide-react"
 import toast, { Toaster } from "react-hot-toast"
 import { UserRegisterSchema } from "@/components/schema/user"
 import axios from "axios"
+import { useSession } from "next-auth/react"
 
-const page = () => {
+const Page = () => {
   const router = useRouter();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -26,6 +27,11 @@ const page = () => {
   const [errors, setErrors] = useState({});
 
   const [submit, setSubmit] = useState(false);
+
+  const session = useSession();
+  if(session.status=='authenticated'){
+    router.push('/dashboard');
+  }
 
   const submitForm = () => {
     const data: object = {
@@ -98,4 +104,4 @@ const page = () => {
   )
 }
 
-export default page
+export default Page

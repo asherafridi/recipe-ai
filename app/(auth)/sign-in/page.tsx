@@ -19,7 +19,7 @@ import { CircleDashed } from "lucide-react"
 import { UserLoginSchema } from "@/components/schema/user"
 import { useRouter } from 'next/navigation'
 
-const page = () => {
+const Page = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [submit,setSubmit] = useState(false);
@@ -95,4 +95,4 @@ const page = () => {
   )
 }
 
-export default page
+export default Page

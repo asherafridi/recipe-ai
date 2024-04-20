@@ -9,7 +9,7 @@ import React from 'react'
 const page = async () => {
   
   const session = await getServerSession(authOption);
-  console.log(session?.user.id);
+  console.log(session?.user.name);
   return (
     <div className='p-5 min-h-screen'>
         <Breadcrumb title="Dashboard" />
@@ -18,6 +18,9 @@ const page = async () => {
             <DashboardTopCards icon={<Webhook />} title="Total Campaigns" data="500" span="Dummy Data"/>
             <DashboardTopCards icon={<PhoneMissed />} title="Rejected Calls" data="230" span="Dummy Data"/>
             <DashboardTopCards icon={<Users />} title="Total Contacts" data="510" span="Dummy Data"/>
+        </div>
+        <div>
+          {session?.user?.name}
         </div>
     </div>
   )
