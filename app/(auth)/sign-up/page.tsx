@@ -19,12 +19,20 @@ import { UserRegisterSchema } from "@/components/schema/user"
 import axios from "axios"
 import { useSession } from "next-auth/react"
 
+
+interface ErrorType {
+  email? : string,
+  password? :string,
+  name?:string
+}
+
+
 const Page = () => {
   const router = useRouter();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState<ErrorType>({});
 
   const [submit, setSubmit] = useState(false);
 

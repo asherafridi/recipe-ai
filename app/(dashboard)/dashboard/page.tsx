@@ -6,10 +6,13 @@ import { PhoneCall, PhoneMissed, Users, Webhook } from 'lucide-react'
 import { getServerSession } from 'next-auth'
 import React from 'react'
 
+interface SessionType{
+  user?:any
+}
 const Page = async () => {
   
   const session = await getServerSession(authOption);
-  console.log(session?.user.name);
+  console.log(session);
   return (
     <div className='p-5 min-h-screen'>
         <Breadcrumb title="Dashboard" />
