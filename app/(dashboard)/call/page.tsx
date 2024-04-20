@@ -2,7 +2,7 @@ import Breadcrumb from '@/components/Breadcrumb'
 import Link from 'next/link'
 import React from 'react'
 
-const page = () => {
+const Page = () => {
   return (
     <div className='p-5 min-h-screen'>
         <Breadcrumb title="Make a Single Call"  />
@@ -13,4 +13,4 @@ const page = () => {
   )
 }
 
-export default page
+export default Page

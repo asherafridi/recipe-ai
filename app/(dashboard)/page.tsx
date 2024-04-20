@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { PhoneCall, PhoneMissed, Users, Webhook } from 'lucide-react'
 import React from 'react'
 
-const page = () => {
+const Page = () => {
   return (
     <div className='p-5 min-h-screen'>
         <Breadcrumb title="Dashboard" />
@@ -18,4 +18,4 @@ const page = () => {
   )
 }
 
-export default page
+export default Page

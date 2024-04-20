@@ -1,7 +1,7 @@
 import Breadcrumb from '@/components/Breadcrumb'
 import React from 'react'
 
-const page = () => {
+const Page = () => {
   return (
     <div className='p-5 min-h-screen'>
         <Breadcrumb title="Purchase More Credits" />
@@ -11,4 +11,4 @@ const page = () => {
   )
 }
 
-export default page
+export default Page

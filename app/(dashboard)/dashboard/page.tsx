@@ -6,7 +6,7 @@ import { PhoneCall, PhoneMissed, Users, Webhook } from 'lucide-react'
 import { getServerSession } from 'next-auth'
 import React from 'react'
 
-const page = async () => {
+const Page = async () => {
   
   const session = await getServerSession(authOption);
   console.log(session?.user.name);
@@ -26,4 +26,4 @@ const page = async () => {
   )
 }
 
-export default page
+export default Page
