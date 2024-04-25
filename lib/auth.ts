@@ -5,6 +5,20 @@ import CredentialsProvider, { CredentialsConfig } from 'next-auth/providers/cred
 import { AuthOptions } from "next-auth";
 import GoogleProvider, { GoogleProfile } from "next-auth/providers/google";
 
+import NextAuth, { DefaultSession } from "next-auth"
+
+declare module "next-auth" {
+  /**
+   * Returned by `useSession`, `getSession` and received as a prop on the `SessionProvider` React Context
+   */
+  interface Session {
+    user: {
+      /** The user's postal address. */
+      id: string
+    } & DefaultSession["user"]
+  }
+}
+
 export const authOption: AuthOptions = {
     adapter: PrismaAdapter(prisma),
     session: {
@@ -52,13 +66,15 @@ export const authOption: AuthOptions = {
     ],
     callbacks: {
         async jwt({ token, user, account, profile, isNewUser }) {
-            if(user){
-                token.id = user.id
+            if (user && user.id) {
+                token.id = user.id;
+            } else {
+                console.error('User or user.id is missing.');
             }
             return token;
         },
         async session({ session, user, token }) {
-            session.user.id = token.id;
+            session.user.id = `${token.id}`
             return session;
         }
     },
