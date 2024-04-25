@@ -30,17 +30,6 @@ const useContactsFetch = () => {
   return { data, loading };
 };
 
- export const useContactDelete = async (id:string)=>{
-     axios.post(`/api/contacts/remove`,{
-      id:id
-    }).then(response=>{
-      toast.success(response?.data?.msg);
-
-    }).catch(error=>{
-      toast.error(error?.data?.error);
-    });
-}
-
 
 const Page = () => {
   const {data,loading} = useContactsFetch();
