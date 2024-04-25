@@ -4,7 +4,7 @@ import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest, res: NextResponse) {
-    const { id } = req.params;
+    const { id } = req?.params;
 
     const session = await getServerSession(authOption);
     const contact = await prisma.contact.findFirst({
