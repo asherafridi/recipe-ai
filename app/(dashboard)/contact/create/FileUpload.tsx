@@ -11,9 +11,9 @@ interface Contact {
 }
 
 export default function FileUpload() {
-    const [contacts, setContacts] = useState<Contact[]>([]); // Specify the type of contacts as Contact[]
+    const [contacts, setContacts] = useState<Contact[]>([]);
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null); // Specify the type of error as string | null
+    const [error, setError] = useState<string | null>(null);
 
     const handleCSVUpload = async (csvText:any) => {
         setLoading(true);
@@ -22,7 +22,7 @@ export default function FileUpload() {
         try {
             const parsedContacts = await parseCSV(csvText);
             setContacts(parsedContacts);
-        } catch (error) {
+        } catch (error: any) { // Specify the type of error as any or Error
             setError('Error parsing CSV file. Please try again.');
         } finally {
             setLoading(false);
@@ -31,7 +31,7 @@ export default function FileUpload() {
 
     const parseCSV = async (csvText:any) => {
         const rows = csvText.split('\n');
-        const parsedContacts: Contact[] = []; // Specify the type of parsedContacts as Contact[]
+        const parsedContacts: Contact[] = [];
 
         for (let i = 1; i < rows.length; i++) {
             const row = rows[i];
@@ -41,7 +41,7 @@ export default function FileUpload() {
             try {
                 const response = await axios.post('/api/contacts/create', data);
                 parsedContacts.push({ id: i, name, number, status: 'Contact Added Successfully' });
-            } catch (error) {
+            } catch (error: any) { // Specify the type of error as any or Error
                 parsedContacts.push({ id: i, name, number, status: error.response?.data?.error || 'Unknown Error' });
             }
         }
