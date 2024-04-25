@@ -1,9 +1,9 @@
 import { authOption } from "@/lib/auth";
 import prisma from "@/lib/db";
 import { getServerSession } from "next-auth";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(res : NextResponse) {
+export async function GET(req:NextRequest,res : NextResponse) {
 
     const session = await getServerSession(authOption);
     const user = await prisma.user.findFirst({
