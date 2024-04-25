@@ -2,7 +2,7 @@ import prisma from "@/lib/db";
 import { getServerSession } from "next-auth";
 import { NextApiRequest, NextApiResponse } from "next";
 
-export default async function GET(req: NextApiRequest, res: NextApiResponse) {
+export async function GET(req: NextApiRequest, res: NextApiResponse) {
     
 
     const { id } = req.query;
