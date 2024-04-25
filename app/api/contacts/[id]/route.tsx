@@ -1,17 +1,34 @@
-import { authOption } from "@/lib/auth";
 import prisma from "@/lib/db";
 import { getServerSession } from "next-auth";
-import { NextRequest, NextResponse } from "next/server";
+import { NextApiRequest, NextApiResponse } from "next";
 
-export async function GET(req: NextRequest, res: NextResponse) {
-    const { id } = req?.query;
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+    const { id } = req.query;
 
-    const session = await getServerSession(authOption);
-    const contact = await prisma.contact.findFirst({
-        where:{
-            userId: +session?.user?.id,
-            id: +id 
+    if (!id) {
+        return res.status(400).json({ error: 'Missing contact ID' });
+    }
+
+    const session = await getServerSession();
+    if (!session?.user?.id) {
+        return res.status(401).json({ error: 'User not authenticated' });
+    }
+
+    try {
+        const contact = await prisma.contact.findFirst({
+            where: {
+                userId: +session.user.id,
+                id: +id 
+            }
+        });
+
+        if (!contact) {
+            return res.status(404).json({ error: 'Contact not found' });
         }
-    });
-    return res.json({contact: contact}, {status: 200});
+
+        return res.status(200).json({ contact });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'Internal server error' });
+    }
 }
