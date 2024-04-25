@@ -3,6 +3,10 @@ import { getServerSession } from "next-auth";
 import { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+    if (req.method !== 'GET') {
+        return res.status(405).end(); // Method Not Allowed
+    }
+
     const { id } = req.query;
 
     if (!id) {
