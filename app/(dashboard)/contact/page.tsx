@@ -30,7 +30,7 @@ const useContactsFetch = () => {
   return { data, loading };
 };
 
- const useContactDelete = async (id:string)=>{
+ export const useContactDelete = async (id:string)=>{
      axios.post(`/api/contacts/remove`,{
       id:id
     }).then(response=>{
