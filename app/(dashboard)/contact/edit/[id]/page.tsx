@@ -22,7 +22,7 @@ const useFetchContact = (id:string, setValue:any) => {
     }, [id]);
   };
 
-const page = async ({params} : {params:{id:string}}) => {
+const Page = async ({params} : {params:{id:string}}) => {
     const router = useRouter();
     const { register, setValue, handleSubmit, formState: { errors } } = useForm();
     const [loading, setLoading] = useState(false);
@@ -73,4 +73,4 @@ const page = async ({params} : {params:{id:string}}) => {
     )
 }
 
-export default page
+export default Page
