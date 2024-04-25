@@ -1,0 +1,78 @@
+import { Input } from '@/components/ui/input';
+import axios from 'axios';
+import React, { useState } from 'react';
+import Link from 'next/link'
+
+export default function FileUpload() {
+    const [contacts, setContacts] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+
+    const handleCSVUpload = async (csvText) => {
+        setLoading(true);
+        setError(null);
+
+        try {
+            const parsedContacts = await parseCSV(csvText);
+            setContacts(parsedContacts);
+        } catch (error) {
+            setError('Error parsing CSV file. Please try again.');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const parseCSV = async (csvText) => {
+        const rows = csvText.split('\n');
+        const parsedContacts = [];
+
+        for (let i = 1; i < rows.length; i++) {
+            const row = rows[i];
+            const [name, number] = row.split(',');
+            const data = { name, number };
+
+            try {
+                const response = await axios.post('/api/contacts/create', data);
+                parsedContacts.push({ id: i, name, number, status: 'Contact Added Successfully' });
+            } catch (error) {
+                parsedContacts.push({ id: i, name, number, status: error.response?.data?.error || 'Unknown Error' });
+            }
+        }
+
+        return parsedContacts;
+    };
+
+    const handleFileUpload = (event) => {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const text = e.target.result;
+            handleCSVUpload(text);
+        };
+        reader.readAsText(file);
+    };
+
+    return (
+        <div>
+            <div className='border m-3 p-4'>
+                <h2>Upload CSV File. Download <Link href="" className='text-primary'>sample file</Link> for input download.</h2>
+                <Input type="file" accept=".csv" onChange={handleFileUpload} />
+            </div>
+            
+            {loading && <p>Loading...</p>}
+            {error && <p>Error: {error}</p>}
+            
+            <div className='border m-3 p-4'>
+                <ul>
+                    {contacts.map((contact) => (
+                        <li key={contact?.id} className={contact?.status == 'Contact Added Successfully' ? 'text-primary' : 'text-red-500'}>
+                            Name: {contact?.name} - Number: {contact?.number} - Status: {contact?.status}
+                        </li>
+                    ))}
+                </ul>
+            </div>
+        </div>
+    );
+}

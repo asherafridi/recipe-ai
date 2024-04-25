@@ -15,10 +15,6 @@ const Sidebar = ({ sidebar, setSidebar }: { sidebar: any, setSidebar: any }) => 
     { href: '/credit', icon: <DollarSign />, text: 'Purchase Credits', key: 'credit' },
     { href: '/help', icon: <Info />, text: 'Need Help?', key: 'help' },
   ];
-  const path = usePathname();
-  useEffect(()=>{
-    setSidebar(path.split('/')[1]);
-  },[])
 
   return (
     <div className='sidebar w-[400px] p-3 min-h-screen bg-accent text-accent-foreground shadow-sm hidden lg:block'>

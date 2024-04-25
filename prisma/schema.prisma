@@ -19,4 +19,12 @@ model User {
   name String?
   password String
   balance Float @default(0.00)
+  status Boolean @default(false)
+}
+
+model Contact{
+  id Int @id @default(autoincrement())
+  name String?
+  number String
+  userId Int
 }

@@ -9,18 +9,18 @@ import React from 'react'
 const Page = async () => {
   
   const session = await getServerSession(authOption);
-  console.log(session);
+  console.log('dashboard');
   return (
     <div className='p-5 min-h-screen'>
         <Breadcrumb title="Dashboard" />
-        <div className="grid grid-cols-4 mt-10 gap-5">
+        {/* <div className="grid grid-cols-4 mt-10 gap-5">
             <DashboardTopCards icon={<PhoneCall />} title="Total Calls" data="483" span="Dummy Data"/>
             <DashboardTopCards icon={<Webhook />} title="Total Campaigns" data="500" span="Dummy Data"/>
             <DashboardTopCards icon={<PhoneMissed />} title="Rejected Calls" data="230" span="Dummy Data"/>
             <DashboardTopCards icon={<Users />} title="Total Contacts" data="510" span="Dummy Data"/>
-        </div>
-        <div>
-          {session?.user?.name}
+        </div> */}
+        <div className='flex justify-center p-10'>
+          Hi {session?.user?.id}, Currently Working on the feature...
         </div>
     </div>
   )
