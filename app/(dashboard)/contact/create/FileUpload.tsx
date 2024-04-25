@@ -55,7 +55,7 @@ export default function FileUpload() {
 
         const reader = new FileReader();
         reader.onload = (e) => {
-            const text = e.target.result;
+            const text = e?.target?.result;
             handleCSVUpload(text);
         };
         reader.readAsText(file);
