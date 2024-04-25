@@ -8,7 +8,7 @@ export default function FileUpload() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    const handleCSVUpload = async (csvText) => {
+    const handleCSVUpload = async (csvText:any) => {
         setLoading(true);
         setError(null);
 
@@ -22,7 +22,7 @@ export default function FileUpload() {
         }
     };
 
-    const parseCSV = async (csvText) => {
+    const parseCSV = async (csvText:any) => {
         const rows = csvText.split('\n');
         const parsedContacts = [];
 
@@ -42,7 +42,7 @@ export default function FileUpload() {
         return parsedContacts;
     };
 
-    const handleFileUpload = (event) => {
+    const handleFileUpload = (event:any) => {
         const file = event.target.files[0];
         if (!file) return;
 
