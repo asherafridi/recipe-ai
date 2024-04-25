@@ -1,12 +1,19 @@
 import { Input } from '@/components/ui/input';
 import axios from 'axios';
 import React, { useState } from 'react';
-import Link from 'next/link'
+import Link from 'next/link';
+
+interface Contact {
+  id: number;
+  name: string;
+  number: string;
+  status: string;
+}
 
 export default function FileUpload() {
-    const [contacts, setContacts] = useState([]);
+    const [contacts, setContacts] = useState<Contact[]>([]); // Specify the type of contacts as Contact[]
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
+    const [error, setError] = useState<string | null>(null); // Specify the type of error as string | null
 
     const handleCSVUpload = async (csvText:any) => {
         setLoading(true);
@@ -24,7 +31,7 @@ export default function FileUpload() {
 
     const parseCSV = async (csvText:any) => {
         const rows = csvText.split('\n');
-        const parsedContacts = [];
+        const parsedContacts: Contact[] = []; // Specify the type of parsedContacts as Contact[]
 
         for (let i = 1; i < rows.length; i++) {
             const row = rows[i];
