@@ -21,6 +21,7 @@ const useContactsFetch = () => {
       } catch (error) {
         toast.error('Something Went Wrong!');
         setLoading(false);
+        console.log(error);
       }
     };
 
