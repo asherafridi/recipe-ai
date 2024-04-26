@@ -11,7 +11,7 @@ import { useParams, usePathname, useRouter } from 'next/navigation';
 
 const useFetchContact = (id:string, setValue:any) => {
     useEffect(() => {
-      axios.get(`/api/contacts/read`,{
+      axios.post(`/api/contacts/read`,{
         id:id
       })
         .then(response => {

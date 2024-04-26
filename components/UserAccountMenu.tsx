@@ -34,7 +34,7 @@ const UserAccountMenu = () => {
             <DropdownMenu>
                 <DropdownMenuTrigger>
                     <Avatar>
-                        <AvatarImage src={session?.data?.user?.image} />
+                        <AvatarImage src={session?.data?.user?.image ? session?.data?.user?.image : undefined} />
                         <AvatarFallback>{session?.data?.user?.name?.slice(0,2).toUpperCase()}</AvatarFallback>
                     </Avatar>
 
