@@ -6,30 +6,8 @@ import axios from 'axios';
 import { columns} from './columns';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
+import { useContactsFetch } from '@/hooks/contactHook';
 
-const useContactsFetch = () => {
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get('/api/contacts');
-        setData(response.data.contacts);
-        setLoading(false);
-        
-      } catch (error) {
-        toast.error('Something Went Wrong!');
-        setLoading(false);
-        console.log(error);
-      }
-    };
-
-    fetchData();
-  }, ['']);
-
-  return { data, loading };
-};
 
 
 const Page = () => {

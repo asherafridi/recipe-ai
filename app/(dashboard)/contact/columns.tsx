@@ -6,7 +6,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
 import { ColumnDef } from "@tanstack/react-table"
 import { BarChart, EllipsisVertical, MoreHorizontal } from "lucide-react"
 import Link from "next/link"
-import { useContactDelete } from "@/hooks/agentHook"
+import { useContactDelete } from "@/hooks/contactHook"
 import { useRouter } from "next/navigation"
 
 // This type is used to define the shape of our data.
