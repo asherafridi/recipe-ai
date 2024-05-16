@@ -30,7 +30,6 @@ export default function RootLayout({
             }, 500);
         }
     }, [{}, sidebar])
-    console.log("dashboard");
 
     return (
         <div className={fontSans.className}>

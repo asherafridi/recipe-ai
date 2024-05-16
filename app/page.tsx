@@ -7,6 +7,7 @@ import Page from '@/app/(auth)/sign-in/page'
 
 export default function Home() {
   const router = useRouter();
+  
   useEffect(()=>{
     router.push('/sign-in');
   },[])

@@ -1,15 +1,16 @@
+"use client"
 import Breadcrumb from '@/components/Breadcrumb'
 import DashboardTopCards from '@/components/DashboardTopCards'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { authOption } from '@/lib/auth'
 import { PhoneCall, PhoneMissed, Users, Webhook } from 'lucide-react'
 import { getServerSession } from 'next-auth'
-import React from 'react'
+import React, { useEffect } from 'react'
 
 const Page = async () => {
-  
-  const session = await getServerSession(authOption);
-  console.log('dashboard');
+  useEffect(()=>{
+    console.log('dashboard');
+  },[]);
   return (
     <div className='p-5 min-h-screen'>
         <Breadcrumb title="Dashboard" />
@@ -20,7 +21,6 @@ const Page = async () => {
             <DashboardTopCards icon={<Users />} title="Total Contacts" data="510" span="Dummy Data"/>
         </div> */}
         <div className='flex justify-center p-10'>
-          Hi {session?.user?.id}, Currently Working on the feature...
         </div>
     </div>
   )

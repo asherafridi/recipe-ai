@@ -4,7 +4,11 @@ import React, { useEffect, useReducer } from 'react';
 import { DollarSign, Headphones, Info, LayoutDashboard, MessageSquareDiff, Phone, PhoneOutgoing, User, Users, Webhook } from 'lucide-react';
 import { usePathname, useRouter } from 'next/navigation';
 
+
 const Sidebar = ({ sidebar, setSidebar }: { sidebar: any, setSidebar: any }) => {
+  
+  
+  const pathname = usePathname();
   const menuItems = [
     { href: '/dashboard', icon: <LayoutDashboard />, text: 'Dashboard', key: 'dashboard' },
     { href: '/number', icon: <Phone />, text: 'Agent Numbers', key: 'number' },
@@ -25,7 +29,7 @@ const Sidebar = ({ sidebar, setSidebar }: { sidebar: any, setSidebar: any }) => 
       <div className='mt-16'>
         <ul className='grid gap-2 menu'>
           {menuItems.map(({ href, icon, text, key }) => (
-            <Link href={href} key={key} className={`flex p-4 py-3 rounded bg-white text-secondary-foreground gap-4 hover:bg-secondary-hover ${sidebar === key ? 'active' : ''}`} onClick={() => setSidebar(key)}>
+            <Link href={href} key={key} className={`flex p-4 py-3 rounded bg-white text-secondary-foreground gap-4 hover:bg-secondary-hover ${pathname === href ? 'active' : ''}`} onClick={() => setSidebar(key)}>
                 {icon} <span>{text}</span>
             </Link>
           ))}

@@ -71,6 +71,7 @@ export const columns: ColumnDef<Contact>[] = [
               <DropdownMenuItem onClick={()=>{
                 if(confirm('Are you sure?')){
                     useContactDelete(payment.id);
+                    
                 }
               }}>Delete Contact</DropdownMenuItem>
             </DropdownMenuContent>
