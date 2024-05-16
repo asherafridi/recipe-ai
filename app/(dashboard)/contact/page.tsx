@@ -26,4 +26,3 @@ const Page = () => {
 }
 
 export default Page
-export {useContactsFetch}
