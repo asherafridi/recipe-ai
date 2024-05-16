@@ -130,4 +130,14 @@ const useAgentDelete = async (id: string): Promise<void> => {
     return { contact, contactLoader };
   };
 
+  
+export const useContactDelete = async (id: string): Promise<void> => {
+  try {
+    const response = await axios.post(`/api/contacts/remove`, { id });
+    toast.success(response?.data?.msg);
+  } catch (error:any) {
+    toast.error(error?.data?.error || 'An error occurred while deleting the contact.');
+  }
+};
+
 export { useFetchAgent,useAllAgentFetch ,useAgentDelete,useFetchVoice,useFetchNumber,useAllContactFetch};
