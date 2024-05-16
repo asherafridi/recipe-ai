@@ -44,7 +44,7 @@ const Page = () => {
     }
 
 
-    if (loader && numberLoader) {
+    if ( numberLoader || voiceLoader) {
         return <div className='p-5 bg-white'>Loading...</div>;
     }
 
