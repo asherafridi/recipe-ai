@@ -94,8 +94,12 @@ const useAgentDelete = async (id: string): Promise<void> => {
     return {voice,voiceLoader};
   }
 
+  interface Number {
+    id : string;
+    number:string;
+  }
   const useFetchNumber=  ()=>{
-    const [number,setNumber] =useState([]);
+    const [number,setNumber] =useState<Number[]>([]);
     const [numberLoader,setNumberLoader] = useState(true);
 
     useEffect(()=>{
