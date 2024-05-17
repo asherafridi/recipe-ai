@@ -13,7 +13,7 @@ interface Agent {
   id:string;
   name:string;
   agentType:string;
-  voice : number;
+  voice : string;
   numberId : number;
   prompt : string;
 }
