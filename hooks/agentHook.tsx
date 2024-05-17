@@ -14,7 +14,7 @@ interface Agent {
   name:string;
   agentType:string;
   voice : string;
-  numberId : number;
+  numberId : string;
   prompt : string;
 }
 const useAllAgentFetch = () => {
