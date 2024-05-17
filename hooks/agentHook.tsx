@@ -58,9 +58,19 @@ const useAgentDelete = async (id: string): Promise<void> => {
       toast.error(error?.data?.error || 'An error occurred while deleting the contact.');
     }
   };
+  interface Voice {
+    id: string;
+    name: string;
+    // Add other properties of a voice object here if available
+  }
+  
+  interface UseFetchVoiceResult {
+    voice: Voice[];
+    voiceLoader: boolean;
+  }
 
-  const useFetchVoice=  ()=>{
-    const [voice,setVoice] =useState<any>([]);
+  const useFetchVoice=  () : UseFetchVoiceResult=>{
+    const [voice,setVoice] =useState<Voice[]>([]);
     const [voiceLoader,setVoiceLoader] = useState(true);
 
     useEffect(()=>{
