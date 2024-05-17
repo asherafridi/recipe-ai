@@ -22,8 +22,8 @@ import { useFetchNumber, useFetchVoice } from '@/hooks/agentHook'
 
 const Page = () => {
 
-    const { voice, voiceLoader } = useFetchVoice();
-    const { number, numberLoader } = useFetchNumber();
+    const { voice, voiceLoader } = useFetchVoice<any>();
+    const { number, numberLoader } = useFetchNumber<any>();
     const form = useForm();
     const [loading, setLoading] = useState(false);
 
