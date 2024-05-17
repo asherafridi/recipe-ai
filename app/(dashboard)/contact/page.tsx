@@ -6,19 +6,19 @@ import axios from 'axios';
 import { columns} from './columns';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
-import { useContactsFetch } from '@/hooks/contactHook';
+import { useAllContactFetch } from '@/hooks/contactHook';
 
 
 
 const Page = () => {
-  const {data,loading} = useContactsFetch();
+  const {contact, contactLoader} = useAllContactFetch();
 
   
   return (
     <div className='p-5 min-h-screen'>
         <Breadcrumb title="Contacts" />
         <div className="bg-white mt-4 rounded p-4">
-          {loading ?  'Loading...' : <DataTable columns={columns} data={data}  />}
+          {contactLoader ?  'Loading...' : <DataTable columns={columns} data={contact}  />}
         
         </div>
     </div>
