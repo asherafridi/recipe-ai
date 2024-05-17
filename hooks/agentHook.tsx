@@ -8,8 +8,17 @@ type Data ={
     id:number
 }
 
+
+interface Agent {
+  id:string;
+  name:string;
+  agentType:string;
+  voice : number;
+  numberId : number;
+  prompt : string;
+}
 const useAllAgentFetch = () => {
-    const [data, setData] = useState([]);
+    const [data, setData] = useState<Agent[]>([]);
     const [loading, setLoading] = useState(true);
   
     useEffect(() => {
@@ -31,13 +40,6 @@ const useAllAgentFetch = () => {
     return { data, loading };
   };
 
-  interface Agent {
-    name:string;
-    agentType:string;
-    voice : number;
-    numberId : number;
-    prompt : string;
-  }
 const useFetchAgent = (id: string) => {
     const [loader,setLoader] = useState(true);
     const [data,setData] = useState<Agent>();
@@ -128,29 +130,6 @@ const useAgentDelete = async (id: string): Promise<void> => {
     return {number,numberLoader};
   }
 
-  const useAllContactFetch = () => {
-    const [contact, setContact] = useState([]);
-    const [contactLoader, setContactLoader] = useState(true);
-  
-    useEffect(() => {
-      const fetchData = async () => {
-        try {
-          const response = await axios.get('/api/contacts');
-          setContact(response.data.contacts);
-          setContactLoader(false);
-          
-        } catch (error) {
-          setContactLoader(false);
-          console.log(error);
-        }
-      };
-  
-      fetchData();
-    }, ['']);
-  
-    return { contact, contactLoader };
-  };
-
   
 
-export { useFetchAgent,useAllAgentFetch ,useAgentDelete,useFetchVoice,useFetchNumber,useAllContactFetch};
+export { useFetchAgent,useAllAgentFetch ,useAgentDelete,useFetchVoice,useFetchNumber};

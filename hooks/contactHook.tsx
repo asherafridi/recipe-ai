@@ -2,29 +2,35 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
-const useContactsFetch = () => {
-    const [data, setData] = useState([]);
-    const [loading, setLoading] = useState(true);
-  
-    useEffect(() => {
-      const fetchData = async () => {
-        try {
-          const response = await axios.get('/api/contacts');
-          setData(response.data.contacts);
-          setLoading(false);
-          
-        } catch (error) {
-          toast.error('Something Went Wrong!');
-          setLoading(false);
-          console.log(error);
-        }
-      };
-  
-      fetchData();
-    }, ['']);
-  
-    return { data, loading };
-  };
+
+interface Contact {
+    id:string;
+    name:string;
+    number:string;
+}
+const useAllContactFetch = () => {
+  const [contact, setContact] = useState<Contact[]>([]);
+  const [contactLoader, setContactLoader] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('/api/contacts');
+        setContact(response.data.contacts);
+        setContactLoader(false);
+        
+      } catch (error) {
+        setContactLoader(false);
+        console.log(error);
+      }
+    };
+
+    fetchData();
+  }, ['']);
+
+  return { contact, contactLoader };
+};
+
 
   
 const useContactDelete = async (id: string): Promise<void> => {
@@ -36,4 +42,4 @@ const useContactDelete = async (id: string): Promise<void> => {
     }
   };
 
-  export { useContactDelete, useContactsFetch};
+  export { useContactDelete, useAllContactFetch};

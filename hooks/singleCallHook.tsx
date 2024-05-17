@@ -36,10 +36,27 @@ const useAllCallFetch = () => {
     }
   }
   
+  interface Transcript {
+    id:string;
+    user:string;
+    text :string;
+  }
+interface ExtCall {
+  call_id :string;
+  from : string;
+  to : string;
+  started_at:string;
+  completed : string;
+  answered_by : string;
+  call_length: string;
+  summary : string;
+  recording_url : string;
+  transcripts :Transcript[];
 
+}
 const useFetchCall = (id: string) => {
     const [loader,setLoader] = useState(true);
-    const [data,setData] = useState(null);
+    const [data,setData] = useState<ExtCall>();
     useEffect(() => {
       const options = {method: 'GET', headers: {authorization: 'sk-ix1uv15q05edyjxb2oqdporz1okqchzq5zvjvi9271f2cixopa3d71ulo0ppky3969'}};
 

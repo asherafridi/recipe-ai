@@ -41,11 +41,11 @@ const Page = ({ params }: { params: { id: string } }) => {
                 <p><strong>Answered By:</strong> {data?.answered_by}</p>
                 <p><strong>Call Length:</strong> {data?.call_length} minutes</p>
                 <p><strong>Summary:</strong> {data?.summary}</p>
-                {data.recording_url && (
+                {data?.recording_url && (
                 <div className='mx-4 my-3'>
                     <p className=''><strong>Recording:</strong></p>
                     <audio controls>
-                        <source src={data.recording_url} type="audio/mpeg" />
+                        <source src={data?.recording_url} type="audio/mpeg" />
                         Your browser does not support the audio element.
                     </audio>
                 </div>

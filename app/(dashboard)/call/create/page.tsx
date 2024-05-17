@@ -18,7 +18,8 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from '@/components/ui/textarea';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { useAllAgentFetch, useAllContactFetch } from '@/hooks/agentHook';
+import { useAllAgentFetch } from '@/hooks/agentHook';
+import { useAllContactFetch } from '@/hooks/contactHook';
 
 
 const Page = () => {
