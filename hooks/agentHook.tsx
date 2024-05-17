@@ -31,9 +31,16 @@ const useAllAgentFetch = () => {
     return { data, loading };
   };
 
+  interface Agent {
+    name:string;
+    agentType:string;
+    voice : number;
+    numberId : number;
+    prompt : string;
+  }
 const useFetchAgent = (id: string) => {
     const [loader,setLoader] = useState(true);
-    const [data,setData] = useState(null);
+    const [data,setData] = useState<Agent>();
     useEffect(() => {
         axios.post(`/api/agent/read`, {
             id: id

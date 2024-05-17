@@ -73,7 +73,7 @@ const Page = ({ params }: { params: { id: string } }) => {
                         <FormField
                             control={form.control}
                             name="agentType"
-                            defaultValue={data.agentType}
+                            defaultValue={data?.agentType}
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel>Agent Type</FormLabel>
@@ -95,7 +95,7 @@ const Page = ({ params }: { params: { id: string } }) => {
                         <FormField
                             control={form.control}
                             name="voice"
-                            defaultValue={data.voice}
+                            defaultValue={data?.voice}
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel>Voice</FormLabel>
@@ -119,7 +119,7 @@ const Page = ({ params }: { params: { id: string } }) => {
                         <FormField
                             control={form.control}
                             name="numberId"
-                            defaultValue={data.numberId}
+                            defaultValue={data?.numberId}
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel>Number</FormLabel>
@@ -143,7 +143,7 @@ const Page = ({ params }: { params: { id: string } }) => {
                         <FormField
                             control={form.control}
                             name="prompt"
-                            defaultValue={data.prompt}
+                            defaultValue={data?.prompt}
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel>Prompt</FormLabel>
