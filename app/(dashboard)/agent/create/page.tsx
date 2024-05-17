@@ -22,8 +22,8 @@ import { useFetchNumber, useFetchVoice } from '@/hooks/agentHook'
 
 const Page = () => {
 
-    const { voice, voiceLoader } = useFetchVoice<any>();
-    const { number, numberLoader } = useFetchNumber<any>();
+    const { voice, voiceLoader } = useFetchVoice();
+    const { number, numberLoader } = useFetchNumber();
     const form = useForm();
     const [loading, setLoading] = useState(false);
 
@@ -107,7 +107,7 @@ const Page = () => {
                                         </FormControl>
                                         <SelectContent>
                                             {voice.map((element, index) => (
-                                                <SelectItem key={index} value={element.id}>{element.name} - {element.description}</SelectItem>
+                                                <SelectItem key={index} value={element?.id}>{element?.name} - {element?.description}</SelectItem>
                                             ))}
                                         </SelectContent>
                                     </Select>
