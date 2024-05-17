@@ -18,9 +18,10 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from '@/components/ui/textarea';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { useAllAgentFetch, useAllContactFetch } from '@/hooks/agentHook';
+import { useAllAgentFetch } from '@/hooks/agentHook';
 import { DataTable } from './data-table';
 import { columns } from './columns';
+import { useAllContactFetch } from '@/hooks/contactHook';
 
 
 const Page = () => {
@@ -29,7 +30,7 @@ const Page = () => {
     const form = useForm();
     const [buttonLoading, setButtonLoading] = useState(false);
   const [rowSelection, setRowSelection] = React.useState({});
-    const [rowArray,setRowArray] = useState([]);
+    const [rowArray,setRowArray] = useState();
     
     useEffect(()=>{
         setRowArray(Object.keys(rowSelection));
