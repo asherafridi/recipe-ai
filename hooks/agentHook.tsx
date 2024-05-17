@@ -61,7 +61,7 @@ const useAgentDelete = async (id: string): Promise<void> => {
   interface Voice {
     id: string;
     name: string;
-    // Add other properties of a voice object here if available
+    description: string;
   }
   
   interface UseFetchVoiceResult {
