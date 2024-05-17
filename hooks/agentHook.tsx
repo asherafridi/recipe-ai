@@ -60,7 +60,7 @@ const useAgentDelete = async (id: string): Promise<void> => {
   };
 
   const useFetchVoice=  ()=>{
-    const [voice,setVoice] =useState([]);
+    const [voice,setVoice] =useState<any>([]);
     const [voiceLoader,setVoiceLoader] = useState(true);
 
     useEffect(()=>{
