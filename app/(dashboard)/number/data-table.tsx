@@ -44,7 +44,7 @@ export function DataTable<TData, TValue>({
             <div className="flex items-center justify-between py-4">
                 <h1>All Numbers</h1>
                 <div className="flex gap-4">
-                    <Link href="number/create"><Button>Purchase New Number</Button></Link>
+                    <Link href="number/create"><Button>Purchase New Outbound Number</Button></Link>
                 </div>
             </div>
             <div className="rounded-md border">

@@ -9,42 +9,40 @@ import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useAgentDelete } from "@/hooks/agentHook"
 import {  useStopCall } from "@/hooks/singleCallHook"
-import { useStopBatch } from "@/hooks/campaignHook"
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 export type Call = {
-  id: string
-  agent: string
-  callId: string
-  campaignId:string
-  cost: string
-  status: string
-  time :string
+  call_id: string
 }
-
 
 
 export const columns: ColumnDef<Call>[] = [
   {
-    accessorKey: "id",
-    header: "#",
+    accessorKey: "label",
+    header: "Label",
   },
   {
-    accessorKey: "name",
-    header: "Campaign Name",
-  },
-  {
-    accessorKey: "agent.name",
-    header: "Agent",
-  },
-  {
-    accessorKey: "cost",
-    header: "Cost",
-  },
-  {
-    accessorKey: "status",
-    header: "Status",
+    accessorKey: "created_at",
+    header: "Created At",
+    cell : ({row})=>{
+      const formatDate = (isoString) => {
+        const date = new Date(isoString);
+        return new Intl.DateTimeFormat('en-US', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+          hour: 'numeric',
+          minute: 'numeric',
+          second: 'numeric',
+        }).format(date);
+      };
+      
+      // Example usage
+      const createdAt = row.original.created_at;
+      const readableDate = formatDate(createdAt);
+      return (readableDate);
+    }
   },
   {
     id: "actions",
@@ -52,8 +50,7 @@ export const columns: ColumnDef<Call>[] = [
     enableHiding: false,
     cell: ({ row }) => {
       const payment = row.original;
-      const dateTime = new Date(payment.time);
-
+      const dateTime = new Date(payment.created_at);
       // Get the current date-time
       const currentDateTime = new Date();
       return (
@@ -67,14 +64,17 @@ export const columns: ColumnDef<Call>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem><Link href={`/campaign/detail/${payment.campaignId}`}>Campaign Detail</Link></DropdownMenuItem>
-            <>
+            <DropdownMenuItem><Link href={`/call/detail/${payment.call_id}`}>Call Detail</Link></DropdownMenuItem>
+            <DropdownMenuItem><Link href={`/call/analyze/${payment.call_id}`}>Analyze Call with AI</Link></DropdownMenuItem>
+            
+            {/* {dateTime > currentDateTime ? (<> */}
               <DropdownMenuItem onClick={() => {
               if (confirm('Are you sure?')) {
-                useStopBatch(payment.callId);
+                
+                useStopCall(payment.call_id);
               }
-            }}>Stop Batch</DropdownMenuItem>
-            </>
+            }}>Stop Call</DropdownMenuItem>
+            {/* </>):'' } */}
             
             
           </DropdownMenuContent>

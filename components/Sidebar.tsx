@@ -1,7 +1,7 @@
 "use client"
 import Link from 'next/link';
 import React, { useEffect, useReducer } from 'react';
-import { DollarSign, Headphones, Info, LayoutDashboard, MessageSquareDiff, Phone, PhoneOutgoing, User, Users, Webhook } from 'lucide-react';
+import { DollarSign, Headphones, Info, LayoutDashboard, MessageSquareDiff, PenTool, Phone, PhoneOutgoing, User, Users, Webhook } from 'lucide-react';
 import { usePathname, useRouter } from 'next/navigation';
 
 
@@ -16,7 +16,7 @@ const Sidebar = ({ sidebar, setSidebar }: { sidebar: any, setSidebar: any }) => 
     { href: '/contact', icon: <Users />, text: 'Contacts', key: 'contact' },
     { href: '/call', icon: <PhoneOutgoing />, text: 'Single Call', key: 'call' },
     { href: '/campaign', icon: <Webhook />, text: 'Campaigns', key: 'campaign' },
-    { href: '/credit', icon: <DollarSign />, text: 'Purchase Credits', key: 'credit' },
+    { href: '/vector', icon: <PenTool />, text: 'Vector Store', key: 'vector' },
     { href: '/help', icon: <Info />, text: 'Need Help?', key: 'help' },
   ];
 

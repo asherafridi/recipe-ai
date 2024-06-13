@@ -12,48 +12,46 @@ import { useRouter } from "next/navigation"
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 export type Number = {
-    id: string
-    number: string
+    phone_number: string
+    created_at: string
+    last_initiated: string
 }
 
 
 export const columns: ColumnDef<Number>[] = [
     {
-        accessorKey: "id",
-        header: "#",
+        accessorKey: "phone_number",
+        header: "Phone Number",
     },
     {
-        accessorKey: "number",
-        header: "Number",
+        accessorKey: "created_at",
+        header: "Created At",
+        cell: ({ row }) => {
+            const isoDateString = row.original.created_at;
+
+            const date = new Date(isoDateString);
+
+
+            // Format the date to a readable string
+            const readableDate = date.toLocaleDateString('en-US') + ' ' + date.toLocaleTimeString('en-US');
+            return (readableDate);
+
+        }
     },
     {
-      id: "actions",
-      header:"Actions",
-      enableHiding: false,
-      cell: ({ row }) => {
-        const payment = row.original
-   
-        return (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-8 w-8 p-0">
-                <span className="sr-only">Open menu</span>
-                <MoreHorizontal className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>Actions</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              {/* <DropdownMenuItem><Link href={`/contact/edit/${payment.id}`}>Edit Number</Link></DropdownMenuItem> */}
-              {/* <DropdownMenuItem onClick={()=>{
-                if(confirm('Are you sure?')){
-                    useContactDelete(payment.id);
-                }
-              }}>Delete Number</DropdownMenuItem> */}
-            </DropdownMenuContent>
-          </DropdownMenu>
-        )
-      },
+        accessorKey: "last_initiated",
+        header: "Last Initiated",
+        cell: ({ row }) => {
+            const isoDateString = row.original.last_initiated;
+
+            const date = new Date(isoDateString);
+
+
+            // Format the date to a readable string
+            const readableDate = date.toLocaleDateString('en-US') + ' ' + date.toLocaleTimeString('en-US');
+            return (readableDate);
+
+        }
     }
-    
+
 ]

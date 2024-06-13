@@ -11,7 +11,7 @@ const useAllCampaignFetch = () => {
         const fetchData = async () => {
             try {
                 const response = await axios.get('/api/campaign');
-                setCampaignData(response.data.agents);
+                setCampaignData(response.data.campaign);
                 setCampaignLoading(false);
 
             } catch (error) {

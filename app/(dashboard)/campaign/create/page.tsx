@@ -19,8 +19,6 @@ import {
 import { Textarea } from '@/components/ui/textarea';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { useAllAgentFetch } from '@/hooks/agentHook';
-import { DataTable } from './data-table';
-import { columns } from './columns';
 import { useAllContactFetch } from '@/hooks/contactHook';
 
 
@@ -29,35 +27,21 @@ const Page = () => {
     const { contact, contactLoader } = useAllContactFetch();
     const form = useForm();
     const [buttonLoading, setButtonLoading] = useState(false);
-  const [rowSelection, setRowSelection] = React.useState({});
-    const [rowArray,setRowArray] = useState();
-    
-    useEffect(()=>{
-        setRowArray(Object.keys(rowSelection));
-    },[rowSelection]);
 
-    
-  
-
-    const submit = async (values: any) => {
+    const submit = (values: any) => {
         setButtonLoading(true);
-        const data = {
-            ...values,
-            a:rowArray
-        }
-        console.log(data);
-        const response = await axios.post('/api/campaign/create',data);
-        if (response.data) {
-            console.log(response.data.msg);
-            toast.success('Data is Coming'); // Display success message
-            setButtonLoading(false); // Reset button loading state
-            form.reset(); // Reset the form
-        } else {
-            // The server responded with an error or unexpected data
-            console.error('Unexpected response:', response.data);
-            toast.error('Unexpected response from server'); // Display error message
-            setButtonLoading(false); // Reset button loading state
-        }
+        console.log(values);
+        axios.post('/api/call/create', values).then(response => {
+            toast.success(response.data?.msg);
+            setTimeout(() => {
+                setButtonLoading(false);
+                form.reset();
+            })
+        }).catch(e => {
+            // toast.error(e?.response?.data?.error);
+            setButtonLoading(false);
+            console.log(e);
+        });
     }
 
 
@@ -68,28 +52,15 @@ const Page = () => {
 
     return (
         <div className='p-5 min-h-screen'>
-            <Breadcrumb title="Launch Campaign" />
-            <div className="bg-white mt-4 rounded p-4 w-100">
+            <Breadcrumb title="Make Call" />
+            <div className="bg-white mt-4 rounded p-4">
                 <div className='flex justify-between items-center'>
-                    <h3>Launch your AI Call Campaign in 29 Seconds.</h3>
+                    <h3>Make an Call</h3>
                 </div>
 
                 <Form {...form}>
-                    <form onSubmit={form.handleSubmit(submit)} className="space-y-4 w-full mt-4">
+                    <form onSubmit={form.handleSubmit(submit)} className="space-y-4 w-1/3 mt-4">
 
-                        <FormField
-                            control={form.control}
-                            name="name"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Name</FormLabel>
-                                    <FormControl>
-                                        <Input type='name' placeholder='Campaign Name' {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
 
                         <FormField
                             control={form.control}
@@ -114,10 +85,58 @@ const Page = () => {
                             )}
                         />
 
-                        <DataTable columns={columns} data={contact} rowSelection={rowSelection} setRowSelection={setRowSelection}  />
+                        <FormField
+                            control={form.control}
+                            name="contactId"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Contact</FormLabel>
+                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                        <FormControl>
+                                            <SelectTrigger>
+                                                <SelectValue placeholder="Number" />
+                                            </SelectTrigger>
+                                        </FormControl>
+                                        <SelectContent>
+                                            {contact.map((ele, index) => (
+                                                <SelectItem key={index} value={`${ele?.id}`}>{ele?.name}</SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
 
-                            
+<FormField
+                            control={form.control}
+                            name="time"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Time</FormLabel>
+                                    <FormControl>
+                                        <Input type='datetime-local' {...field}/>
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
 
+                        <FormField
+                            control={form.control}
+                            name="duration"
+                            defaultValue={1}
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Max Duration</FormLabel>
+                                    <FormControl>
+                                        <Input type='number' {...field}/>
+                                    </FormControl>
+                                    <FormDescription>One Minute Call Cost around 0.16$</FormDescription>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
                         <FormButton state={buttonLoading} />
                     </form>
                 </Form>

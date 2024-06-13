@@ -18,7 +18,8 @@ model User {
   email    String  @unique
   name     String?
   password String
-  balance  Float   @default(0.00)
+  subaccount_id String?
+  subaccount_key  String?
   status   Boolean @default(false)
 }
 
@@ -27,54 +28,23 @@ model Contact {
   name   String?
   number String
   userId Int
-
-  singleCall SingleCall[]
 }
 
-model AgentNumber {
-  id         Int     @id @default(autoincrement())
-  number     String?
-  purchaseId String
-  userId     Int
 
-  agent Agent[]
-}
 
 model Agent {
   id        Int     @id @default(autoincrement())
   name      String?
-  agentType String
+  agentType String?
   voice     String
   prompt    String
-  numberId  Int
+  numberId  String?
+  firstSentence String?
+  waitForGreeting String? @default("false")
+  maxDuration String? @default("1")
+  transferNumber String?
+  language String? @default("ENG")
+  model String? @default("enhanced")
   userId    Int
-
-  agentNumber       AgentNumber   @relation(fields: [numberId], references: [id])
-  call      SingleCall[]
-  Campaigns Campaigns[]
-}
-
-model SingleCall {
-  id          Int     @id @default(autoincrement())
-  agentId     Int
-  agent       Agent   @relation(fields: [agentId], references: [id])
-  callId      String  @unique
-  contactId   Int
-  contact     Contact @relation(fields: [contactId], references: [id])
-  cost        Float   @default(0.00)
-  status      String?
-  time        String?
-  maxDuration Int?
-  userId      Int
-}
-
-model Campaigns {
-  id         Int      @id @default(autoincrement())
-  name       String
-  agentId    Int
-  agent      Agent    @relation(fields: [agentId], references: [id])
-  campaignId String
-  cost       Float    @default(0.00)
-  status     String?
-  userId     Int
+  tools String?
 }

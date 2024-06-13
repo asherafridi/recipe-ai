@@ -3,10 +3,9 @@ import prisma from '@/lib/db';
 import { getServerSession } from 'next-auth';
 import { authOption } from '@/lib/auth';
 import axios from 'axios';
-import { record } from 'zod';
 
 export async function POST(req: NextRequest) {
-    const { a,agentId,name } = await req.json();
+    const { agentId, contactId,time,duration } = await req.json();
     const session = await getServerSession(authOption);
 
     if (!session?.user?.id) {
@@ -14,62 +13,53 @@ export async function POST(req: NextRequest) {
     }
 
     try {
-        const contacts = await prisma.contact.findMany({
-            where: {
-                number: {
-                    in: a,
-                },
-                userId: +session.user.id
-            }
-        }).then(users => {
-            return users.map(user => ({
-                ...user,
-                phone_number: user.number
-            }));
-        });
         const agent = await prisma.agent.findFirst({
             where: {
                 id: +agentId
-            },
-            include:{
-                agentNumber:{
-
-                }
+            }
+        });
+        const contact = await prisma.contact.findFirst({
+            where: {
+                id: +contactId
             }
         });
 
-        
+        const tools:any = agent?.tools;
+        console.log(tools);
         const options = {
             method: 'POST',
             headers: {
-                authorization: 'sk-ix1uv15q05edyjxb2oqdporz1okqchzq5zvjvi9271f2cixopa3d71ulo0ppky3969',
+                authorization: 'sub-sk-7ce29856-fe18-43e4-978a-936e413906ba-c97ed112-aa16-470e-93c6-02776baf8688',
                 'Content-Type': 'application/json'
             },
             data: {
-                base_prompt: `${agent?.prompt}`,
-                call_data: contacts,
-                label: `${name}`,
-                test_mode: true,
-                from : `${agent?.agentNumber.number}`,
-                record : true
+                phone_number: `${contact?.number}`,
+                task: `${agent?.prompt}`,
+                voice: `${agent?.voice}`,
+                analysis_schema: {},
+                first_sentence: `Hi How Are You ${contact?.name}`,
+                wait_for_greeting: true,
+                interruption_threshold: 50,
+                record: true,
+                max_duration: +duration,
+                answered_by_enabled: true,
+                // from: `${number?.number}`,
+                time: convertDateTimeLocalToCustomFormat(time),
+                temperature: 0.7,
+                start_time : `${convertDateTimeLocalToCustomFormat(time)}`,
+                "tools" :  [
+                        "KB-f328960f-31de-4ac0-a367-b9d1c4923e1b"
+                ],
+
             }
         };
 
         // Make the POST request and wait for the response
-        const response = await axios.post('https://api.bland.ai/v1/batches', options.data, { headers: options.headers });
-        
-        const campaign = await prisma.campaigns.create({
-            data: {
-                agentId: +agentId,
-                name : name,
-                campaignId: response.data.batch_id,
-                cost: 0.16*(+contacts.length),
-                status: 'Initiated',
-                userId: +session?.user?.id
-            }
-        });
+        const response = await axios.post('https://api.bland.ai/v1/calls', options.data, { headers: options.headers });
 
-        return NextResponse.json({ msg: 'Campaign Started...' }, { status: 200 });
+        
+
+        return NextResponse.json({ msg: 'Calling...' }, { status: 200 });
 
     } catch (e) {
         return NextResponse.json({ error: e }, { status: 500 });

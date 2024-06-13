@@ -13,37 +13,61 @@ import {  useStopCall } from "@/hooks/singleCallHook"
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 export type Call = {
-  id: string
-  agent: string
-  callId: string
-  contact: string
-  cost: string
-  status: string
-  time :string
+  call_id: string
 }
 
 
+const convertToMinutesAndSeconds = (fractionalMinutes) => {
+  
+};
 
 export const columns: ColumnDef<Call>[] = [
   {
-    accessorKey: "id",
-    header: "#",
+    accessorKey: "from",
+    header: "From",
   },
   {
-    accessorKey: "agent.name",
-    header: "Agent",
+    accessorKey: "to",
+    header: "To",
   },
   {
-    accessorKey: "contact.name",
-    header: "Contact",
-  },
-  {
-    accessorKey: "cost",
-    header: "Cost",
+    accessorKey: "call_length",
+    header: "Call_length",
+    cell: ({row})=>{
+      const itemRow = row.original.call_length;
+
+      const totalSeconds = Math.floor(itemRow * 60);
+      const minutes = Math.floor(totalSeconds / 60);
+      const seconds = totalSeconds % 60;
+      return `${minutes}m ${seconds}s`;
+
+    }
   },
   {
     accessorKey: "status",
     header: "Status",
+  },
+  {
+    accessorKey: "created_at",
+    header: "Created At",
+    cell : ({row})=>{
+      const formatDate = (isoString) => {
+        const date = new Date(isoString);
+        return new Intl.DateTimeFormat('en-US', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+          hour: 'numeric',
+          minute: 'numeric',
+          second: 'numeric',
+        }).format(date);
+      };
+      
+      // Example usage
+      const createdAt = row.original.created_at;
+      const readableDate = formatDate(createdAt);
+      return (readableDate);
+    }
   },
   {
     id: "actions",
@@ -51,8 +75,7 @@ export const columns: ColumnDef<Call>[] = [
     enableHiding: false,
     cell: ({ row }) => {
       const payment = row.original;
-      const dateTime = new Date(payment.time);
-
+      const dateTime = new Date(payment.created_at);
       // Get the current date-time
       const currentDateTime = new Date();
       return (
@@ -66,14 +89,17 @@ export const columns: ColumnDef<Call>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem><Link href={`/call/detail/${payment.callId}`}>Call Detail</Link></DropdownMenuItem>
-            {dateTime.getTime() > currentDateTime.getTime() ? (<>
+            <DropdownMenuItem><Link href={`/call/detail/${payment.call_id}`}>Call Detail</Link></DropdownMenuItem>
+            <DropdownMenuItem><Link href={`/call/analyze/${payment.call_id}`}>Analyze Call with AI</Link></DropdownMenuItem>
+            
+            {/* {dateTime > currentDateTime ? (<> */}
               <DropdownMenuItem onClick={() => {
               if (confirm('Are you sure?')) {
-                useStopCall(payment.callId);
+                
+                useStopCall(payment.call_id);
               }
             }}>Stop Call</DropdownMenuItem>
-            </>):'' }
+            {/* </>):'' } */}
             
             
           </DropdownMenuContent>

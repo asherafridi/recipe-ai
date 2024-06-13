@@ -4,7 +4,7 @@ import { getServerSession } from 'next-auth';
 import { authOption } from '@/lib/auth';
 
 export async function POST(req: NextRequest) {
-    const { id, name, agentType,voice,numberId,prompt } = await req.json();
+    const { id, name, numberId,voice,prompt,first_sentence,language,max_duration,model,transfer_number,wait_for_greeting,tools } = await req.json();
     const session = await getServerSession(authOption);
 
 
@@ -14,16 +14,26 @@ export async function POST(req: NextRequest) {
 
     try {
 
+        const vectorIds = tools.map((item:any) => item.vector_id);
+console.log(JSON.stringify(vectorIds));
         const contact = await prisma.agent.update({
             where: {
                 id: +id
             },
             data: {
                 name: name,
-                agentType:agentType,
+                numberId: numberId,
                 voice:voice,
-                numberId:+numberId,
-                prompt:prompt
+                agentType: "Inbound",
+                prompt:prompt,
+                userId: +session?.user?.id,
+                firstSentence : first_sentence,
+                language : language,
+                maxDuration : max_duration,
+                model : model,
+                transferNumber : transfer_number,
+                waitForGreeting : `${wait_for_greeting}`,
+                tools : JSON.stringify(vectorIds)
             }
         });
 
@@ -32,7 +42,7 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ msg: 'Agent Updated Successfully' }, { status: 200 });
 
     } catch (e) {
-        return NextResponse.json({ error: 'Something Went Wrong' }, { status: 500 });
+        return NextResponse.json({ error: 'Something Went Wrong',e:e }, { status: 500 });
     }
 
 }

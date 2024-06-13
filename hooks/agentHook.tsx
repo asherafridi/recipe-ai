@@ -1,12 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-
-type Data ={
-    name:string,
-    voice:string,
-    id:number
-}
+import { StringValidation } from "zod";
 
 
 interface Agent {
@@ -16,6 +11,14 @@ interface Agent {
   voice : string;
   numberId : string;
   prompt : string;
+  number : any;
+  firstSentence : string;
+  waitForGreeting : string;
+  maxDuration : string;
+  transferNumber : string;
+  language : string;
+  model :string;
+  tools :string;
 }
 const useAllAgentFetch = () => {
     const [data, setData] = useState<Agent[]>([]);

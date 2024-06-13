@@ -6,41 +6,20 @@ import axios from 'axios';
 import { columns} from './columns';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
-
-const useContactsFetch = () => {
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get('/api/number');
-        setData(response.data.numbers);
-        setLoading(false);
-        
-      } catch (error) {
-        toast.error('Something Went Wrong!');
-        setLoading(false);
-        console.log(error);
-      }
-    };
-
-    fetchData();
-  }, ['']);
-
-  return { data, loading };
-};
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+import { useNumberFetch } from '@/hooks/numberHook';
 
 
 const Page = () => {
-  const {data,loading} = useContactsFetch();
+  const {number,numberLoader} = useNumberFetch();
 
   
   return (
     <div className='p-5 min-h-screen'>
-        <Breadcrumb title="Agent Number" />
+      <Breadcrumb title='Agent Number' />
         <div className="bg-white mt-4 rounded p-4">
-          {loading ?  'Loading...' : <DataTable columns={columns} data={data}  />}
+          {numberLoader ?  'Loading...' : <DataTable columns={columns} data={number}  />}
         
         </div>
     </div>

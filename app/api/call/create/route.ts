@@ -18,21 +18,18 @@ export async function POST(req: NextRequest) {
                 id: +agentId
             }
         });
-        const number = await prisma.agentNumber.findFirst({
-            where: {
-                id: agent?.numberId
-            }
-        });
         const contact = await prisma.contact.findFirst({
             where: {
                 id: +contactId
             }
         });
 
+        const tools:any = agent?.tools;
+        console.log(tools);
         const options = {
             method: 'POST',
             headers: {
-                authorization: 'sk-ix1uv15q05edyjxb2oqdporz1okqchzq5zvjvi9271f2cixopa3d71ulo0ppky3969',
+                authorization: 'sub-sk-7ce29856-fe18-43e4-978a-936e413906ba-c97ed112-aa16-470e-93c6-02776baf8688',
                 'Content-Type': 'application/json'
             },
             data: {
@@ -46,28 +43,21 @@ export async function POST(req: NextRequest) {
                 record: true,
                 max_duration: +duration,
                 answered_by_enabled: true,
-                from: `${number?.number}`,
+                // from: `${number?.number}`,
+                time: convertDateTimeLocalToCustomFormat(time),
                 temperature: 0.7,
-                start_time : `${convertDateTimeLocalToCustomFormat(time)}`
+                start_time : `${convertDateTimeLocalToCustomFormat(time)}`,
+                "tools" :  [
+                        "KB-f328960f-31de-4ac0-a367-b9d1c4923e1b"
+                ],
+
             }
         };
 
         // Make the POST request and wait for the response
         const response = await axios.post('https://api.bland.ai/v1/calls', options.data, { headers: options.headers });
 
-        // Create the call record after receiving the response
-        const call = await prisma.singleCall.create({
-            data: {
-                agentId: +agentId,
-                callId: `${response.data.call_id}`,
-                contactId: +contactId,
-                cost: 0.16*(+duration),
-                status: 'Initiated',
-                userId: +session?.user?.id,
-                time: convertDateTimeLocalToCustomFormat(time),
-                maxDuration:+duration
-            }
-        });
+        
 
         return NextResponse.json({ msg: 'Calling...' }, { status: 200 });
 
