@@ -28,7 +28,7 @@ const Page = () => {
       </div>
       <div className=" mt-4 rounded p-4 flex gap-2">
         {data?.map((element, index) => (
-          <div className='bg-white rounded w-full md:w-1/2 lg:w-1/4 p-3'>
+          <div key={index} className='bg-white rounded w-full md:w-1/2 lg:w-1/4 p-3'>
             <div className='flex justify-between'>
               <div className='flex items-center gap-4'>
                 <Avatar>
