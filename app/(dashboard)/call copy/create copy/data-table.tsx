@@ -20,27 +20,29 @@ import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { useEffect, useState } from "react"
 
-interface DataTableProps<TData, TValue> {
-    columns: ColumnDef<TData, TValue>[]
-    data: TData[],
-    rowSelection:any,
-    setRowSelection:any
+interface RowData {
+    number: string; // or number, depending on your data structure
 }
 
-export function DataTable<TData, TValue>({
+interface DataTableProps<TData extends RowData, TValue> {
+    columns: ColumnDef<TData, TValue>[]
+    data: TData[],
+    rowSelection: any,
+    setRowSelection: any
+}
+
+export function DataTable<TData extends RowData, TValue>({
     columns,
     data,
     rowSelection,
     setRowSelection
 }: DataTableProps<TData, TValue>) {
-    
-
     const table = useReactTable({
         data,
         columns,
         getRowId: originalRow => originalRow.number,
         state: {
-          rowSelection,
+            rowSelection,
         },
         enableRowSelection: true, //enable row selection for all rows
         // enableRowSelection: row => row.original.age > 18, // or enable row selection conditionally per row
@@ -48,7 +50,6 @@ export function DataTable<TData, TValue>({
         getCoreRowModel: getCoreRowModel(),
         getPaginationRowModel: getPaginationRowModel(),
     });
-
 
     return (
         <div className="border p-2 rounded">
