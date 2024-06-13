@@ -21,41 +21,33 @@ import {
 import { Label } from "@/components/ui/label";
 import { useVectorFetch } from "@/hooks/vectorHook";
 
+interface Vector {
+  vector_id: string;
+  name: string;
+}
+
 const badgeStyle = (color: string) => ({
   borderColor: `#999`,
   backgroundColor: `#999`,
   color: `#fff`,
 });
 
-export function FancyBox({field} : {field:any}) {
+export function FancyBox({ field }: { field: any }) {
   const inputRef = React.useRef<HTMLInputElement>(null);
   const [openCombobox, setOpenCombobox] = React.useState(false);
   const [inputValue, setInputValue] = React.useState<string>("");
-  const [selectedValues, setSelectedValues] = React.useState([]);
-  const { vector,vectorLoader } = useVectorFetch();
+  const [selectedValues, setSelectedValues] = React.useState<Vector[]>([]);
+  const { vector, vectorLoader } = useVectorFetch();
 
-  
   React.useEffect(() => {
     field.onChange(selectedValues);
   }, [selectedValues]);
 
-  
-  // React.useEffect(() => {
-  //   // Initialize selectedValues based on the default field value
-  //   if (field.value && vector.length > 0) {
-  //     const initialSelected = vector.filter(tool =>
-  //       field.value.includes(tool.vector_id)
-  //     );
-  //     setSelectedValues(initialSelected);
-  //   }
-  //   console.log(field.value);
-  // }, []);
-
-  const toggleFramework = (vector:any) => {
-    setSelectedValues((currentFrameworks:any) =>
-      !currentFrameworks.includes(vector)
+  const toggleFramework = (vector: Vector) => {
+    setSelectedValues((currentFrameworks) =>
+      !currentFrameworks.some((v) => v.vector_id === vector.vector_id)
         ? [...currentFrameworks, vector]
-        : currentFrameworks.filter((l :any ) => l.vector_id !== vector.vector_id)
+        : currentFrameworks.filter((v) => v.vector_id !== vector.vector_id)
     );
     inputRef?.current?.focus();
   };
@@ -65,10 +57,9 @@ export function FancyBox({field} : {field:any}) {
     setOpenCombobox(value);
   };
 
-  
   if (vectorLoader) {
-    return <div className='p-5 bg-white'>Loading...</div>;
-}
+    return <div className="p-5 bg-white">Loading...</div>;
+  }
 
   return (
     <div className="w-full mb-4 p-2">
@@ -102,8 +93,8 @@ export function FancyBox({field} : {field:any}) {
             />
             <CommandList>
               <CommandGroup className="max-h-[145px] overflow-auto">
-                {vector.map((tool:any) => {
-                  const isActive = selectedValues.includes(tool);
+                {vector.map((tool: Vector) => {
+                  const isActive = selectedValues.some((v) => v.vector_id === tool.vector_id);
                   return (
                     <CommandItem
                       key={tool.vector_id}
