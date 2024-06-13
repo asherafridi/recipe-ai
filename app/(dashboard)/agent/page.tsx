@@ -1,11 +1,6 @@
 "use client"
 import Breadcrumb from '@/components/Breadcrumb'
 import React, { useEffect, useState } from 'react'
-import { DataTable } from './data-table';
-import axios from 'axios';
-import { columns } from './columns';
-import toast from 'react-hot-toast';
-import { useRouter } from 'next/navigation';
 import { useAllAgentFetch } from '@/hooks/agentHook';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';

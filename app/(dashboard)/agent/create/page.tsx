@@ -119,7 +119,7 @@ const Page = () => {
                                         </FormControl>
                                         <SelectContent>
                                             {number.map((element, index) => (
-                                                <SelectItem key={index} value={`${element?.id}`}>{element?.number}</SelectItem>
+                                                <SelectItem key={index} value={`${element?.phone_number}`}>{element?.phone_number}</SelectItem>
                                             ))}
                                         </SelectContent>
                                     </Select>

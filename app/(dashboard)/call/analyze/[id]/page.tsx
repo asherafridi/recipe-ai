@@ -12,12 +12,22 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import FormButton from '@/components/FormButton';
 import axios from 'axios';
 
+interface Result{
+    questions : any[]
+    answers : any[]
+}
+interface FormValues {
+    fields: { user: string; text: string }[];
+    goal: string;
+  }
+  
+
 const Page = ({ params }: { params: { id: string } }) => {
     const { call, callLoader } = useFetchCall(params.id);
     const [buttonLoading, setButtonLoading] = useState(false);
 
-    const [result, setResult] = useState(null);
-    const form = useForm({
+    const [result, setResult] = useState<Result>();
+    const form = useForm<FormValues>({
         defaultValues: {
             fields: [{ user: '', text: '' }],
             goal: ''
@@ -30,6 +40,7 @@ const Page = ({ params }: { params: { id: string } }) => {
     });
 
     const onSubmit = (data: any) => {
+        console.log(data);
         setButtonLoading(true);
         toast.success('Analyzing...');
         const values = { ...data, call_id: params.id };
@@ -76,15 +87,15 @@ const Page = ({ params }: { params: { id: string } }) => {
                         />
                         <FormLabel>Questions</FormLabel>
                         {fields.map((item, index) => (
-                            <div key={item.id} className="flex items-center space-x-2 mb-2 w-full">
+                            <div key={index} className="flex items-center space-x-2 mb-2 w-full">
                                 <Controller
                                     control={form.control}
-                                    name={`fields[${index}].user`}
+                                    name={`fields.${index}.user`}
                                     render={({ field }) => <Input {...field} className='w-4/5' required placeholder={`Question ${index + 1} ?`} />}
                                 />
                                 <Controller
                                     control={form.control}
-                                    name={`fields[${index}].text`}
+                                    name={`fields.${index}.text`}
                                     render={({ field }) =>
                                         <FormItem className='w-1/5'>
                                             <Select onValueChange={field.onChange} required>

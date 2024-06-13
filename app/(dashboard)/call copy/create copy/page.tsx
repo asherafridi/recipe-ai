@@ -30,7 +30,7 @@ const Page = () => {
     const form = useForm();
     const [buttonLoading, setButtonLoading] = useState(false);
   const [rowSelection, setRowSelection] = React.useState({});
-    const [rowArray,setRowArray] = useState();
+    const [rowArray,setRowArray] = useState<string[]>();
     
     useEffect(()=>{
         setRowArray(Object.keys(rowSelection));

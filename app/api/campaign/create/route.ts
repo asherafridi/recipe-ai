@@ -47,9 +47,7 @@ export async function POST(req: NextRequest) {
                 time: convertDateTimeLocalToCustomFormat(time),
                 temperature: 0.7,
                 start_time : `${convertDateTimeLocalToCustomFormat(time)}`,
-                "tools" :  [
-                        "KB-f328960f-31de-4ac0-a367-b9d1c4923e1b"
-                ],
+                "tools" :  tools,
 
             }
         };

@@ -14,12 +14,10 @@ import {  useStopCall } from "@/hooks/singleCallHook"
 // You can use a Zod schema here if you want.
 export type Call = {
   call_id: string
+  call_length : string
+  created_at :string
 }
 
-
-const convertToMinutesAndSeconds = (fractionalMinutes) => {
-  
-};
 
 export const columns: ColumnDef<Call>[] = [
   {
@@ -34,7 +32,7 @@ export const columns: ColumnDef<Call>[] = [
     accessorKey: "call_length",
     header: "Call_length",
     cell: ({row})=>{
-      const itemRow = row.original.call_length;
+      const itemRow:any = row.original.call_length;
 
       const totalSeconds = Math.floor(itemRow * 60);
       const minutes = Math.floor(totalSeconds / 60);
@@ -51,7 +49,7 @@ export const columns: ColumnDef<Call>[] = [
     accessorKey: "created_at",
     header: "Created At",
     cell : ({row})=>{
-      const formatDate = (isoString) => {
+      const formatDate = (isoString :string) => {
         const date = new Date(isoString);
         return new Intl.DateTimeFormat('en-US', {
           year: 'numeric',
