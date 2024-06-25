@@ -136,7 +136,7 @@ const Page = ({ params }: { params: { id: string } }) => {
 
             {result == null ? '' : <div className=''>
                 {Object.entries(result.answers).map(([key, value], index) => (
-                   <div className='bg-white rounded mt-2 px-4 py-6'>
+                   <div className='bg-white rounded mt-2 px-4 py-6' key={index}>
                     <h1>Call id : {key}</h1>
                     {value.map((ele:any,ind:any)=>(
                         <div key={ind}>
