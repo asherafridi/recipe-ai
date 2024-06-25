@@ -28,14 +28,13 @@ const useAllCampaignFetch = () => {
 
 
 const useStopBatch= async (campaignId:string)=>{
-    const options = {method: 'POST', headers: {authorization: 'sk-ix1uv15q05edyjxb2oqdporz1okqchzq5zvjvi9271f2cixopa3d71ulo0ppky3969'}};
-    try {
-      const response = await axios.post(`https://api.bland.ai/v1/batches/${campaignId}/stop`,'',options);
-    //   const statusUpdate = await axios.post(`/api/call/stop`,{id:callId});
-      toast.success(response?.data?.message);
-    } catch (error:any) {
-      toast.error(error?.data?.status || 'An error occurred while Stoping the call.');
-    }
+  try {
+    const response = await axios.post(`/api/campaign/stop`, { id: campaignId });
+    toast.success(response?.data?.msg);
+  } catch (error: any) {
+    console.log(error);
+    toast.error(error?.data?.error || 'Campaign already Completed.');
+  }
   }
 
     
@@ -43,19 +42,21 @@ const useStopBatch= async (campaignId:string)=>{
 const useFetchCampaign = (id: string) => {
     const [batchLoader,setBatchLoader] = useState(true);
     const [batches,setBatches] = useState(null);
-    useEffect(() => {
-      const options = {method: 'GET', headers: {authorization: 'sk-ix1uv15q05edyjxb2oqdporz1okqchzq5zvjvi9271f2cixopa3d71ulo0ppky3969'}};
 
-        axios.get(`https://api.bland.ai/v1/batches/${id}`,options)
-            .then(response => {
-                setBatches(response.data);
-                console.log(response.data);
-                setBatchLoader(false);
-            })
-            .catch(error => {
-                console.error('Error fetching contact:', error);
-                setBatchLoader(false);
-            });
+    useEffect(() => {
+      const fetchData = async () => {
+        try {
+          const response = await axios.post(`/api/campaign/read`,{id :id});
+          setBatches(response.data.batch);
+          setBatchLoader(false);
+          
+        } catch (error) {
+          setBatchLoader(false);
+          console.log(error);
+        }
+      };
+  
+      fetchData();
     }, [id]);
     return {batches,batchLoader};
 };

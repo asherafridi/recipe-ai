@@ -88,16 +88,7 @@ export const columns: ColumnDef<Call>[] = [
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem><Link href={`/call/detail/${payment.call_id}`}>Call Detail</Link></DropdownMenuItem>
-            <DropdownMenuItem><Link href={`/call/analyze/${payment.call_id}`}>Analyze Call with AI</Link></DropdownMenuItem>
             
-            {/* {dateTime > currentDateTime ? (<> */}
-              <DropdownMenuItem onClick={() => {
-              if (confirm('Are you sure?')) {
-                
-                useStopCall(payment.call_id);
-              }
-            }}>Stop Call</DropdownMenuItem>
-            {/* </>):'' } */}
             
             
           </DropdownMenuContent>

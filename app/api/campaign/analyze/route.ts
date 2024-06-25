@@ -34,7 +34,8 @@ export async function POST(req: NextRequest) {
             questions: questions
         };
 
-        const request = await axios.post(`https://api.bland.ai/v1/calls/${call_id}/analyze`, requestData, options);
+        const request = await axios.post(`https://api.bland.ai/v1/batches/${call_id}/analyze`, requestData, options);
+        console.log(request);
         return NextResponse.json({ msg: 'Analyzed Completed',data:request.data }, { status: 200 });
 
     } catch (e) {

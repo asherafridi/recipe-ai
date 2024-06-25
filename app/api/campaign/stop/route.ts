@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
         }
 
         const response = await axios.post(
-            `https://api.bland.ai/v1/calls/${id}/stop`,
+            `https://api.bland.ai/v1/batches/${id}/stop`,
             {},
             {
                 headers: {

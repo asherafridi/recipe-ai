@@ -11,19 +11,20 @@ import { X } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import FormButton from '@/components/FormButton';
 import axios from 'axios';
+import { useFetchCampaign } from '@/hooks/campaignHook';
 
-interface Result{
-    questions : any[]
-    answers : any[]
+interface Result {
+    questions: any[]
+    answers: any[]
 }
 interface FormValues {
     fields: { user: string; text: string }[];
     goal: string;
-  }
-  
+}
+
 
 const Page = ({ params }: { params: { id: string } }) => {
-    const { call, callLoader } = useFetchCall(params.id);
+    const { batchLoader, batches } = useFetchCampaign(params.id);
     const [buttonLoading, setButtonLoading] = useState(false);
 
     const [result, setResult] = useState<Result>();
@@ -44,7 +45,7 @@ const Page = ({ params }: { params: { id: string } }) => {
         setButtonLoading(true);
         toast.success('Analyzing...');
         const values = { ...data, call_id: params.id };
-        axios.post('/api/call/analyze', values).then(response => {
+        axios.post('/api/campaign/analyze', values).then(response => {
             toast.success(response.data?.data?.message);
             setResult(response.data?.data);
             console.log(response.data);
@@ -58,17 +59,14 @@ const Page = ({ params }: { params: { id: string } }) => {
         });
     };
 
-    if (callLoader) {
+    if (batchLoader) {
         return <div className='p-5 bg-white'>Loading...</div>;
     }
 
     return (
         <div className='p-5 min-h-screen'>
-            <Breadcrumb title="Analyze Call" />
+            <Breadcrumb title={`Analyze - ${batches?.batch_params?.label}`} />
             <div className="bg-white mt-4 rounded p-4">
-                <p><strong>Call ID:</strong> {call?.call_id}</p>
-                <p><strong>From:</strong> {call?.from}</p>
-                <p><strong>To:</strong> {call?.to}</p>
 
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -136,12 +134,17 @@ const Page = ({ params }: { params: { id: string } }) => {
                 </Form>
             </div>
 
-            {result == null ? '' : <div className='bg-white mt-4 rounded p-4'>
-                {result?.questions.map((element, index) => (
-                    <div key={index}>
-                        <b>Question No.{index+1} : </b>{element[0]}<br />
-                        <b>Answer :</b> {result?.answers[index]}
+            {result == null ? '' : <div className=''>
+                {Object.entries(result.answers).map(([key, value], index) => (
+                   <div className='bg-white rounded mt-2 px-4 py-6'>
+                    <h1>Call id : {key}</h1>
+                    {value.map((ele:any,ind:any)=>(
+                        <div key={ind}>
+                        <b>Question No.{ind+1} : </b>{result.questions[ind][0]}<br />
+                        <b>Answer :</b> {ele}
                     </div>
+                    ))}
+                   </div>
                 ))}
             </div>}
         </div>

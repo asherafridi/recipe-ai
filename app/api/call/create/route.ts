@@ -13,6 +13,12 @@ export async function POST(req: NextRequest) {
     }
 
     try {
+        
+        const user = await prisma.user.findFirstOrThrow({
+            where: {
+                id: +session.user.id,
+            },
+        });
         const agent = await prisma.agent.findFirst({
             where: {
                 id: +agentId
@@ -29,7 +35,7 @@ export async function POST(req: NextRequest) {
         const options = {
             method: 'POST',
             headers: {
-                authorization: 'sub-sk-7ce29856-fe18-43e4-978a-936e413906ba-c97ed112-aa16-470e-93c6-02776baf8688',
+                authorization: user.subaccount_key,
                 'Content-Type': 'application/json'
             },
             data: {

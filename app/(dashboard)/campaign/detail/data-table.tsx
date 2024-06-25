@@ -43,9 +43,6 @@ export function DataTable<TData, TValue>({
         <>
             <div className="flex items-center justify-between py-4">
                 <h1>All Calls</h1>
-                <div className="flex gap-4">
-                    <Link href="call/create"><Button>Make an Single Call</Button></Link>
-                </div>
             </div>
             <div className="rounded-md border">
                 <Table>

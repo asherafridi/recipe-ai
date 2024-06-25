@@ -27,8 +27,6 @@ export async function GET(req: NextRequest) {
         };
 
         const response = await axios.get('https://api.bland.ai/v1/batches', options);
-
-        console.log( response.data.batches);
         return NextResponse.json({ campaign: response.data?.batches }, { status: 200 });
     } catch (error:any) {
         console.error('Error fetching calls:', error);
