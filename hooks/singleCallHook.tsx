@@ -56,6 +56,7 @@ interface ExtCall {
   summary: string;
   recording_url: string;
   transcripts: Transcript[];
+  status : string;
 
 }
 const useFetchCall = (id: string) => {

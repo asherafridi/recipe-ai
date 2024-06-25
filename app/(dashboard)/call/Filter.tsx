@@ -8,6 +8,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { useAllAgentFetch } from '@/hooks/agentHook';
 import { useAllContactFetch } from '@/hooks/contactHook';
+import { useAllCampaignFetch } from '@/hooks/campaignHook';
 
 // Function to get the date 7 days ago in "YYYY-MM-DD" format
 const getSevenDaysAgo = () => {
@@ -16,8 +17,9 @@ const getSevenDaysAgo = () => {
 };
 
 const Filter = () => {
+      
     const { data: agents, loading: loadingAgents } = useAllAgentFetch();
-    const { contact: contacts, contactLoader } = useAllContactFetch();
+    const { campaignData,campaignLoading } = useAllCampaignFetch();
 
     const form = useForm({
         defaultValues: {
@@ -44,7 +46,7 @@ const Filter = () => {
         // Optionally trigger data fetching or other side effects here
     }
 
-    if (loadingAgents || contactLoader) {
+    if (loadingAgents || campaignLoading) {
         return <Skeleton className="w-full h-[60px] rounded mt-2" />;
     }
 
@@ -87,8 +89,8 @@ const Filter = () => {
                                         </SelectTrigger>
                                     </FormControl>
                                     <SelectContent>
-                                        {contacts.map((ele, index) => (
-                                            <SelectItem key={index} value={`${ele.id}`}>{ele.name}</SelectItem>
+                                        {campaignData.map((ele, index) => (
+                                            <SelectItem key={index} value={`${ele.batch_id}`}>{ele.label}</SelectItem>
                                         ))}
                                     </SelectContent>
                                 </Select>

@@ -2,9 +2,14 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
+type Call = {
+  batch_id: string
+  created_at :string
+  label :string
+}
 
 const useAllCampaignFetch = () => {
-    const [campaignData, setCampaignData] = useState([]);
+    const [campaignData, setCampaignData] = useState<Call[]>([]);
     const [campaignLoading, setCampaignLoading] = useState(true);
 
     useEffect(() => {
