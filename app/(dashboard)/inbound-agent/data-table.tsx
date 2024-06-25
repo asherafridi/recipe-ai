@@ -22,6 +22,7 @@ import { DropdownMenu } from "@/components/ui/dropdown-menu"
 import { RefreshCcw, Upload } from "lucide-react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
+import { useState } from "react"
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
@@ -32,6 +33,7 @@ export function DataTable<TData, TValue>({
     columns,
     data,
 }: DataTableProps<TData, TValue>) {
+    
     const table = useReactTable({
         data,
         columns,
@@ -42,7 +44,10 @@ export function DataTable<TData, TValue>({
     return (
         <>
             <div className="flex items-center justify-between py-4">
-                <h1>Campaign Calls</h1>
+                <h1>All Vector Stores</h1>
+                <div className="flex gap-4">
+                    <Link href="/vector/create"><Button>Add Vector Store</Button></Link>
+                </div>
             </div>
             <div className="rounded-md border">
                 <Table>
