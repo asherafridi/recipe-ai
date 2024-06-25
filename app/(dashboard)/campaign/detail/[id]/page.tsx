@@ -23,7 +23,7 @@ const Page = ({ params }: { params: { id: string } }) => {
 
     return (
         <div className='p-5 min-h-screen'>
-            <Breadcrumb title={`${batches.batch_params.label} - Campaign Detail`} />
+            <Breadcrumb title={`${batches?.batch_params.label} - Campaign Detail`} />
 
             <div className="grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-4 mt-4">
                 <Card x-chunk="dashboard-01-chunk-0">
@@ -72,7 +72,7 @@ const Page = ({ params }: { params: { id: string } }) => {
                         <Activity className="h-4 w-4 text-muted-foreground" />
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold">{batches.analysis.call_lengths.average}</div>
+                        <div className="text-2xl font-bold">{batches?.analysis.call_lengths.average}</div>
                         <p className="text-xs text-muted-foreground">
                             Sec
                         </p>
@@ -96,7 +96,7 @@ const Page = ({ params }: { params: { id: string } }) => {
 
             <div className="bg-white mt-4 rounded p-4">
 
-            <DataTable columns={columns} data={batches.call_data} />
+            <DataTable columns={columns} data={batches?.call_data} />
             </div>
         </div>
     )

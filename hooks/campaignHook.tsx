@@ -37,11 +37,18 @@ const useStopBatch= async (campaignId:string)=>{
   }
   }
 
+  
+interface ExtBatch {
+  batch_params : any,
+  analysis :any,
+  call_data : any
+
+}
     
 
 const useFetchCampaign = (id: string) => {
     const [batchLoader,setBatchLoader] = useState(true);
-    const [batches,setBatches] = useState(null);
+    const [batches,setBatches] = useState<ExtBatch>();
 
     useEffect(() => {
       const fetchData = async () => {
