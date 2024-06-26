@@ -37,7 +37,7 @@ export async function POST(req: NextRequest) {
             }
         });
 
-        sendVerificationEmail(token);
+        sendVerificationEmail(token,user.email);
         return NextResponse.json({ msg: 'Verification email has been sent.' }, { status: 200 });
 
     } catch (e) {
@@ -54,7 +54,7 @@ const createToken = (id:string)=>{
     return jwt.sign(data,jwtSecret);
 }
 
-const sendVerificationEmail = (token:string)=>{
+const sendVerificationEmail = (token:string,email:string)=>{
     const transporter = nodemailer.createTransport({
         host: 'smtp.gmail.com',
         port: 587,
@@ -68,7 +68,7 @@ const sendVerificationEmail = (token:string)=>{
       // Configure the mailoptions object
       const mailOptions = {
         from: 'ashirchannel765@gmail.com',
-        to: 'ashirafridi.work@gmail.com',
+        to: email,
         subject: 'Verification Link From Lexa Talk',
         html: htmlTemplate(token)
       };
@@ -85,6 +85,7 @@ const sendVerificationEmail = (token:string)=>{
 
 
 const htmlTemplate = (token:any)=>{
+  const host = process.env.APP_HOSTNAME;
     return `<!doctype html>
 <html lang="en">
   <head>
@@ -197,7 +198,7 @@ const htmlTemplate = (token:any)=>{
                           <table role="presentation" border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: auto;">
                             <tbody>
                               <tr>
-                                <td style="font-family: Helvetica, sans-serif; font-size: 16px; vertical-align: top; border-radius: 4px; text-align: center; background-color: #0867ec;" valign="top" align="center" bgcolor="#0867ec"> <a href="http://localhost:3000/verify/email?token=${token}" target="_blank" style="border: solid 2px #0867ec; border-radius: 4px; box-sizing: border-box; cursor: pointer; display: inline-block; font-size: 16px; font-weight: bold; margin: 0; padding: 12px 24px; text-decoration: none; text-transform: capitalize; background-color: #0867ec; border-color: #0867ec; color: #ffffff;">Verify your Email.</a> </td>
+                                <td style="font-family: Helvetica, sans-serif; font-size: 16px; vertical-align: top; border-radius: 4px; text-align: center; background-color: #0867ec;" valign="top" align="center" bgcolor="#0867ec"> <a href="${host}/verify/email?token=${token}" target="_blank" style="border: solid 2px #0867ec; border-radius: 4px; box-sizing: border-box; cursor: pointer; display: inline-block; font-size: 16px; font-weight: bold; margin: 0; padding: 12px 24px; text-decoration: none; text-transform: capitalize; background-color: #0867ec; border-color: #0867ec; color: #ffffff;">Verify your Email.</a> </td>
                               </tr>
                             </tbody>
                           </table>
