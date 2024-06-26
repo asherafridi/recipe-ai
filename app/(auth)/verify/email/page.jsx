@@ -4,6 +4,8 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import Breadcrumb from '@/components/Breadcrumb';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import { Suspense } from 'react'
+
 
 const Page = () => {
   const params = useSearchParams();
