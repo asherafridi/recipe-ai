@@ -1,3 +1,4 @@
+"use client"
 import Link from "next/link"
 import {
   Activity,
@@ -43,8 +44,20 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import { useEffect } from "react"
+import axios from "axios"
+import { useRouter } from "next/navigation"
+
 
 export default function Dashboard() {
+  const router = useRouter();
+useEffect(()=>{
+  axios.get('/api/auth/verify').then(response=>{
+    if(response.data.result==false){
+      router.push('/verify');
+    }
+  });
+},[]);
   return (
     <div className="flex min-h-screen w-full flex-col">
       

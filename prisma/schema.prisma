@@ -20,6 +20,7 @@ model User {
   password String
   subaccount_id String?
   subaccount_key  String?
+  verificationToken String?
   status   Boolean @default(false)
 }
 

@@ -69,7 +69,7 @@ export const authOption: AuthOptions = {
             if (user && user.id) {
                 token.id = user.id;
             } else {
-                console.error('User or user.id is missing.');
+                // console.error('User or user.id is missing.');
             }
             return token;
         },

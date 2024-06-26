@@ -31,6 +31,7 @@ export default function RootLayout({
         }
     }, [{}, sidebar])
 
+
     return (
         <div className={fontSans.className}>
             <div className="main flex">
