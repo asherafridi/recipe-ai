@@ -52,7 +52,8 @@ import { useRouter } from "next/navigation"
 export default function Dashboard() {
   const router = useRouter();
 useEffect(()=>{
-  axios.get('/api/auth/verify').then(response=>{
+  axios.get('/api/auth/status').then(response=>{
+    console.log(response);
     if(response.data.result==false){
       router.push('/verify');
     }
