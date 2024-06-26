@@ -13,6 +13,7 @@ const PageContent = () => {
     if (token) {
       axios.post('/api/auth/verify', { token })
         .then(response => {
+          console.log(response);
           toast.success(response.data.msg);
           setTimeout(() => {
             router.push('/sign-in');
