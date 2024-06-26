@@ -8,7 +8,6 @@ const nodemailer = require('nodemailer');
 
 export async function POST(req: NextRequest) {
     const { token } = await req.json();
-
     try {
         let data = await verifyToken(token);
         let diffrenceMin = timeDiffrence(data.time);
@@ -22,6 +21,8 @@ export async function POST(req: NextRequest) {
                 id: +data.userId,
             },
         });
+        
+
         if (user.verificationToken != token) {
             return NextResponse.json({ msg: 'Invalid Token' }, { status: 500 });
         }
@@ -42,7 +43,7 @@ export async function POST(req: NextRequest) {
             };
 
             const request = await axios.post('https://api.bland.ai/v1/subaccounts', options.data, { headers: options.headers });
-
+            console.log(request);
             const userUpdate = await prisma.user.update({
                 where: {
                     id: +data.userId,

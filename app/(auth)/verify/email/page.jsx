@@ -9,21 +9,21 @@ const PageContent = () => {
   const token = params.get('token');
   const router = useRouter();
 
+
+    
   useEffect(() => {
-    if (token) {
-      axios.post('/api/auth/verify', { token })
-        .then(response => {
-          console.log(response);
-          toast.success(response.data.msg);
-          setTimeout(() => {
-            router.push('/sign-in');
-          }, 2000);
-        })
-        .catch(e => {
-          toast.error(e.response.data.msg || 'An error occurred.');
-        });
-    }
-  }, [token, router]);
+    axios.post('/api/auth/verify', { token:token })
+      .then(response => {
+        console.log(response);
+        toast.success(response.data.msg);
+        setTimeout(() => {
+          router.push('/sign-in');
+        }, 2000);
+      })
+      .catch(e => {
+        toast.error(e.response.data.msg || 'An error occurred.');
+      });
+  }, []);
 
   return (
     <div className='p-5 min-h-screen'>
@@ -32,12 +32,5 @@ const PageContent = () => {
   );
 };
 
-const Page = () => {
-  return (
-    <Suspense fallback={<div>Loading...</div>}>
-      Wait....
-    </Suspense>
-  );
-};
 
-export default Page;
+export default PageContent;
