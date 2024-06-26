@@ -1,10 +1,10 @@
 "use client"
-import React, { useEffect } from 'react';
+import React, { useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 
-const Page = () => {
+const PageContent = () => {
   const params = useSearchParams();
   const token = params.get('token');
   const router = useRouter();
@@ -28,6 +28,14 @@ const Page = () => {
     <div className='p-5 min-h-screen'>
       wait...
     </div>
+  );
+};
+
+const Page = () => {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      Wait....
+    </Suspense>
   );
 };
 
