@@ -31,7 +31,7 @@ const Page = () => {
     router.push('/dashboard');
   }
 
-  const submitForm = async (data) => {
+  const submitForm = async (data:any) => {
     setSubmit(true);
 
     try {
@@ -49,9 +49,9 @@ const Page = () => {
         router.push('/sign-in');
       }, 2000);
 
-    } catch (e) {
-      toast.error(e.response.data.error);
-      console.log(e.response.data.error);
+    } catch (e:any) {
+      toast.error(e?.response.data.error);
+      console.log(e?.response.data.error);
       setSubmit(false);
     }
   }
@@ -69,19 +69,19 @@ const Page = () => {
             <div className="flex flex-col w-full space-y-1.5">
               <Label htmlFor="name">Full Name</Label>
               <Input type="text" id="name" placeholder="Full Name" className="outline-none" {...register("name", { required: "Full Name is required" })} />
-              {errors.name && <span className="text-destructive">{errors.name.message}</span>}
+              {/* {errors.name && <span className="text-destructive">{errors?.name.message}</span>} */}
             </div>
             <div className="h-1"></div>
             <div className="flex flex-col w-full space-y-1.5">
               <Label htmlFor="email">Email</Label>
               <Input type="email" id="email" placeholder="Email" className="outline-none" {...register("email", { required: "Email is required" })} />
-              {errors.email && <span className="text-destructive">{errors.email.message}</span>}
+              {/* {errors.email && <span className="text-destructive">{errors?.email.message}</span>} */}
             </div>
             <div className="h-1"></div>
             <div className="flex flex-col w-full space-y-1.5">
               <Label htmlFor="password">Password</Label>
               <Input type="password" id="password" placeholder="Password" className="outline-none" {...register("password", { required: "Password is required", minLength: { value: 8, message: "Password must be at least 8 characters" } })} />
-              {errors.password && <span className="text-destructive">{errors.password.message}</span>}
+              {/* {errors.password && <span className="text-destructive">{errors?.password.message}</span>} */}
             </div>
             <div className="h-1"></div>
             <Button className="w-full gap-2 cursor-pointer" type="submit" disabled={submit}>{submit ? <CircleDashed className="w-[20px] animate-spin" /> : ''} Submit</Button>
