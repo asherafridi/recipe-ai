@@ -1,6 +1,6 @@
 "use client"
 import React from "react"
-import { useForm } from "react-hook-form"
+import { useForm, SubmitHandler } from "react-hook-form"
 import { useRouter } from 'next/navigation'
 import { Button } from "@/components/ui/button"
 import {
@@ -19,13 +19,18 @@ import toast from "react-hot-toast"
 import { CircleDashed } from "lucide-react"
 import { UserLoginSchema } from "@/components/schema/user"
 
+interface FormData {
+  email: string;
+  password: string;
+}
+
 interface ErrorType {
   email?: string,
   password?: string
 }
 
 const Page = () => {
-  const { register, handleSubmit, setError, formState: { errors, isSubmitting } } = useForm();
+  const { register, handleSubmit, setError, formState: { errors, isSubmitting } } = useForm<FormData>();
   const router = useRouter();
   const session = useSession();
 
@@ -33,11 +38,11 @@ const Page = () => {
     router.push('/dashboard');
   }
 
-  const submitHandler = async (data: { email: string; password: string }) => {
+  const submitHandler: SubmitHandler<FormData> = async (data) => {
     const msg = await UserLoginSchema(data);
     if (msg) {
       Object.entries(msg).forEach(([key, value]) => {
-        setError(key as keyof ErrorType, { message: value });
+        setError(key as keyof ErrorType, { message: value as string });
       });
       toast.error('Validation Error!');
     } else {
@@ -76,7 +81,7 @@ const Page = () => {
                 className="outline-none"
                 {...register("email", { required: "Email is required" })}
               />
-              {/* {errors.email && <span className="text-destructive">{errors.email.message}</span>} */}
+              {errors.email && <span className="text-destructive">{errors.email.message}</span>}
             </div>
             <div className="h-1"></div>
             <div className="flex flex-col w-full space-y-1.5">
@@ -88,7 +93,7 @@ const Page = () => {
                 className="outline-none"
                 {...register("password", { required: "Password is required", minLength: { value: 8, message: "Password must be at least 8 characters" } })}
               />
-              {/* {errors.password && <span className="text-destructive">{errors.password.message}</span>} */}
+              {errors.password && <span className="text-destructive">{errors.password.message}</span>}
             </div>
             <div className="flex w-full flex-col items-end">
               <Link href="/forgot-password" className="text-primary">Forgot Password?</Link>
