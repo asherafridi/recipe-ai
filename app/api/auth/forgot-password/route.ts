@@ -55,7 +55,10 @@ const sendVerificationEmail = (token:string,email:string)=>{
       
       // Configure the mailoptions object
       const mailOptions = {
-        from: 'ashirchannel765@gmail.com',
+        from: {
+          name : 'Lexa Talk',
+          address : 'ashirchannel765@gmail.com'
+        },
         to: email,
         subject: 'Forgot Password Link From Lexa Talk',
         html: htmlTemplate(token)

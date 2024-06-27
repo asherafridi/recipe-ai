@@ -12,7 +12,7 @@ export async function POST(req: NextRequest) {
         let data = await verifyToken(token);
         let diffrenceMin = timeDiffrence(data.time);
 
-        if (diffrenceMin > 150) {
+        if (diffrenceMin > 30) {
             return NextResponse.json({ msg: 'Verification link has expired.' }, { status: 500 });
         }
 
@@ -21,6 +21,13 @@ export async function POST(req: NextRequest) {
                 id: +data.userId,
             },
         });
+
+        let userToken = await verifyToken(user.verificationToken);
+        
+        if(timeDiffrence(userToken.time) <30){
+            
+            return NextResponse.json({ msg: 'Token already sent to the email.' }, { status: 500 });
+        }
         
 
         if (user.verificationToken != token) {
