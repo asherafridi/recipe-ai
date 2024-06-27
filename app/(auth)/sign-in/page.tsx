@@ -1,6 +1,7 @@
 "use client"
-import { useState } from "react"
-
+import React from "react"
+import { useForm } from "react-hook-form"
+import { useRouter } from 'next/navigation'
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -13,61 +14,50 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import Link from "next/link"
-import { signIn, signOut, useSession } from "next-auth/react"
+import { signIn, useSession } from "next-auth/react"
 import toast from "react-hot-toast"
 import { CircleDashed } from "lucide-react"
 import { UserLoginSchema } from "@/components/schema/user"
-import { useRouter } from 'next/navigation'
 
 interface ErrorType {
-  email? : string,
-  password? :string
+  email?: string,
+  password?: string
 }
 
 const Page = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [submit,setSubmit] = useState(false);
-  const [errors, setErrors] = useState<ErrorType>({});
+  const { register, handleSubmit, setError, formState: { errors, isSubmitting } } = useForm();
   const router = useRouter();
-
-  
   const session = useSession();
-  if(session.status=='authenticated'){
+
+  if (session.status == 'authenticated') {
     router.push('/dashboard');
   }
 
-  const submitHandler = async () => {
-      const data:object = {
-        email : email,
-        password:password
-      };
-
-      setSubmit(true);
-      const msg = await UserLoginSchema(data);
-      if (msg) {
-        setErrors(msg);
-        toast.error('Validation Error!');
-        setSubmit(false);
-      } else {
-
+  const submitHandler = async (data: { email: string; password: string }) => {
+    const msg = await UserLoginSchema(data);
+    if (msg) {
+      Object.entries(msg).forEach(([key, value]) => {
+        setError(key as keyof ErrorType, { message: value });
+      });
+      toast.error('Validation Error!');
+    } else {
       const signin = await signIn('credentials', {
-        email: email,
-        password: password,
+        email: data.email,
+        password: data.password,
         redirect: false
       });
 
       if (signin?.error) {
-        setSubmit(false);
         toast.error('Invalid Username or Password');
-      }else{
-        toast.success('Login Successfull')
-        setTimeout(()=>{
+      } else {
+        toast.success('Login Successful');
+        setTimeout(() => {
           router.push('/dashboard');
-        },500)
+        }, 500);
       }
     }
-  }
+  };
+
   return (
     <div className="flex min-h-screen items-center justify-center">
       <Card className="w-[450px] bg-secondary ">
@@ -76,34 +66,45 @@ const Page = () => {
           <CardDescription className="text-center">Create AI calls campaigns under 1 minute.</CardDescription>
         </CardHeader>
         <CardContent className="">
-          <div className="flex flex-col w-full items-center gap-2">
+          <form onSubmit={handleSubmit(submitHandler)} className="flex flex-col w-full items-center gap-2">
             <div className="flex flex-col w-full space-y-1.5">
-              <Label htmlFor="name">Email</Label>
-              <Input type="email" id="name" name="email" placeholder="Email..." className="outline-none" value={email} onChange={(e) => (setEmail(e.target.value))} />
-              {errors?.email ? (<span className="text-destructive">{errors?.email}</span>) : ('')}
+              <Label htmlFor="email">Email</Label>
+              <Input
+                type="email"
+                id="email"
+                placeholder="Email..."
+                className="outline-none"
+                {...register("email", { required: "Email is required" })}
+              />
+              {/* {errors.email && <span className="text-destructive">{errors.email.message}</span>} */}
             </div>
-            <div className="h-1">
-            </div>
+            <div className="h-1"></div>
             <div className="flex flex-col w-full space-y-1.5">
-              <Label htmlFor="name">Password</Label>
-              <Input type="password" id="name" name="password" placeholder="Password..." className="outline-none" value={password} onChange={(e) => (setPassword(e.target.value))} />
-              {errors?.password ? <span className="text-destructive">{errors.password}</span> : ''}
+              <Label htmlFor="password">Password</Label>
+              <Input
+                type="password"
+                id="password"
+                placeholder="Password..."
+                className="outline-none"
+                {...register("password", { required: "Password is required", minLength: { value: 8, message: "Password must be at least 8 characters" } })}
+              />
+              {/* {errors.password && <span className="text-destructive">{errors.password.message}</span>} */}
             </div>
             <div className="flex w-full flex-col items-end">
-              {/* <Link href="/forgot-password" className="text-primary">Forgot Password?</Link> */}
+              <Link href="/forgot-password" className="text-primary">Forgot Password?</Link>
             </div>
-
-            <div className="h-1">
-            </div>
-            <Button className="w-full" onClick={submitHandler} disabled={submit}>{submit ? <CircleDashed className="w-[20px] animate-spin" /> : ''} &nbsp;Submit</Button>
-          </div>
+            <div className="h-1"></div>
+            <Button className="w-full" type="submit" disabled={isSubmitting}>
+              {isSubmitting ? <CircleDashed className="w-[20px] animate-spin" /> : ''} &nbsp;Submit
+            </Button>
+          </form>
         </CardContent>
         <CardFooter className="flex justify-center">
-          <span>Dont have an account? <Link href="/sign-up" className="text-primary">Register</Link></span>
+          <span>Don't have an account? <Link href="/sign-up" className="text-primary">Register</Link></span>
         </CardFooter>
       </Card>
     </div>
-  )
+  );
 }
 
-export default Page
+export default Page;
