@@ -24,6 +24,14 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ msg: 'User is Already Verified' }, { status: 200 });
         }
         
+        
+        let userLink = await verifyToken(user.verificationToken);
+        
+        
+        if(timeDiffrence(userLink.time) <30){
+            
+            return NextResponse.json({ msg: 'Token already sent to the email.' }, { status: 500 });
+        }
 
         let token = createToken(session.user.id);
 
@@ -43,6 +51,27 @@ export async function POST(req: NextRequest) {
     } catch (e) {
         return NextResponse.json({ msg: 'Something Went Wrong!' }, { status: 500 });
     }
+}
+
+
+const verifyToken = (token: any) => {
+  let jwtSecret = 'AlgoNlp';
+  return jwt.verify(token, jwtSecret);
+}
+
+
+const timeDiffrence = (date: any) => {
+
+  let currentDate: any = new Date();
+  let pastDate: any = new Date(date); // Assuming data.time is a valid date string or timestamp
+
+  // Calculate the difference in milliseconds
+  let differenceInMs = currentDate - pastDate;
+
+  // Convert the difference to minutes
+  let differenceInMinutes = differenceInMs / (1000 * 60);
+
+  return differenceInMinutes;
 }
 
 const createToken = (id:string)=>{

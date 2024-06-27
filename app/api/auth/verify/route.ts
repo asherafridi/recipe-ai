@@ -22,12 +22,6 @@ export async function POST(req: NextRequest) {
             },
         });
 
-        let userToken = await verifyToken(user.verificationToken);
-        
-        if(timeDiffrence(userToken.time) <30){
-            
-            return NextResponse.json({ msg: 'Token already sent to the email.' }, { status: 500 });
-        }
         
 
         if (user.verificationToken != token) {
