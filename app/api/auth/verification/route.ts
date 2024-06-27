@@ -7,50 +7,51 @@ const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
 
 export async function POST(req: NextRequest) {
-    const session = await getServerSession(authOption);
+  const session = await getServerSession(authOption);
 
-    if (!session?.user?.id) {
-        return NextResponse.json({ error: 'User not authenticated' }, { status: 401 });
+  if (!session?.user?.id) {
+    return NextResponse.json({ error: 'User not authenticated' }, { status: 401 });
+  }
+
+  try {
+
+    const user = await prisma.user.findFirstOrThrow({
+      where: {
+        id: +session.user.id,
+      },
+    });
+    
+    if (user.status == true) {
+      return NextResponse.json({ msg: 'User is Already Verified' }, { status: 200 });
+    }
+    if (user.verificationToken != null) {
+      let userLink = await verifyToken(user.verificationToken);
+
+
+      if (timeDiffrence(userLink.time) < 30) {
+        return NextResponse.json({ msg: 'Token already sent to the email.' }, { status: 500 });
+      }
     }
 
-    try {
 
-        const user = await prisma.user.findFirstOrThrow({
-            where: {
-                id: +session.user.id,
-            },
-        });
-        if (user.status == true) {
-            return NextResponse.json({ msg: 'User is Already Verified' }, { status: 200 });
-        }
-        
-        
-        let userLink = await verifyToken(user.verificationToken);
-        
-        
-        if(timeDiffrence(userLink.time) <30){
-            
-            return NextResponse.json({ msg: 'Token already sent to the email.' }, { status: 500 });
-        }
+    let token = createToken(session.user.id);
 
-        let token = createToken(session.user.id);
 
-        
-        const userToken = await prisma.user.update({
-            where: {
-                id: +session.user.id,
-            },
-            data: {
-                verificationToken : token
-            }
-        });
+    const userToken = await prisma.user.update({
+      where: {
+        id: +session.user.id,
+      },
+      data: {
+        verificationToken: token
+      }
+    });
 
-        sendVerificationEmail(token,user.email);
-        return NextResponse.json({ msg: 'Verification email has been sent.' }, { status: 200 });
+    sendVerificationEmail(token, user.email);
+    return NextResponse.json({ msg: 'Verification email has been sent.' }, { status: 200 });
 
-    } catch (e) {
-        return NextResponse.json({ msg: 'Something Went Wrong!' }, { status: 500 });
-    }
+  } catch (e) {
+    return NextResponse.json({ msg: 'Something Went Wrong!' }, { status: 500 });
+  }
 }
 
 
@@ -74,51 +75,51 @@ const timeDiffrence = (date: any) => {
   return differenceInMinutes;
 }
 
-const createToken = (id:string)=>{
-    let jwtSecret = 'AlgoNlp';
-    let data = {
-        time : Date(),
-        userId : id
+const createToken = (id: string) => {
+  let jwtSecret = 'AlgoNlp';
+  let data = {
+    time: Date(),
+    userId: id
+  }
+  return jwt.sign(data, jwtSecret);
+}
+
+const sendVerificationEmail = (token: string, email: string) => {
+  const transporter = nodemailer.createTransport({
+    host: 'smtp.gmail.com',
+    port: 587,
+    secure: false, // use SSL
+    auth: {
+      user: 'ashirchannel765@gmail.com',
+      pass: 'jprp zckb ahqz ktxz',
     }
-    return jwt.sign(data,jwtSecret);
-}
+  });
 
-const sendVerificationEmail = (token:string,email:string)=>{
-    const transporter = nodemailer.createTransport({
-        host: 'smtp.gmail.com',
-        port: 587,
-        secure: false, // use SSL
-        auth: {
-          user: 'ashirchannel765@gmail.com',
-          pass: 'jprp zckb ahqz ktxz',
-        }
-      });
-      
-      // Configure the mailoptions object
-      const mailOptions = {
-        from: {
-          name:'Lexa Talk',
-          address : 'ashirchannel765@gmail.com'
-        },
-        to: email,
-        subject: 'Verification Link From Lexa Talk',
-        html: htmlTemplate(token)
-      };
-      
-      // Send the email
-      transporter.sendMail(mailOptions, function(error:any, info:any){
-        if (error) {
-          console.log('Error:'+ error);
-        } else {
-          console.log('Email sent: ' + info.response);
-        }
-      });
+  // Configure the mailoptions object
+  const mailOptions = {
+    from: {
+      name: 'Lexa Talk',
+      address: 'ashirchannel765@gmail.com'
+    },
+    to: email,
+    subject: 'Verification Link From Lexa Talk',
+    html: htmlTemplate(token)
+  };
+
+  // Send the email
+  transporter.sendMail(mailOptions, function (error: any, info: any) {
+    if (error) {
+      console.log('Error:' + error);
+    } else {
+      console.log('Email sent: ' + info.response);
+    }
+  });
 }
 
 
-const htmlTemplate = (token:any)=>{
+const htmlTemplate = (token: any) => {
   const host = process.env.APP_HOSTNAME;
-    return `<!doctype html>
+  return `<!doctype html>
 <html lang="en">
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">

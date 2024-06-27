@@ -28,7 +28,7 @@ const Page = () => {
     .then(response=>{
         toast.success(response.data.msg);
     }).catch(e=>{
-        toast.error(e.response.data);
+        toast.error(e.response.data.msg);
     })
 }
   const onSubmit = async (data:any) => {
