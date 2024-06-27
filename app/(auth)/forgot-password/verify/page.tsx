@@ -1,8 +1,8 @@
 "use client"
 import * as React from "react"
+import { Suspense, useState } from "react"
 import { useForm } from "react-hook-form"
 import { Button } from "@/components/ui/button"
-import { useState } from "react"
 import {
   Card,
   CardContent,
@@ -16,31 +16,31 @@ import { Label } from "@/components/ui/label"
 import FormButton from "@/components/FormButton"
 import axios from "axios"
 import toast from "react-hot-toast"
-import { useParams, useRouter, useSearchParams } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 
-const Page = () => {
+const VerifyPasswordForm = () => {
   const params = useSearchParams();
   const token = params.get('token');
   const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm();
   const [buttonLoading, setButtonLoading] = useState(false);
   const router = useRouter();
 
-  
-  const verifyPassword = (data:any)=>{
-    axios.post('/api/auth/forgot-password/verify',data)
-    .then(response=>{
+  const verifyPassword = (data: any) => {
+    axios.post('/api/auth/forgot-password/verify', data)
+      .then(response => {
         toast.success(response.data.msg);
-        setTimeout(()=>{
+        setTimeout(() => {
           router.push('/sign-in');
-        },2000)
-    }).catch(e=>{
+        }, 2000);
+      }).catch(e => {
         toast.error(e.response.data.msg);
-    })
-}
-  const onSubmit = async (data:any) => {
+      });
+  }
+
+  const onSubmit = async (data: any) => {
     setButtonLoading(true);
-    console.log({...data,token:token});
-    verifyPassword({...data,token:token});
+    console.log({ ...data, token: token });
+    verifyPassword({ ...data, token: token });
     setTimeout(() => { // Simulate an API call
       setButtonLoading(false);
     }, 2000);
@@ -57,7 +57,7 @@ const Page = () => {
           <form onSubmit={handleSubmit(onSubmit)} method="POST">
             <div className="flex flex-col w-full items-center gap-2">
               <div className="flex flex-col w-full space-y-1.5">
-                <Label htmlFor="email">Password</Label>
+                <Label htmlFor="password">Password</Label>
                 <Input
                   type="password"
                   id="password"
@@ -65,10 +65,10 @@ const Page = () => {
                   className="outline-none"
                   {...register("password", { required: "Password is required" })}
                 />
-                {/* {errors.email && <span className="text-destructive">{errors.email.message}</span>} */}
+                {/* {errors.password && <span className="text-destructive">{errors.password.message}</span>} */}
               </div>
               <div className="flex flex-col w-full space-y-1.5 mt-3">
-                <Label htmlFor="email">Confirm Password</Label>
+                <Label htmlFor="confirm_password">Confirm Password</Label>
                 <Input
                   type="password"
                   id="confirm_password"
@@ -76,7 +76,7 @@ const Page = () => {
                   className="outline-none"
                   {...register("confirm_password", { required: "Confirm Password is required" })}
                 />
-                {/* {errors.email && <span className="text-destructive">{errors.email.message}</span>} */}
+                {/* {errors.confirm_password && <span className="text-destructive">{errors.confirm_password.message}</span>} */}
               </div>
 
               <div className="h-1"></div>
@@ -87,6 +87,14 @@ const Page = () => {
       </Card>
     </div>
   )
+}
+
+const Page = () => {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <VerifyPasswordForm />
+    </Suspense>
+  );
 }
 
 export default Page;
