@@ -47,7 +47,7 @@ export async function POST(req: NextRequest) {
                 record: true,
                 max_duration: +duration,
                 answered_by_enabled: true,
-                from: `${agent?.numberId}`,
+                // from: `${agent?.numberId}`,
                 temperature: 0.7,
                 start_time : `${convertDateTimeLocalToCustomFormat(time)}`,
                 // tools :  tools,
