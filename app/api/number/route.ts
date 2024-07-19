@@ -22,7 +22,6 @@ export async function GET(req : NextRequest,res : NextResponse) {
         const options = {method: 'GET', headers: {authorization: user.subaccount_key}};
     
         const response = await axios.get('https://api.bland.ai/v1/outbound',options);
-        console.log(response.data);
         
 
         return NextResponse.json({outbound_numbers:response?.data?.outbound_numbers},{status:200});

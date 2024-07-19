@@ -10,9 +10,8 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = "postgres://postgres.ulqdcqaptsfsqsceyvsb:5MHottUpLxg9mS9G@aws-0-ap-southeast-1.pooler.supabase.com:5432/postgres"
+  url      = env("POSTGRESS_URI")
 }
-
 model User {
   id       Int     @id @default(autoincrement())
   email    String  @unique

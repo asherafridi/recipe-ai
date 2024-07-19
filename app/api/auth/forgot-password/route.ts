@@ -44,12 +44,12 @@ const createToken = (id:string)=>{
 
 const sendVerificationEmail = (token:string,email:string)=>{
     const transporter = nodemailer.createTransport({
-        host: 'smtp.gmail.com',
-        port: 587,
+        host: process.env.MAIL_HOST,
+        port: process.env.MAIL_PORT,
         secure: false, // use SSL
         auth: {
-          user: 'ashirchannel765@gmail.com',
-          pass: 'jprp zckb ahqz ktxz',
+          user: process.env.MAIL_USER,
+          pass: process.env.MAIL_PASS,
         }
       });
       
@@ -57,7 +57,7 @@ const sendVerificationEmail = (token:string,email:string)=>{
       const mailOptions = {
         from: {
           name : 'Lexa Talk',
-          address : 'ashirchannel765@gmail.com'
+          address: process.env.MAIL_USER
         },
         to: email,
         subject: 'Forgot Password Link From Lexa Talk',

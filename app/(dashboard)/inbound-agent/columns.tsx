@@ -13,7 +13,7 @@ import { useVectorDelete } from "@/hooks/vectorHook"
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 export type Vector = {
-    vector_id: string
+    phone_number: string
     name: string
     description: string
     text: string
@@ -22,16 +22,12 @@ export type Vector = {
 
 export const columns: ColumnDef<Vector>[] = [
     {
-        accessorKey: "vector_id",
-        header: "#",
+        accessorKey: "phone_number",
+        header: "Phone Number",
     },
     {
-        accessorKey: "name",
-        header: "Name",
-    },
-    {
-        accessorKey: "description",
-        header: "Description",
+        accessorKey: "created_at",
+        header: "Created At",
     },
     {
       id: "actions",
@@ -51,14 +47,8 @@ export const columns: ColumnDef<Vector>[] = [
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem><Link href={`/vector/read/${payment.vector_id}`}>Read Vector Store</Link></DropdownMenuItem>
-              <DropdownMenuItem><Link href={`/vector/edit/${payment.vector_id}`}>Edit Vector Store</Link></DropdownMenuItem>
-              <DropdownMenuItem onClick={()=>{
-                if(confirm('Are you sure?')){
-                    useVectorDelete(payment.vector_id);
-                    
-                }
-              }}>Delete Vector Store</DropdownMenuItem>
+              <DropdownMenuItem><Link href={`/inbound-agent/edit/${payment.phone_number}`}>Edit Inbound Agent</Link></DropdownMenuItem>
+              
             </DropdownMenuContent>
           </DropdownMenu>
         )

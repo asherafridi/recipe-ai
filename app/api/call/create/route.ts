@@ -5,7 +5,7 @@ import { authOption } from '@/lib/auth';
 import axios from 'axios';
 
 export async function POST(req: NextRequest) {
-    const { agentId, contactId,time,duration } = await req.json();
+    const { agentId, contactId, time,duration } = await req.json();
     const session = await getServerSession(authOption);
 
     if (!session?.user?.id) {
@@ -31,7 +31,6 @@ export async function POST(req: NextRequest) {
         });
 
         const tools:any = agent?.tools;
-        console.log(tools);
         const options = {
             method: 'POST',
             headers: {
@@ -42,20 +41,16 @@ export async function POST(req: NextRequest) {
                 phone_number: `${contact?.number}`,
                 task: `${agent?.prompt}`,
                 voice: `${agent?.voice}`,
-                analysis_schema: {},
-                first_sentence: `Hi How Are You ${contact?.name}`,
+                first_sentence: `${agent?.firstSentence}`,
                 wait_for_greeting: true,
                 interruption_threshold: 50,
                 record: true,
                 max_duration: +duration,
                 answered_by_enabled: true,
-                // from: `${number?.number}`,
-                time: convertDateTimeLocalToCustomFormat(time),
+                from: `${agent?.numberId}`,
                 temperature: 0.7,
                 start_time : `${convertDateTimeLocalToCustomFormat(time)}`,
-                "tools" :  [
-                        "KB-f328960f-31de-4ac0-a367-b9d1c4923e1b"
-                ],
+                tools :  tools,
 
             }
         };
@@ -63,12 +58,11 @@ export async function POST(req: NextRequest) {
         // Make the POST request and wait for the response
         const response = await axios.post('https://api.bland.ai/v1/calls', options.data, { headers: options.headers });
 
-        
 
         return NextResponse.json({ msg: 'Calling...' }, { status: 200 });
 
     } catch (e) {
-        return NextResponse.json({ error: e }, { status: 500 });
+        return NextResponse.json({ error: e,msg:'Something Went Wrong!' }, { status: 500 });
     }
 }
 

@@ -38,7 +38,7 @@ const Page = () => {
                 form.reset();
             })
         }).catch(e => {
-            toast.error(e?.response?.data?.error);
+            toast.error(e?.response?.data?.msg);
             setButtonLoading(false);
             console.log(e);
         });

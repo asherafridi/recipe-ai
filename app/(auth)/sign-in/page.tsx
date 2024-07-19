@@ -71,7 +71,7 @@ const Page = () => {
           <CardDescription className="text-center">Create AI calls campaigns under 1 minute.</CardDescription>
         </CardHeader>
         <CardContent className="">
-          <form onSubmit={handleSubmit(submitHandler)} className="flex flex-col w-full items-center gap-2">
+          <form onSubmit={handleSubmit(submitHandler)} className="flex flex-col w-full items-center gap-2" method="POST">
             <div className="flex flex-col w-full space-y-1.5">
               <Label htmlFor="email">Email</Label>
               <Input

@@ -24,7 +24,9 @@ const Page = () => {
       <div className='border-b-2 border-slate-300 flex justify-between'>
 
       <div className=' text-3xl  pb-8'>Agents</div>
+      <div className='gap-2 flex'>
       <Link href='/agent/create' ><Button>Create New Agent</Button></Link>
+      <Link href='/call/create' ><Button variant={'secondary'}>Make a Call</Button></Link></div>
       </div>
       <div className=" mt-4 rounded p-4 flex gap-2">
         {data?.map((element, index) => (
@@ -63,8 +65,6 @@ const Page = () => {
             <Badge variant="default">{element.agentType}</Badge>
             <span>{element.language}</span>
             </div>
-            <Link href='/call/create' className=' border-2 border-blue-400 rounded-md w-100 p-2 mt-4 block text-center hover:bg-blue-600 hover:border-blue-600 hover:text-white'>Make a Call</Link>
-            
           </div>
         ))}
       </div>

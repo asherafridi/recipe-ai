@@ -22,8 +22,8 @@ export async function GET(req : NextRequest,res : NextResponse) {
         const options = {method: 'GET', headers: {authorization: user.subaccount_key}};
     
     
-        const response = await axios.get('https://kb.bland.ai/vectors',options);
-        return NextResponse.json({vectors:response.data?.vectors},{status:200});
+        const response = await axios.get('https://api.bland.ai/v1/inbound',options);
+        return NextResponse.json({inbound:response.data?.inbound_numbers},{status:200});
     }catch(e){
         
         return NextResponse.json({error:'Data Not Found'},{status:500});

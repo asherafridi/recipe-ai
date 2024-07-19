@@ -4,8 +4,10 @@ import axios from "axios";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 
+
+
 export async function POST(req: NextRequest) {
-    const  {id,name,description,text}  = await req.json();
+    const  {id,phone_number,voice_id,prompt, max_duration,transfer_phone_number,language,model}  = await req.json();
     const session = await getServerSession(authOption);
 
     if(!session?.user){
@@ -25,12 +27,16 @@ export async function POST(req: NextRequest) {
             }
         };
         const requestData = {
-            name: name,
-            description: description,
-            text: `${text}`
+            phone_number : phone_number,
+            voice_id : voice_id,
+            prompt : prompt,
+            max_duration : max_duration ,
+            transfer_phone_number : transfer_phone_number,
+            language : language,
+            model : model
         };
     
-  axios.post(`https://kb.bland.ai/vectors/${id}`, requestData, options)
+  axios.post(`https://api.bland.ai/v1/inbound/${id}`, requestData, options)
     .then(response => {
       console.log(response.data);
     })

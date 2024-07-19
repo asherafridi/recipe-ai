@@ -20,7 +20,7 @@ export async function POST(req: NextRequest) {
         id: +session.user.id,
       },
     });
-    
+
     if (user.status == true) {
       return NextResponse.json({ msg: 'User is Already Verified' }, { status: 200 });
     }
@@ -50,6 +50,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ msg: 'Verification email has been sent.' }, { status: 200 });
 
   } catch (e) {
+    console.log(e);
     return NextResponse.json({ msg: 'Something Went Wrong!' }, { status: 500 });
   }
 }
@@ -86,12 +87,12 @@ const createToken = (id: string) => {
 
 const sendVerificationEmail = (token: string, email: string) => {
   const transporter = nodemailer.createTransport({
-    host: 'smtp.gmail.com',
-    port: 587,
+    host: process.env.MAIL_HOST,
+    port: process.env.MAIL_PORT,
     secure: false, // use SSL
     auth: {
-      user: 'ashirchannel765@gmail.com',
-      pass: 'jprp zckb ahqz ktxz',
+      user: process.env.MAIL_USER,
+      pass: process.env.MAIL_PASS,
     }
   });
 
@@ -99,7 +100,7 @@ const sendVerificationEmail = (token: string, email: string) => {
   const mailOptions = {
     from: {
       name: 'Lexa Talk',
-      address: 'ashirchannel765@gmail.com'
+      address: process.env.MAIL_USER
     },
     to: email,
     subject: 'Verification Link From Lexa Talk',

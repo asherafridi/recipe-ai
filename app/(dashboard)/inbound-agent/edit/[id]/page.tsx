@@ -2,87 +2,98 @@
 import Breadcrumb from '@/components/Breadcrumb';
 import FormButton from '@/components/FormButton';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
-import { useParams, usePathname, useRouter } from 'next/navigation';
-import { useFetchVectorDetail } from '@/hooks/vectorHook';
-import pdfToText from 'react-pdftotext';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { useRouter } from 'next/navigation';
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
+import { useFetchAgent, useFetchVoice } from '@/hooks/agentHook';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { FancyBox } from '@/components/FancyMultiBox';
+import { useNumberFetch } from '@/hooks/numberHook';
+import { useInboundAgentDetail } from '@/hooks/inboundAgentHook';
 
 
 
-const Page = async ({params} : {params:{id:string}}) => {
-    const form = useForm();
-    const router = useRouter();
-    const {vector,vectorLoader} = useFetchVectorDetail(params.id);
-
+const Page = ({ params }: { params: { id: string } }) => {
+    const { voice, voiceLoader } = useFetchVoice();
     const [loading, setLoading] = useState(false);
 
-    const submit = async (values: any) => {
+    const { agent, agentLoader } = useInboundAgentDetail(params.id);
+    console.log(agent);
+    // const router = useRouter();
+    const form = useForm();
+
+
+    const submit = (values: any) => {
         setLoading(true);
-
-        const data = { ...values,id:params.id };
-
-        axios.post('/api/vector/update', data)
-            .then(response => {
-                toast.success(response.data?.msg);
-                setTimeout(() => {
-                    setLoading(false);
-                    form.reset();
-                    router.push('/vector');
-                    
-                }, 1000);
-            })
-            .catch(e => {
-                toast.error(e?.response?.data?.error);
+        axios.post(`/api/inbound-agent/update`, {
+            ...values,
+            id: params.id
+        }).then(response => {
+            toast.success(response.data?.msg);
+            setTimeout(() => {
                 setLoading(false);
-                console.log(e);
-            });
+                // router.push('/inbound-agent');
+            }, 2000);
+        }).catch(e => {
+            toast.error(e.response.data?.error);
+            setLoading(false);
+            console.log(e);
+        });
     }
 
-    
-    function handleFrontFileChange(e:any) {
-        const file = e.target.files[0]; // Get the first file from the selected files
-        if (file) {
-
-            if (file.type === 'application/pdf') {
-                pdfToText(file)
-                    .then(text => form.setValue('text', text))
-                    .catch(error => console.error("Failed to extract text from pdf"))
-
-            } else {
-                toast.error('Unsupported file type. Please upload a text PDF');
-            }
-        }
-    }
-    
-    if(vectorLoader){
+    if (agentLoader && voiceLoader) {
         return <div className='p-5 bg-white'>Loading...</div>;
     }
+
+
     return (
 
         <div className='p-5 min-h-screen'>
-            <Breadcrumb title="Edit Vector Store" />
+            <Breadcrumb title="Edit Agent" />
             <div className="bg-white mt-4 rounded p-4">
-                <div className='flex justify-between items-center'>
-                    <h3>Vector Store</h3>
-                </div>
 
                 <Form {...form}>
-                    <form onSubmit={form.handleSubmit(submit)} className="mt-4 flex w-full flex-wrap">
+                    <form onSubmit={form.handleSubmit(submit)} className="flex w-full flex-wrap">
+                        
                         <FormField
                             control={form.control}
-                            name="name"
-                            defaultValue={vector?.name}
+                            name="voice_id"
+                            defaultValue={agent?.voice_id}
                             render={({ field }) => (
-                                <FormItem className='w-full md:w-1/2 lg:w-full p-2'>
-                                    <FormLabel>Name</FormLabel>
+                                <FormItem className='w-full md:w-1/2 lg:w-1/2 p-2'>
+                                    <FormLabel>Voice</FormLabel>
+                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                        <FormControl>
+                                            <SelectTrigger>
+                                                <SelectValue placeholder="Voice" />
+                                            </SelectTrigger>
+                                        </FormControl>
+                                        <SelectContent>
+                                            {voice.map((element, index) => (
+                                                <SelectItem key={index} value={element?.id}>{element?.name} - {element?.description}</SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+
+
+                        <FormField
+                            control={form.control}
+                            name="first_sentence"
+                            defaultValue={agent?.first_sentence}
+                            render={({ field }) => (
+                                <FormItem className='w-full md:w-1/2 lg:w-1/2 p-2'>
+                                    <FormLabel>First Sentence</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="Name" {...field} />
+                                        <Input placeholder="First Sentence" {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -91,42 +102,113 @@ const Page = async ({params} : {params:{id:string}}) => {
 
                         <FormField
                             control={form.control}
-                            name="description"
-                            defaultValue={vector?.description}
+                            name="prompt"
+                            defaultValue={agent?.prompt}
                             render={({ field }) => (
-                                <FormItem className='w-full md:w-1/2 lg:w-full p-2'>
-                                    <FormLabel>Description</FormLabel>
+                                <FormItem className='w-full mb-4'>
+                                    <FormLabel>Prompt</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="Description" {...field} />
+                                        <Textarea placeholder="Type your prompt here...." {...field} className='w-full' rows={10} />
+                                    </FormControl>
+                                    <FormMessage />
+                                    <FormDescription className='text-right text-blue'><a className='text-blue-800 ' href="">Prompt Guide</a></FormDescription>
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="max_duration"
+                            defaultValue={agent?.max_duration}
+                            render={({ field }) => (
+                                <FormItem className='w-full md:w-1/2 lg:w-1/4 p-2'>
+                                    <FormLabel>Max Duration</FormLabel>
+                                    <FormControl>
+                                        <Input placeholder="Max Duration" {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
                             )}
                         />
 
-                        <FormItem className='w-full md:w-1/2 lg:w-full p-2'>
-                            <FormLabel>File (.pdf,.docs,.text)</FormLabel>
-                            <FormControl>
-                                <Input type="file"  />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
 
                         <FormField
                             control={form.control}
-                            name="text"
-                            defaultValue={vector?.text}
+                            name="transfer_phone_number"
+                            defaultValue={agent?.transfer_phone_number}
                             render={({ field }) => (
-                                <FormItem className='w-full md:w-1/2 lg:w-full p-2'>
-                                    <FormLabel>Text</FormLabel>
+                                <FormItem className='w-full md:w-1/2 lg:w-1/4 p-2'>
+                                    <FormLabel>Transfer Number</FormLabel>
                                     <FormControl>
-
-                                        <Textarea placeholder="Text" {...field} className='w-full' rows={10} />
+                                        <Input placeholder="Transfer Call to" {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
                             )}
                         />
+
+                        <FormField
+                            control={form.control}
+                            name="language"
+                            defaultValue={agent?.language}
+                            render={({ field }) => (
+                                <FormItem className='w-full md:w-1/2 lg:w-1/4 p-2'>
+                                    <FormLabel>Language</FormLabel>
+                                    <Select onValueChange={field.onChange} defaultValue={agent?.language}>
+                                        <FormControl>
+                                            <SelectTrigger>
+                                                <SelectValue placeholder="Wait For Greeting" />
+                                            </SelectTrigger>
+                                        </FormControl>
+                                        <SelectContent>
+                                            <SelectItem value='ENG'>English</SelectItem>
+                                            <SelectItem value='ESP'>Spanish</SelectItem>
+                                            <SelectItem value='FRE'>French</SelectItem>
+                                            <SelectItem value='POL'>Polish</SelectItem>
+                                            <SelectItem value='GER'>German</SelectItem>
+                                            <SelectItem value='ITA'>Italian</SelectItem>
+                                            <SelectItem value='PBR'>Brazilian Portuguese</SelectItem>
+                                            <SelectItem value='POR'>Portuguese</SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+
+                        <FormField
+                            control={form.control}
+                            name="model"
+                            defaultValue={agent?.model}
+                            render={({ field }) => (
+                                <FormItem className='w-full md:w-1/2 lg:w-1/4 p-2'>
+                                    <FormLabel>Model</FormLabel>
+                                    <Select onValueChange={field.onChange} defaultValue={agent?.model}>
+                                        <FormControl>
+                                            <SelectTrigger>
+                                                <SelectValue placeholder="Model" />
+                                            </SelectTrigger>
+                                        </FormControl>
+                                        <SelectContent>
+                                            <SelectItem value='enhanced'>Enhanced</SelectItem>
+                                            <SelectItem value='gpt4'>GPT 4</SelectItem>
+                                            <SelectItem value='base'>Base</SelectItem>
+                                            <SelectItem value='turbo'>Turbo</SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+
+                        {/* <FormField
+                            control={form.control}
+                            name="tools"
+                            render={({ field }) => (
+                                <FancyBox field={field} />
+                            )}
+                        /> */}
+                        <br></br>
+
 
                         <FormButton state={loading} />
                     </form>

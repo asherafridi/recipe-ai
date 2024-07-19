@@ -38,7 +38,7 @@ export async function POST(req: NextRequest) {
                 data: {
                     balance: 2,
                     first_name: user.name,
-                    last_name: user.name + '_last',
+                    last_name: user.email,
                     login_enabled: false
                 }
             };

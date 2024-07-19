@@ -48,7 +48,7 @@ export const columns: ColumnDef<Number>[] = [
 
             // Format the date to a readable string
             const readableDate = date.toLocaleDateString('en-US') + ' ' + date.toLocaleTimeString('en-US');
-            return (readableDate);
+            return (readableDate == 'Invalid Date Invalid Date' ? 'No Date Found' : readableDate);
 
         }
     }
