@@ -50,7 +50,7 @@ export async function POST(req: NextRequest) {
                 from: `${agent?.numberId}`,
                 temperature: 0.7,
                 start_time : `${convertDateTimeLocalToCustomFormat(time)}`,
-                tools :  tools,
+                // tools :  tools,
 
             }
         };
