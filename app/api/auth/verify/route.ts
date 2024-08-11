@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
             const options = {
                 method: 'POST',
                 headers: {
-                    authorization: 'sk-ix1uv15q05edyjxb2oqdporz1okqchzq5zvjvi9271f2cixopa3d71ulo0ppky3969',
+                    authorization: process.env.BLAND_KEY,
                     'Content-Type': 'application/json'
                 },
                 data: {

@@ -62,6 +62,7 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ msg: 'Calling...' }, { status: 200 });
 
     } catch (e) {
+        console.log(e);
         return NextResponse.json({ error: e,msg:'Something Went Wrong!' }, { status: 500 });
     }
 }

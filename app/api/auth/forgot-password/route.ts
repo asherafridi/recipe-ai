@@ -13,12 +13,12 @@ export async function POST(req: NextRequest) {
 
     try {
 
+      console.log(email);
         const user = await prisma.user.findFirstOrThrow({
             where: {
                 email: email,
             },
         });
-        
 
         let token = createToken(user.id+'');
 
@@ -28,6 +28,8 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ msg: 'Forgot Password email has been sent to your inbox.' }, { status: 200 });
 
     } catch (e) {
+      
+      console.log(e);
         return NextResponse.json({ msg: 'Something Went Wrong!' }, { status: 500 });
     }
 }
