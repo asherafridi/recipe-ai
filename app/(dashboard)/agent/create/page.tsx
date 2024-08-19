@@ -27,12 +27,16 @@ import { Textarea } from '@/components/ui/textarea';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { useFetchNumber, useFetchVoice } from '@/hooks/agentHook'
 import { useNumberFetch } from '@/hooks/numberHook';
-import { FancyBox } from '@/components/FancyMultiBox';
+import { useToolsFetch, useVectorFetch } from '@/hooks/vectorHook';
 
 const Page = () => {
 
     const { voice, voiceLoader } = useFetchVoice();
     const { number, numberLoader } = useNumberFetch();
+    const { vector, vectorLoader } = useVectorFetch();
+    const { tools, toolsLoader } = useToolsFetch();
+
+    
     const form = useForm();
     const [loading, setLoading] = useState(false);
 
@@ -267,13 +271,52 @@ const Page = () => {
                                         )}
                                     />
 
-                                    <FormField
-                                        control={form.control}
-                                        name="tools"
-                                        render={({ field }) => (
-                                            <FancyBox field={field} />
-                                        )}
-                                    />
+                                    
+<FormField
+                            control={form.control}
+                            name="information"
+                            render={({ field }) => (
+                                <FormItem className='w-full md:w-full lg:w-full p-2'>
+                                    <FormLabel>Company Informations</FormLabel>
+                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                        <FormControl>
+                                            <SelectTrigger>
+                                                <SelectValue placeholder="Information" />
+                                            </SelectTrigger>
+                                        </FormControl>
+                                        <SelectContent>
+                                            {vector.map((element, index) => (
+                                                <SelectItem key={index} value={element?.vector_id}>{element?.name} - {element?.description}</SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />  
+
+                        <FormField
+                            control={form.control}
+                            name="tools"
+                            render={({ field }) => (
+                                <FormItem className='w-full md:w-full lg:w-full p-2'>
+                                    <FormLabel>Tools</FormLabel>
+                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                        <FormControl>
+                                            <SelectTrigger>
+                                                <SelectValue placeholder="Tools" />
+                                            </SelectTrigger>
+                                        </FormControl>
+                                        <SelectContent>
+                                            {tools.map((element, index) => (
+                                                <SelectItem key={index} value={element?.tool_id}>{element?.tool?.name}</SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
 
                                 </AccordionContent>
                             </AccordionItem>

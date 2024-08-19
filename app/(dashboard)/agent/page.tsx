@@ -28,7 +28,7 @@ const Page = () => {
       <Link href='/agent/create' ><Button>Create New Agent</Button></Link>
       <Link href='/call/create' ><Button variant={'secondary'}>Make a Call</Button></Link></div>
       </div>
-      <div className=" mt-4 rounded p-4 flex gap-2">
+      <div className=" mt-4 rounded p-4 flex gap-2 flex-wrap">
         {data?.map((element, index) => (
           <div key={index} className='bg-white rounded w-full md:w-1/2 lg:w-1/4 p-3'>
             <div className='flex justify-between'>

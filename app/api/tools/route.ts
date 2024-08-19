@@ -23,7 +23,7 @@ export async function GET(req : NextRequest,res : NextResponse) {
     
     
         const response = await axios.get('https://api.bland.ai/v1/tools',options);
-        return NextResponse.json({vectors:response.data?.vectors},{status:200});
+        return NextResponse.json({tools:response.data?.tools},{status:200});
     }catch(e){
         
         return NextResponse.json({error:'Data Not Found'},{status:500});

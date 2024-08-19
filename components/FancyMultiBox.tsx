@@ -37,7 +37,6 @@ export function FancyBox({ field }: { field: any }) {
   const [openCombobox, setOpenCombobox] = React.useState(false);
   const [inputValue, setInputValue] = React.useState<string>("");
   const [selectedValues, setSelectedValues] = React.useState<Vector[]>([]);
-  const { vector, vectorLoader } = useVectorFetch();
 
   React.useEffect(() => {
     field.onChange(selectedValues);
