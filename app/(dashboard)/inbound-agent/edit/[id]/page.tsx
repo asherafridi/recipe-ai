@@ -12,7 +12,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Textarea } from '@/components/ui/textarea';
 import { useFetchAgent, useFetchVoice } from '@/hooks/agentHook';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { FancyBox } from '@/components/FancyMultiBox';
+
 import { useNumberFetch } from '@/hooks/numberHook';
 import { useInboundAgentDetail } from '@/hooks/inboundAgentHook';
 
@@ -200,13 +200,6 @@ const Page = ({ params }: { params: { id: string } }) => {
                             )}
                         />
 
-                        {/* <FormField
-                            control={form.control}
-                            name="tools"
-                            render={({ field }) => (
-                                <FancyBox field={field} />
-                            )}
-                        /> */}
                         <br></br>
 
 
