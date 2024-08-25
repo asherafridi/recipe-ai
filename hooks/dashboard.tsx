@@ -6,7 +6,7 @@ interface Insight {
 }
 
 const useFetchInsightsHook = () => {
-    const [data, setData] = useState<Insight>([]);
+    const [data, setData] = useState<Insight>();
     const [loading, setLoading] = useState(true);
   
     useEffect(() => {
