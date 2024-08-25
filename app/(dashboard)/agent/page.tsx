@@ -16,19 +16,19 @@ import { Skeleton } from '@/components/ui/skeleton';
 const Page = () => {
   const { data, loading } = useAllAgentFetch();
 
-  
+
   if (loading) {
-    return <Skeleton className='w-full h-[400px] rounded mt-4'/>;
-}
+    return <Skeleton className='w-full h-[400px] rounded mt-4' />;
+  }
 
   return (
     <div className='p-5 min-h-screen'>
       <div className='border-b-2 border-slate-300 flex justify-between'>
 
-      <div className=' text-3xl  pb-8'>Agents</div>
-      <div className='gap-2 flex'>
-      <Link href='/agent/create' ><Button>Create New Agent</Button></Link>
-      <Link href='/call/create' ><Button variant={'secondary'}>Make a Call</Button></Link></div>
+        <div className=' text-3xl  pb-8'>Agents</div>
+        <div className='gap-2 flex'>
+          <Link href='/agent/create' ><Button>Create New Agent</Button></Link>
+          <Link href='/call/create' ><Button variant={'secondary'}>Make a Call</Button></Link></div>
       </div>
       <div className=" mt-4 rounded p-4 flex gap-2 flex-wrap">
         {data?.map((element, index) => (
@@ -52,20 +52,20 @@ const Page = () => {
                   <DropdownMenuLabel>Actions</DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem><Link href={`/agent/edit/${element.id}`}>Edit Agent</Link></DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => {
-              if (confirm('Are you sure?')) {
-                useAgentDelete(element.id);
-              }
-            }}>Delete Agent</DropdownMenuItem>
+                  {/* <DropdownMenuItem onClick={() => {
+                    if (confirm('Are you sure?')) {
+                      useAgentDelete(element.id);
+                    }
+                  }}>Delete Agent</DropdownMenuItem> */}
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
             <div className='flex mt-10 gap-4'>
-            <span>{element.numberId}</span>
+              <span>{element.numberId}</span>
             </div>
             <div className='flex mt-2 gap-4'>
-            <Badge variant="default">{element.agentType}</Badge>
-            <span>{element.language}</span>
+              <Badge variant="default">{element.agentType}</Badge>
+              <span>{element.language}</span>
             </div>
           </div>
         ))}
