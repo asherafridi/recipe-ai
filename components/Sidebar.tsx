@@ -15,7 +15,7 @@ const Sidebar = ({ sidebar, setSidebar }: { sidebar: any, setSidebar: any }) => 
     { href: '/agent', icon: <Headphones />, text: 'Agents', key: 'agent' },
     { href: '/inbound-agent', icon: <PhoneIncoming />, text: 'Inbound Agent', key: 'inbound-agent' },
     { href: '/contact', icon: <Users />, text: 'Contacts', key: 'contact' },
-    { href: '/call', icon: <PhoneOutgoing />, text: 'Single Call', key: 'call' },
+    { href: '/call', icon: <PhoneOutgoing />, text: 'Calls', key: 'call' },
     { href: '/campaign', icon: <Webhook />, text: 'Campaigns', key: 'campaign' },
     { href: '/vector', icon: <PenTool />, text: 'Information', key: 'vector' },
     { href: '/help', icon: <Info />, text: 'Need Help?', key: 'help' },
