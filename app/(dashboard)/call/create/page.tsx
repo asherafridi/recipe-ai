@@ -20,6 +20,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { useAllAgentFetch } from '@/hooks/agentHook';
 import { useAllContactFetch } from '@/hooks/contactHook';
+import { Skeleton } from '@/components/ui/skeleton';
 
 
 const Page = () => {
@@ -46,7 +47,7 @@ const Page = () => {
 
 
     if (loading && contactLoader) {
-        return <div className='p-5 bg-white'>Loading...</div>;
+        return <Skeleton className='w-full h-[400px] rounded mt-4'/>;
     }
 
 

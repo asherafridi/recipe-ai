@@ -7,16 +7,11 @@ import { NextRequest, NextResponse } from "next/server";
 export async function GET(req:NextRequest ,res : NextResponse) {
 
     const session = await getServerSession(authOption);
-    const user = await prisma.user.findFirst({
-        where:{
-            email:<string>session?.user?.email,
-        }
-    });
 
     const options = {
         method: 'GET',
         headers: {
-          authorization: user?.subaccount_key
+          authorization: session?.user.key_token
         }
       };
 

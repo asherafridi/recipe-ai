@@ -13,6 +13,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { useFetchAgent, useFetchVoice } from '@/hooks/agentHook';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { useNumberFetch } from '@/hooks/numberHook';
+import { Skeleton } from '@/components/ui/skeleton';
 
 
 
@@ -45,7 +46,7 @@ const Page = ({ params }: { params: { id: string } }) => {
     }
 
     if (loader && numberLoader && voiceLoader) {
-        return <div className='p-5 bg-white'>Loading...</div>;
+        return <Skeleton className='w-full h-[400px] rounded mt-4'/>;
     }
 
 

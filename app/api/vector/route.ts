@@ -13,13 +13,8 @@ export async function GET(req : NextRequest,res : NextResponse) {
     }
     try{
 
-        const user =  await prisma.user.findFirstOrThrow({
-            where:{
-                id : +session.user.id
-            }
-        })
     
-        const options = {method: 'GET', headers: {authorization: user.subaccount_key}};
+        const options = {method: 'GET', headers: {authorization: session.user.key_token}};
     
     
         const response = await axios.get('https://kb.bland.ai/vectors',options);

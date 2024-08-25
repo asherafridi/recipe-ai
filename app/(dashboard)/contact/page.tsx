@@ -7,6 +7,7 @@ import { columns} from './columns';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
 import { useAllContactFetch } from '@/hooks/contactHook';
+import { Skeleton } from '@/components/ui/skeleton';
 
 
 
@@ -18,7 +19,7 @@ const Page = () => {
     <div className='p-5 min-h-screen'>
         <Breadcrumb title="Contacts" />
         <div className="bg-white mt-4 rounded p-4">
-          {contactLoader ?  'Loading...' : <DataTable columns={columns} data={contact}  />}
+          {contactLoader ?  <Skeleton className='w-full h-[400px] rounded mt-4'/> : <DataTable columns={columns} data={contact}  />}
         
         </div>
     </div>

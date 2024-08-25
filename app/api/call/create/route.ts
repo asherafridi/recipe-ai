@@ -14,11 +14,6 @@ export async function POST(req: NextRequest) {
 
     try {
         
-        const user = await prisma.user.findFirstOrThrow({
-            where: {
-                id: +session.user.id,
-            },
-        });
         const agent = await prisma.agent.findFirst({
             where: {
                 id: +agentId
@@ -34,7 +29,7 @@ export async function POST(req: NextRequest) {
         const options = {
             method: 'POST',
             headers: {
-                authorization: user.subaccount_key,
+                authorization: session.user.key_token,
                 'Content-Type': 'application/json'
             },
             data: {
@@ -47,10 +42,9 @@ export async function POST(req: NextRequest) {
                 record: true,
                 max_duration: +duration,
                 answered_by_enabled: true,
-                // from: `${agent?.numberId}`,
+                from: `${agent?.numberId}`,
                 temperature: 0.7,
-                start_time : `${convertDateTimeLocalToCustomFormat(time)}`,
-                // tools :  tools,
+                tools :  tools,
 
             }
         };
@@ -62,7 +56,6 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ msg: 'Calling...' }, { status: 200 });
 
     } catch (e) {
-        console.log(e);
         return NextResponse.json({ error: e,msg:'Something Went Wrong!' }, { status: 500 });
     }
 }

@@ -22,6 +22,7 @@ import { useAllAgentFetch } from '@/hooks/agentHook';
 import { DataTable } from './data-table';
 import { columns } from './columns';
 import { useAllContactFetch } from '@/hooks/contactHook';
+import { Skeleton } from '@/components/ui/skeleton';
 
 
 const Page = () => {
@@ -62,7 +63,7 @@ const Page = () => {
 
 
     if (loading && contactLoader) {
-        return <div className='p-5 bg-white'>Loading...</div>;
+        return <Skeleton className='w-full h-[400px] rounded mt-4'/>;
     }
 
 

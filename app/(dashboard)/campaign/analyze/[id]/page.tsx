@@ -12,6 +12,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import FormButton from '@/components/FormButton';
 import axios from 'axios';
 import { useFetchCampaign } from '@/hooks/campaignHook';
+import { Skeleton } from '@/components/ui/skeleton';
 
 interface Result {
     questions: any[]
@@ -60,7 +61,7 @@ const Page = ({ params }: { params: { id: string } }) => {
     };
 
     if (batchLoader) {
-        return <div className='p-5 bg-white'>Loading...</div>;
+        return <Skeleton className='w-full h-[400px] rounded mt-4'/>;
     }
 
     return (

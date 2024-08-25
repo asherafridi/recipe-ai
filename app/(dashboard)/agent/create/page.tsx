@@ -28,6 +28,7 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { useFetchNumber, useFetchVoice } from '@/hooks/agentHook'
 import { useNumberFetch } from '@/hooks/numberHook';
 import { useToolsFetch, useVectorFetch } from '@/hooks/vectorHook';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const Page = () => {
 
@@ -58,7 +59,7 @@ const Page = () => {
 
 
     if (numberLoader || voiceLoader) {
-        return <div className='p-5 bg-white'>Loading...</div>;
+        return <Skeleton className='w-full h-[400px] rounded mt-4'/>;
     }
 
     return (

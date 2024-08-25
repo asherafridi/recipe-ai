@@ -15,6 +15,8 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 
 import { useNumberFetch } from '@/hooks/numberHook';
 import { useInboundAgentDetail } from '@/hooks/inboundAgentHook';
+import { useToolsFetch, useVectorFetch } from '@/hooks/vectorHook';
+import { Skeleton } from '@/components/ui/skeleton';
 
 
 
@@ -23,8 +25,12 @@ const Page = ({ params }: { params: { id: string } }) => {
     const [loading, setLoading] = useState(false);
 
     const { agent, agentLoader } = useInboundAgentDetail(params.id);
+
+    
+    const { vector, vectorLoader } = useVectorFetch();
+    const { tools, toolsLoader } = useToolsFetch();
+
     console.log(agent);
-    // const router = useRouter();
     const form = useForm();
 
 
@@ -46,8 +52,8 @@ const Page = ({ params }: { params: { id: string } }) => {
         });
     }
 
-    if (agentLoader && voiceLoader) {
-        return <div className='p-5 bg-white'>Loading...</div>;
+    if (agentLoader && voiceLoader && vectorLoader && toolsLoader) {
+        return <Skeleton className='w-full h-[400px] rounded mt-4'/>;
     }
 
 
@@ -200,9 +206,54 @@ const Page = ({ params }: { params: { id: string } }) => {
                             )}
                         />
 
-                        <br></br>
+                                    
+<FormField
+                            control={form.control}
+                            name="information"
+                            render={({ field }) => (
+                                <FormItem className='w-full md:w-full lg:w-full p-2'>
+                                    <FormLabel>Company Informations</FormLabel>
+                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                        <FormControl>
+                                            <SelectTrigger>
+                                                <SelectValue placeholder="Information" />
+                                            </SelectTrigger>
+                                        </FormControl>
+                                        <SelectContent>
+                                            {vector.map((element, index) => (
+                                                <SelectItem key={index} value={element?.vector_id}>{element?.name} - {element?.description}</SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />  
 
+                        <FormField
+                            control={form.control}
+                            name="tools"
+                            render={({ field }) => (
+                                <FormItem className='w-full md:w-full lg:w-full p-2'>
+                                    <FormLabel>Tools</FormLabel>
+                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                        <FormControl>
+                                            <SelectTrigger>
+                                                <SelectValue placeholder="Tools" />
+                                            </SelectTrigger>
+                                        </FormControl>
+                                        <SelectContent>
+                                            {tools.map((element, index) => (
+                                                <SelectItem key={index} value={element?.tool_id}>{element?.tool?.name}</SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
 
+                        <br /><br />
                         <FormButton state={loading} />
                     </form>
                 </Form>

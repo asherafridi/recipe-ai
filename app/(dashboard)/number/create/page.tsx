@@ -26,6 +26,7 @@ import {
 import { Textarea } from '@/components/ui/textarea';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { useFetchNumber, useFetchVoice } from '@/hooks/agentHook'
+import { Skeleton } from '@/components/ui/skeleton';
 
 const Page = () => {
 
@@ -53,7 +54,7 @@ const Page = () => {
 
 
     if (numberLoader || voiceLoader) {
-        return <div className='p-5 bg-white'>Loading...</div>;
+        return <Skeleton className='w-full h-[400px] rounded mt-4'/>;
     }
 
     return (

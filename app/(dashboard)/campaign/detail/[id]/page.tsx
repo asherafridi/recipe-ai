@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Activity, CalendarPlus, CreditCard, DollarSign, Headset, Phone, PhoneCall, PhoneOutgoing, Users } from 'lucide-react';
 import { DataTable } from '@/app/(dashboard)/campaign/detail/data-table';
 import { columns } from '@/app/(dashboard)/campaign/detail/columns';
+import { Skeleton } from '@/components/ui/skeleton';
 
 
 
@@ -15,7 +16,7 @@ const Page = ({ params }: { params: { id: string } }) => {
 
 
     if (batchLoader) {
-        return <div className='p-5 bg-white'>Loading...</div>;
+        return <Skeleton className='w-full h-[400px] rounded mt-4'/>;
     }
 
     console.log(batches);

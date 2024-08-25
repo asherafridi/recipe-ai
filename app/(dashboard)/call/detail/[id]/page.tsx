@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { useFetchCall } from '@/hooks/singleCallHook';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Activity, Phone, PhoneCall, PhoneOutgoing, TrendingUp } from 'lucide-react';
+import { Skeleton } from '@/components/ui/skeleton';
 
 
 
@@ -12,7 +13,7 @@ const Page = ({ params }: { params: { id: string } }) => {
 
 
     if (callLoader) {
-        return <div className='p-5 bg-white'>Loading...</div>;
+        return <Skeleton className='w-full h-[400px] rounded mt-4'/>;
     }
 
 

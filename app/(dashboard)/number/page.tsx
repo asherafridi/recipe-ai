@@ -9,6 +9,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { useNumberFetch } from '@/hooks/numberHook';
+import { Skeleton } from '@/components/ui/skeleton';
 
 
 const Page = () => {
@@ -19,7 +20,7 @@ const Page = () => {
     <div className='p-5 min-h-screen'>
       <Breadcrumb title='Agent Number' />
         <div className="bg-white mt-4 rounded p-4">
-          {numberLoader ?  'Loading...' : <DataTable columns={columns} data={number}  />}
+          {numberLoader ?  <Skeleton className='w-full h-[400px] rounded mt-4'/> : <DataTable columns={columns} data={number}  />}
         
         </div>
     </div>

@@ -13,20 +13,16 @@ export async function GET(req : NextRequest,res : NextResponse) {
     }
     try{
 
-        const user =  await prisma.user.findFirstOrThrow({
-            where:{
-                id : +session.user.id
-            }
-        })
     
-        const options = {method: 'GET', headers: {authorization: user.subaccount_key}};
+        const options = {method: 'GET', headers: {authorization: session.user.key_token}};
     
     
         const response = await axios.get('https://api.bland.ai/v1/inbound',options);
+        
         return NextResponse.json({inbound:response.data?.inbound_numbers},{status:200});
     }catch(e){
         
-        return NextResponse.json({error:'Data Not Found'},{status:500});
+        return NextResponse.json({error:'Data Not Found',e:e},{status:500});
     }
 
 }

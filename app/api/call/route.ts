@@ -24,16 +24,10 @@ export async function GET(req: NextRequest) {
     };
 
     try {
-        const user = await prisma.user.findFirstOrThrow({
-            where: {
-                id: +session.user.id,
-            },
-        });
-
         const options = {
             method: 'GET',
             headers: {
-                authorization: user.subaccount_key,
+                authorization: session.user.key_token,
             },
             params,
         };

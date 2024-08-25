@@ -13,18 +13,13 @@ export async function POST(req: NextRequest) {
     }
 
     try {
-        const user = await prisma.user.findFirst({
-            where: {
-                id: +session.user.id
-            }
-        });
         const questions:any[] = [];
         fields.map((element:any)=>{
             questions.push([`${element.user}`,`${element.text}`]);
         });
         const options = {
             headers: {
-                authorization: user?.subaccount_key,
+                authorization: session.user.key_token,
                 'Content-Type': 'application/json'
             }
         };

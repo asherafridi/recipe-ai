@@ -6,6 +6,7 @@ import axios from 'axios';
 import { columns} from './columns';
 import toast from 'react-hot-toast';
 import { useVectorFetch } from '@/hooks/vectorHook';
+import { Skeleton } from '@/components/ui/skeleton';
 
 
 
@@ -15,9 +16,9 @@ const Page = () => {
   
   return (
     <div className='p-5 min-h-screen'>
-        <Breadcrumb title="Vector Store" />
+        <Breadcrumb title="Company Informations" />
         <div className="bg-white mt-4 rounded p-4">
-          {vectorLoader ?  'Loading...' : <DataTable columns={columns} data={vector}  />}
+          {vectorLoader ?  <Skeleton className='w-full h-[400px] rounded mt-4'/> : <DataTable columns={columns} data={vector}  />}
         
         </div>
     </div>

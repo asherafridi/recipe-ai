@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react'
 import {  FormControl, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Textarea } from '@/components/ui/textarea';
 import { useFetchVectorDetail } from '@/hooks/vectorHook';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const Page = async ({params} : {params:{id:string}}) => {
     
@@ -12,7 +13,7 @@ const Page = async ({params} : {params:{id:string}}) => {
 
     
     if(vectorLoader){
-        return <div className='p-5 bg-white'>Loading...</div>;
+        return <Skeleton className='w-full h-[400px] rounded mt-4'/>;
     }
     return (
 

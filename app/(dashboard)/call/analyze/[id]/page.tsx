@@ -11,6 +11,7 @@ import { X } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import FormButton from '@/components/FormButton';
 import axios from 'axios';
+import { Skeleton } from '@/components/ui/skeleton';
 
 interface Result{
     questions : any[]
@@ -59,7 +60,7 @@ const Page = ({ params }: { params: { id: string } }) => {
     };
 
     if (callLoader) {
-        return <div className='p-5 bg-white'>Loading...</div>;
+        return <Skeleton className='w-full h-[400px] rounded mt-4'/>;
     }
 
     return (

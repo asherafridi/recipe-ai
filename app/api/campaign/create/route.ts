@@ -15,11 +15,6 @@ export async function POST(req: NextRequest) {
 
     try {
 
-        const user = await prisma.user.findFirstOrThrow({
-            where: {
-                id: +session.user.id,
-            },
-        });
 
         const contacts = await prisma.contact.findMany({
             where: {
@@ -44,7 +39,7 @@ export async function POST(req: NextRequest) {
         const options = {
             method: 'POST',
             headers: {
-                authorization: user.subaccount_key,
+                authorization: session.user.key_token,
                 'Content-Type': 'application/json'
             },
             data: {
@@ -52,8 +47,9 @@ export async function POST(req: NextRequest) {
                 call_data: contacts,
                 label: `${name}`,
                 test_mode: true,
-                // from : `${agent?.agentNumber.number}`,
-                record : true
+                from : `${agent?.numberId}`,
+                record : true,
+                tools : agent?.tools
             }
         };
 

@@ -7,7 +7,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 
 export async function POST(req: NextRequest) {
-    const  {id,phone_number,voice_id,prompt, max_duration,transfer_phone_number,language,model}  = await req.json();
+    const  {id,phone_number,voice_id,prompt, max_duration,transfer_phone_number,language,model,tools,information}  = await req.json();
     const session = await getServerSession(authOption);
 
     if(!session?.user){
@@ -26,6 +26,9 @@ export async function POST(req: NextRequest) {
                 'Content-Type': 'application/json'
             }
         };
+        
+        const vectorIds = [information,tools];
+
         const requestData = {
             phone_number : phone_number,
             voice_id : voice_id,
@@ -33,7 +36,8 @@ export async function POST(req: NextRequest) {
             max_duration : max_duration ,
             transfer_phone_number : transfer_phone_number,
             language : language,
-            model : model
+            model : model,
+            tools : vectorIds
         };
     
   axios.post(`https://api.bland.ai/v1/inbound/${id}`, requestData, options)

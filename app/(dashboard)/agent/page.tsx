@@ -8,6 +8,8 @@ import { Button } from '@/components/ui/button';
 import { MoreHorizontal } from 'lucide-react';
 import Link from 'next/link';
 import { Badge } from '@/components/ui/badge';
+import { useAgentDelete } from '@/hooks/agentHook';
+import { Skeleton } from '@/components/ui/skeleton';
 
 
 
@@ -16,7 +18,7 @@ const Page = () => {
 
   
   if (loading) {
-    return <div className='p-5 bg-white'>Loading...</div>;
+    return <Skeleton className='w-full h-[400px] rounded mt-4'/>;
 }
 
   return (
@@ -50,11 +52,11 @@ const Page = () => {
                   <DropdownMenuLabel>Actions</DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem><Link href={`/agent/edit/${element.id}`}>Edit Agent</Link></DropdownMenuItem>
-                  {/* <DropdownMenuItem onClick={() => {
+                  <DropdownMenuItem onClick={() => {
               if (confirm('Are you sure?')) {
-                useAgentDelete(payment.id);
+                useAgentDelete(element.id);
               }
-            }}>Delete Agent</DropdownMenuItem> */}
+            }}>Delete Agent</DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>

@@ -13,14 +13,9 @@ export async function POST(req: NextRequest) {
     }
 
     try {
-        const user = await prisma.user.findFirst({
-            where: {
-                id: +session.user.id
-            }
-        });
         const options = {
             headers: {
-                authorization: user?.subaccount_key,
+                authorization: session.user.key_token,
                 'Content-Type': 'application/json'
             }
         };

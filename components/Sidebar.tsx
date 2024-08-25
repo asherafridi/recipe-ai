@@ -17,7 +17,7 @@ const Sidebar = ({ sidebar, setSidebar }: { sidebar: any, setSidebar: any }) => 
     { href: '/contact', icon: <Users />, text: 'Contacts', key: 'contact' },
     { href: '/call', icon: <PhoneOutgoing />, text: 'Single Call', key: 'call' },
     { href: '/campaign', icon: <Webhook />, text: 'Campaigns', key: 'campaign' },
-    { href: '/vector', icon: <PenTool />, text: 'Vector Store', key: 'vector' },
+    { href: '/vector', icon: <PenTool />, text: 'Information', key: 'vector' },
     { href: '/help', icon: <Info />, text: 'Need Help?', key: 'help' },
   ];
 
