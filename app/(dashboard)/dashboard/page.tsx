@@ -70,11 +70,11 @@ export default function Dashboard() {
 
   // 1. Bar Chart for Call Duration Distribution
   const barChartData = {
-    labels: Object.keys(data.insights.callDurationDistribution),
+    labels: Object.keys(data?.insights.callDurationDistribution),
     datasets: [
       {
         label: 'Call Duration (minutes)',
-        data: Object.values(data.insights.callDurationDistribution),
+        data: Object.values(data?.insights.callDurationDistribution),
         backgroundColor: 'rgba(75, 192, 192, 0.6)',
         borderColor: 'rgba(75, 192, 192, 1)',
         borderWidth: 1,
@@ -91,8 +91,8 @@ export default function Dashboard() {
   };
 
   // 2. Pie Chart for Successful and Unsuccessful Calls
-  const successfulCalls = data.insights.completedCalls;
-  const unsuccessfulCalls = data.insights.totalCalls - successfulCalls;
+  const successfulCalls = data?.insights.completedCalls;
+  const unsuccessfulCalls = data?.insights.totalCalls - successfulCalls;
 
   const pieChartData = {
     labels: ['Successful Calls', 'Unsuccessful Calls'],
@@ -106,8 +106,8 @@ export default function Dashboard() {
   };
 
   // 3. Pie Chart for Calls Received by Human vs. Others
-  const callsReceivedByHuman = data.insights.humanAnsweredCalls;
-  const otherCalls = data.insights.totalCalls - callsReceivedByHuman;
+  const callsReceivedByHuman = data?.insights.humanAnsweredCalls;
+  const otherCalls = data?.insights.totalCalls - callsReceivedByHuman;
 
   const humanPieChartData = {
     labels: ['Received by Human', 'Other'],
