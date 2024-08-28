@@ -24,7 +24,7 @@ const Sidebar = ({ sidebar, setSidebar }: { sidebar: any, setSidebar: any }) => 
       
       
       {/* Sidebar */}
-      <div className={`sidebar lg:w-[400px] p-3 min-h-screen bg-accent text-accent-foreground shadow-sm lg:block ${sidebar ? 'block' : 'hidden'}`}>
+      <div className={`sidebar lg:w-[300px] p-3 min-h-screen bg-accent text-accent-foreground shadow-sm lg:block ${sidebar ? 'block' : 'hidden'}`}>
         <div className='hidden lg:block'>
           <h1 className='text-2xl font-semibold '>Lexa Talk</h1>
           <p>AI Phone Caller Maker</p>

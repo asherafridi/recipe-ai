@@ -178,7 +178,7 @@ export default function Dashboard() {
               <DollarSign className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{data?.insights.totalCost} $</div>
+              <div className="text-2xl font-bold">{data?.insights.totalCost?.toFixed(3)} $</div>
               <p className="text-xs text-muted-foreground">
                 Total cost of calls
               </p>

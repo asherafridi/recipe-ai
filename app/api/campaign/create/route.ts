@@ -37,6 +37,7 @@ export async function POST(req: NextRequest) {
         });
 
 
+        const tools = agent?.tools ? JSON.parse(agent.tools) : null;
         const options = {
             method: 'POST',
             headers: {
@@ -50,7 +51,7 @@ export async function POST(req: NextRequest) {
                 test_mode: true,
                 from : `${agent?.numberId}`,
                 record : true,
-                tools : 
+                tools : tools
             }
         };
 

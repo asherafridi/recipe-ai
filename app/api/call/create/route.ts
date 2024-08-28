@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
                 id: +contactId
             }
         });
-        const tools = JSON.parse(agent?.tools);
+        const tools = agent?.tools ? JSON.parse(agent.tools) : null;
         console.log(tools);
         
         const options = {
