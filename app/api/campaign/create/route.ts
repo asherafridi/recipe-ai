@@ -4,6 +4,7 @@ import { getServerSession } from 'next-auth';
 import { authOption } from '@/lib/auth';
 import axios from 'axios';
 import { record } from 'zod';
+import { json } from 'stream/consumers';
 
 export async function POST(req: NextRequest) {
     const { a,agentId,name } = await req.json();
@@ -49,7 +50,7 @@ export async function POST(req: NextRequest) {
                 test_mode: true,
                 from : `${agent?.numberId}`,
                 record : true,
-                tools : agent?.tools
+                tools : 
             }
         };
 

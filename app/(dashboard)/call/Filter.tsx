@@ -53,12 +53,12 @@ const Filter = () => {
     return (
         <div className='bg-white mt-4 rounded p-4'>
             <Form {...form}>
-                <form onSubmit={form.handleSubmit(submit)} className="w-full flex gap-2 justify-between">
+                <form onSubmit={form.handleSubmit(submit)} className="w-full flex gap-2 justify-between flex-col md:flex-row">
                     <FormField
                         control={form.control}
                         name="call_type"
                         render={({ field }) => (
-                            <FormItem className='w-1/5'>
+                            <FormItem className='w-full md:w-1/5'>
                                 <FormLabel>Call Type</FormLabel>
                                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                                     <FormControl>
@@ -80,7 +80,7 @@ const Filter = () => {
                         control={form.control}
                         name="batch"
                         render={({ field }) => (
-                            <FormItem className='w-1/5'>
+                            <FormItem className='w-full md:w-1/5'>
                                 <FormLabel>Batch</FormLabel>
                                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                                     <FormControl>
@@ -102,7 +102,7 @@ const Filter = () => {
                         control={form.control}
                         name="start_date"
                         render={({ field }) => (
-                            <FormItem className='w-1/5'>
+                            <FormItem className='w-full md:w-1/5'>
                                 <FormLabel>Start Date</FormLabel>
                                 <FormControl>
                                     <Input type='date' {...field} />
@@ -115,7 +115,7 @@ const Filter = () => {
                         control={form.control}
                         name="end_date"
                         render={({ field }) => (
-                            <FormItem className='w-1/5'>
+                            <FormItem className='w-full md:w-1/5'>
                                 <FormLabel>End Date</FormLabel>
                                 <FormControl>
                                     <Input type='date' {...field} />
@@ -124,7 +124,7 @@ const Filter = () => {
                             </FormItem>
                         )}
                     />
-                    <FormItem className='w-1/5'>
+                    <FormItem className='w-full md:w-1/5'>
                         <FormLabel><br /></FormLabel>
                         <FormControl>
                             <Button className='w-full' type="submit">Filter</Button>

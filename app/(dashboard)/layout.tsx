@@ -37,7 +37,7 @@ export default function RootLayout({
             <div className="main flex">
                 <Sidebar sidebar={sidebar} setSidebar={setSidebar} />
                 <div className="wrapper w-full">
-                    <Navbar />
+                    <Navbar  sidebar={sidebar} setSidebar={setSidebar} />
                     <div className="p-5">
                         {children}
                     </div>

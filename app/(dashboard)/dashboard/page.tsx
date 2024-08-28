@@ -48,6 +48,7 @@ import { useFetchInsightsHook } from "@/hooks/dashboard"
 import { Bar, Pie } from "react-chartjs-2"
 
 import { Chart as ChartJS, BarElement, CategoryScale, LinearScale, PieController, ArcElement, Tooltip, Legend } from 'chart.js';
+import { Skeleton } from "@/components/ui/skeleton"
 
 ChartJS.register(BarElement, CategoryScale, LinearScale, PieController, ArcElement, Tooltip, Legend);
 
@@ -64,7 +65,7 @@ export default function Dashboard() {
   const { data, loading } = useFetchInsightsHook();
 
   if (loading) {
-    return 'Loading...';
+    return <Skeleton className='w-full h-[400px] rounded mt-4'/>;
   }
 
 
