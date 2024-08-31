@@ -36,7 +36,7 @@ export default function RootLayout({
         <div className={fontSans.className}>
             <div className="main flex">
                 <Sidebar sidebar={sidebar} setSidebar={setSidebar} />
-                <div className="wrapper w-full">
+                <div className="wrapper w-full pl-0 lg:pl-[300px]">
                     <Navbar  sidebar={sidebar} setSidebar={setSidebar} />
                     <div className="p-5">
                         {children}

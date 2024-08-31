@@ -5,7 +5,7 @@ import { authOption } from '@/lib/auth';
 import axios from 'axios';
 
 export async function POST(req: NextRequest) {
-    const { agentId, contactId, time,duration } = await req.json();
+    const { agentId, contactId,duration } = await req.json();
     const session = await getServerSession(authOption);
 
     if (!session?.user?.id) {

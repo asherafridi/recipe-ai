@@ -42,7 +42,7 @@ const UserAccountMenu = () => {
                 <DropdownMenuContent>
                     <DropdownMenuLabel>My Account</DropdownMenuLabel>
                     <DropdownMenuSeparator />
-                    {/* <DropdownMenuItem>Profile</DropdownMenuItem> */}
+                    <DropdownMenuItem onClick={()=>{router.push('/profile-settings')}}>Profile Setting</DropdownMenuItem>
                     <DropdownMenuItem onClick={logout} className='pointer'> Logout</DropdownMenuItem>
                 </DropdownMenuContent>
             </DropdownMenu>
