@@ -1,2 +1,0 @@
--- AlterTable
-ALTER TABLE "SingleCall" ALTER COLUMN "callId" SET DATA TYPE TEXT;
