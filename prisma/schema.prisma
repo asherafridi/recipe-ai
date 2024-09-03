@@ -1,18 +1,16 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["multiSchema"] 
+  binaryTargets   = ["native"]
 }
 
 datasource db {
   provider = "postgresql"
   url      = env("POSTGRESS_URI")
   directUrl = env("POSTGRESS_DIRECT_URI")
+  schemas   = ["auth", "public"]
 }
+
 model User {
   id       Int     @id @default(autoincrement())
   email    String  @unique
@@ -22,6 +20,11 @@ model User {
   subaccount_key  String?
   verificationToken String?
   status   Boolean @default(false)
+
+  contacts Contact[]
+  agents   Agent[]
+
+  @@schema("auth") // Explicitly specify the schema
 }
 
 model Contact {
@@ -29,9 +32,10 @@ model Contact {
   name   String?
   number String
   userId Int
+  user   User    @relation(fields: [userId], references: [id])
+
+  @@schema("public") // Explicitly specify the schema
 }
-
-
 
 model Agent {
   id        Int     @id @default(autoincrement())
@@ -47,5 +51,8 @@ model Agent {
   language String? @default("ENG")
   model String? @default("enhanced")
   userId    Int
-  tools String?
+  user      User   @relation(fields: [userId], references: [id])
+  tools     String?
+
+  @@schema("public") // Explicitly specify the schema
 }
