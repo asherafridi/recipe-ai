@@ -13,39 +13,43 @@ datasource db {
   url      = env("POSTGRESS_URI")
   directUrl = env("POSTGRESS_DIRECT_URI")
 }
+
+
 model User {
-  id       Int     @id @default(autoincrement())
-  email    String  @unique
-  name     String?
-  password String
-  subaccount_id String?
-  subaccount_key  String?
-  verificationToken String?
-  status   Boolean @default(false)
+  id                 Int       @id @default(autoincrement())
+  email              String    @unique
+  name               String?
+  password           String
+  subaccount_id      String?
+  subaccount_key     String?
+  verificationToken  String?
+  status             Boolean   @default(false)
+  contacts           Contact[] // Define one-to-many relationship
+  agents             Agent[]   // Define one-to-many relationship
 }
 
 model Contact {
   id     Int     @id @default(autoincrement())
   name   String?
   number String
+  user   User    @relation(fields: [userId], references: [id]) // Establish relation
   userId Int
 }
 
-
-
 model Agent {
-  id        Int     @id @default(autoincrement())
-  name      String?
-  agentType String?
-  voice     String
-  prompt    String
-  numberId  String?
-  firstSentence String?
+  id              Int     @id @default(autoincrement())
+  name            String?
+  agentType       String?
+  voice           String
+  prompt          String
+  numberId        String?
+  firstSentence   String?
   waitForGreeting String? @default("false")
-  maxDuration String? @default("1")
-  transferNumber String?
-  language String? @default("ENG")
-  model String? @default("enhanced")
-  userId    Int
-  tools String?
+  maxDuration     String? @default("1")
+  transferNumber  String?
+  language        String? @default("ENG")
+  model           String? @default("enhanced")
+  user            User    @relation(fields: [userId], references: [id]) // Establish relation
+  userId          Int
+  tools           String?
 }

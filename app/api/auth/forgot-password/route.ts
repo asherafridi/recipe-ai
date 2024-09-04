@@ -3,6 +3,7 @@ import prisma from '@/lib/db';
 import { getServerSession } from 'next-auth';
 import { authOption } from '@/lib/auth';
 import axios from 'axios';
+import { Prisma } from '@prisma/client';
 
 const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
@@ -22,8 +23,17 @@ export async function POST(req: NextRequest) {
 
         return NextResponse.json({ msg: 'Forgot Password email has been sent to your inbox.' }, { status: 200 });
 
-    } catch (e) {
-        console.log(e);
+    } catch (error) {
+        console.log(error);
+        if (error instanceof Prisma.PrismaClientKnownRequestError) {
+            if (error.code === 'P2025') {
+                return NextResponse.json({ msg: 'User Not Found!',e : error.code }, { status: 500 });
+            }
+        }
+        if(error instanceof Prisma.PrismaClientUnknownRequestError){
+            
+            return NextResponse.json({ msg: error.cause }, { status: 500 });
+        }
         return NextResponse.json({ msg: 'Something Went Wrong!' }, { status: 500 });
     }
 }
