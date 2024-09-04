@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-import prisma from '@/lib/db';
 import { getServerSession } from 'next-auth';
 import { authOption } from '@/lib/auth';
 import axios from 'axios';
