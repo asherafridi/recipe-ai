@@ -45,9 +45,9 @@ const Page = () => {
 
             if (file.type === 'application/pdf') {
 
-                pdfToText(file)
-                    .then(text => form.setValue('text', text))
-                    .catch(error => console.error("Failed to extract text from pdf"))
+                // pdfToText(file)
+                //     .then(text => form.setValue('text', text))
+                //     .catch(error => console.error("Failed to extract text from pdf"))
 
             } else {
                 toast.error('Unsupported file type. Please upload a text PDF');
