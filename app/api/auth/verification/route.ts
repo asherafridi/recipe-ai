@@ -67,7 +67,7 @@ export async function POST(req: NextRequest) {
       }
     }
     if (error instanceof Prisma.PrismaClientUnknownRequestError) {
-      return NextResponse.json({ msg: error.cause }, { status: 500 });
+      return NextResponse.json({ msg: 'Unknown Error' + error.cause, e :error }, { status: 500 });
     }
     return NextResponse.json({ msg: 'Something Went Wrong!' }, { status: 500 });
   }
