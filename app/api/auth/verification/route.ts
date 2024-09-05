@@ -15,49 +15,60 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-      const user = await prisma.user.findFirstOrThrow({
-        where: {
-          id: +session.user.id,
-        },
-      })
-    
+    const user = await prisma.user.findFirstOrThrow({
+      where: {
+        id: +session.user.id,
+      },
+    });
 
     if (user.status) {
       return NextResponse.json({ msg: 'User is Already Verified' }, { status: 200 });
     }
 
-    if (user.verificationToken) {
-      const userLink = verifyToken(user.verificationToken);
+    let tokenExpired = false;
 
-      if (timeDifference(userLink.time) < 30) {
-        return NextResponse.json({ msg: 'Token already sent to the email.' }, { status: 500 });
+    if (user.verificationToken) {
+      try {
+        const userLink = verifyToken(user.verificationToken); // Verifies token
+        if (timeDifference(userLink.time) < 30) {
+          return NextResponse.json({ msg: 'Token already sent to the email.' }, { status: 500 });
+        }
+      } catch (e:any) {
+        if (e.name === 'TokenExpiredError') {
+          tokenExpired = true; // Token has expired, need to send a new one
+        } else {
+          throw e; // Other errors, such as invalid token
+        }
       }
+      
+      return NextResponse.json({ msg: 'Verification email has been sent.' }, { status: 200 });
     }
 
-    const token = createToken(session.user.id);
+    if (!user.verificationToken || tokenExpired) {
+      const token = createToken(session.user.id); // Create a new token
 
-    await prisma.user.update({
-      where: {
-        id: +session.user.id,
-      },
-      data: {
-        verificationToken: token,
-      },
-    });
+      await prisma.user.update({
+        where: {
+          id: +session.user.id,
+        },
+        data: {
+          verificationToken: token,
+        },
+      });
 
-    await sendVerificationEmail(token, user.email);
-    return NextResponse.json({ msg: 'Verification email has been sent.' }, { status: 200 });
+      await sendVerificationEmail(token, user.email); // Send email with new token
+      return NextResponse.json({ msg: 'Verification email has been sent.' }, { status: 200 });
+    }
 
   } catch (error) {
     console.log(error);
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
-        if (error.code === 'P2025') {
-            return NextResponse.json({ msg: 'User Not Found!',e : error.code }, { status: 500 });
-        }
+      if (error.code === 'P2025') {
+        return NextResponse.json({ msg: 'User Not Found!', e: error.code }, { status: 500 });
+      }
     }
-    if(error instanceof Prisma.PrismaClientUnknownRequestError){
-        
-        return NextResponse.json({ msg: error.cause }, { status: 500 });
+    if (error instanceof Prisma.PrismaClientUnknownRequestError) {
+      return NextResponse.json({ msg: error.cause }, { status: 500 });
     }
     return NextResponse.json({ msg: 'Something Went Wrong!' }, { status: 500 });
   }
@@ -65,7 +76,7 @@ export async function POST(req: NextRequest) {
 
 const verifyToken = (token: string) => {
   const jwtSecret = process.env.JWT_SECRET || 'defaultSecret';
-  return jwt.verify(token, jwtSecret);
+  return jwt.verify(token, jwtSecret); // Will throw error if expired or invalid
 };
 
 const timeDifference = (date: string) => {
@@ -85,7 +96,7 @@ const createToken = (id: string) => {
     userId: id,
   };
 
-  return jwt.sign(data, jwtSecret, { expiresIn: '30m' });
+  return jwt.sign(data, jwtSecret, { expiresIn: '30m' }); // Token expires in 30 minutes
 };
 
 const sendVerificationEmail = async (token: string, email: string) => {
@@ -121,8 +132,11 @@ const sendVerificationEmail = async (token: string, email: string) => {
 const htmlTemplate = (token: string) => {
   const host = process.env.APP_HOSTNAME;
   return `<!doctype html>
-    <!-- Your HTML content here -->
-    <a href="${host}/verify/email?token=${token}">Verify your Email</a>
-    <!-- Rest of your HTML content -->
+    <html>
+      <body>
+        <p>Please click the link below to verify your email:</p>
+        <a href="${host}/verify/email?token=${token}">Verify your Email</a>
+      </body>
+    </html>
   `;
 };
