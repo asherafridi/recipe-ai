@@ -74,7 +74,7 @@ export async function POST(req: NextRequest) {
 
 // Function to verify the JWT token
 const verifyToken = (token: any) => {
-    let jwtSecret = 'AlgoNlp';
+    let jwtSecret = process.env.JWT_SECRET || 'defaultSecret';;
     return jwt.verify(token, jwtSecret);
 };
 
