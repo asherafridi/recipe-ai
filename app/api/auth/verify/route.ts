@@ -71,6 +71,7 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ msg: 'Email Verified Successfully' }, { status: 200 });
 
     } catch (e) {
+        console.log(e);
         return NextResponse.json({ msg: 'Something Went Wrong!' }, { status: 500 });
     }
 }
