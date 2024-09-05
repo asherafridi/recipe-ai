@@ -41,7 +41,6 @@ export async function POST(req: NextRequest) {
         }
       }
       
-      return NextResponse.json({ msg: 'Verification email has been sent.' }, { status: 200 });
     }
 
     if (!user.verificationToken || tokenExpired) {
