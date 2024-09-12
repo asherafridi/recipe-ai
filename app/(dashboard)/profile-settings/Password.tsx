@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import axios from 'axios';
@@ -31,7 +32,7 @@ const Account = () => {
     };
 
     return (
-        <div className='bg-white rounded-md p-4'>
+        <Card className=' p-4'>
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(submit)} className="mt-4 flex w-full flex-wrap">
                     <FormField
@@ -87,7 +88,7 @@ const Account = () => {
                     </div>
                 </form>
             </Form>
-        </div>
+        </Card>
     );
 };
 

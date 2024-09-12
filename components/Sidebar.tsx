@@ -25,7 +25,7 @@ const Sidebar = ({ sidebar, setSidebar }: { sidebar: any, setSidebar: any }) => 
       {/* Sidebar */}
       <div className={`sidebar w-[300px] min-h-screen bg-background border-r border-gray-300 text-accent-foreground lg:fixed shadow-sm lg:block ${sidebar ? 'block' : 'hidden'}`}>
         <div className='hidden lg:block p-3'>
-          <h1 className='text-2xl font-semibold '>LexaTalk</h1>
+          <h1 className='text-2xl font-semibold '>VetaTalk</h1>
           <p>AI Calling Assistant</p>
         </div>
         <div className='mt-16'>

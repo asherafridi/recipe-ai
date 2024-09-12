@@ -28,6 +28,7 @@ interface ErrorType {
   email?: string,
   password?: string
 }
+import Banner from '@/public/background.jpg';
 
 const Page = () => {
   const { register, handleSubmit, setError, formState: { errors, isSubmitting } } = useForm<FormData>();
@@ -65,7 +66,14 @@ const Page = () => {
 
   return (
     <div className="flex">
-      <div className="w-3/5 hidden lg:flex justify-center items-center">
+      <div
+        className="w-3/5 hidden lg:flex justify-center items-center"
+        style={{
+          backgroundImage: `url(/background.jpg)`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }}
+      >
         <h1 className="text-5xl font-medium">Veta<span className="text-blue-800">Talk</span></h1>
       </div>
       <div className="w-full lg:w-2/5 min-h-[100vh] bg-white flex flex-col justify-center items-center">
@@ -90,8 +98,8 @@ const Page = () => {
             </div>
             <div className="h-1"></div>
             <div className="flex flex-col w-full space-y-1.5">
-              <Label htmlFor="password" className="flex justify-between"><span>Password</span> 
-              <Link href="/forgot-password" className="">Forgot Password?</Link></Label>
+              <Label htmlFor="password" className="flex justify-between"><span>Password</span>
+                <Link href="/forgot-password" className="">Forgot Password?</Link></Label>
               <Input
                 type="password"
                 id="password"
@@ -112,7 +120,7 @@ const Page = () => {
         </div>
 
         <div className="flex justify-center mt-12">
-          <span>Don't have an account? <Link href="/sign-up" className="underline">Sign Up</Link></span>
+          {/* <span>Don't have an account? <Link href="/sign-up" className="underline">Sign Up</Link></span> */}
         </div>
       </div>
 

@@ -8,16 +8,16 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import {  Lock, UserRound } from 'lucide-react';
 import Account from './Account';
 import Password from './Password';
+import { Card } from '@/components/ui/card';
 
 
 const Page = () => {
 
 
     return (
-        <div className='p-5 min-h-screen'>
-            <div className=" mt-4 rounded p-4 flex justify-center">
+            <Card className=" p-4 ">
                 <Tabs defaultValue="account" className="w-full">
-                    <TabsList className='flex justify-center gap-4 bg-white py-2'>
+                    <TabsList className='flex justify-center gap-4 bg-card border-gray-300 border py-2'>
                         <TabsTrigger value="account" className='flex gap-4 text-lg'><UserRound />Account</TabsTrigger>
                         <TabsTrigger value="password" className='flex gap-4 text-lg'><Lock />Password</TabsTrigger>
                     </TabsList>
@@ -25,8 +25,7 @@ const Page = () => {
                     <TabsContent value="password"><Password /></TabsContent>
                 </Tabs>
 
-            </div>
-        </div>
+            </Card>
     );
 };
 
