@@ -14,6 +14,8 @@ import { useFetchAgent, useFetchVoice } from '@/hooks/agentHook';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { useNumberFetch } from '@/hooks/numberHook';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useToolsFetch, useVectorFetch } from '@/hooks/vectorHook';
+import { Card } from '@/components/ui/card';
 
 
 
@@ -23,6 +25,9 @@ const Page = ({ params }: { params: { id: string } }) => {
     const { number, numberLoader } = useNumberFetch();
     const [loading, setLoading] = useState(false);
 
+    const { vector, vectorLoader } = useVectorFetch();
+    const { tools, toolsLoader } = useToolsFetch();
+    
     const router = useRouter();
     const form = useForm();
 
@@ -45,16 +50,14 @@ const Page = ({ params }: { params: { id: string } }) => {
         });
     }
 
-    if (loader && numberLoader && voiceLoader) {
-        return <Skeleton className='w-full h-[400px] rounded mt-4'/>;
+    if (loader && numberLoader && voiceLoader && vectorLoader && toolsLoader) {
+        return <Skeleton className='w-full h-[400px] rounded' />;
     }
 
 
     return (
 
-        <div className='p-5 min-h-screen'>
-            <Breadcrumb title="Edit Agent" />
-            <div className="bg-white mt-4 rounded p-4">
+            <Card className=" p-4">
 
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(submit)} className="flex w-full  flex-wrap">
@@ -177,12 +180,8 @@ const Page = ({ params }: { params: { id: string } }) => {
                                 </FormItem>
                             )}
                         />
-                        <Accordion type="single" collapsible className='w-full mb-3 border px-3'>
-                            <AccordionItem value="item-1" className='border-none'>
-                                <AccordionTrigger className='hover:no-underline'>More Details?</AccordionTrigger>
-                                <AccordionContent className='flex flex-wrap'>
-
-                                    <FormField
+                        
+                        <FormField
                                         control={form.control}
                                         name="max_duration"
                                         defaultValue={data?.maxDuration}
@@ -266,17 +265,58 @@ const Page = ({ params }: { params: { id: string } }) => {
                                             </FormItem>
                                         )}
                                     />
-                                    
 
-                                </AccordionContent>
-                            </AccordionItem>
-                        </Accordion>
+                                    <FormField
+                                        control={form.control}
+                                        name="information"
+                                        render={({ field }) => (
+                                            <FormItem className='w-full md:w-full lg:w-1/2 p-2'>
+                                                <FormLabel>Company Informations</FormLabel>
+                                                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                                    <FormControl>
+                                                        <SelectTrigger>
+                                                            <SelectValue placeholder="Information" />
+                                                        </SelectTrigger>
+                                                    </FormControl>
+                                                    <SelectContent>
+                                                        {vector.map((element, index) => (
+                                                            <SelectItem key={index} value={element?.vector_id}>{element?.name} - {element?.description}</SelectItem>
+                                                        ))}
+                                                    </SelectContent>
+                                                </Select>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
 
-                        <FormButton state={loading} />
+                                    <FormField
+                                        control={form.control}
+                                        name="tools"
+                                        render={({ field }) => (
+                                            <FormItem className='w-full md:w-full lg:w-1/2 p-2 pb-4'>
+                                                <FormLabel>Tools</FormLabel>
+                                                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                                    <FormControl>
+                                                        <SelectTrigger>
+                                                            <SelectValue placeholder="Tools" />
+                                                        </SelectTrigger>
+                                                    </FormControl>
+                                                    <SelectContent>
+                                                        {tools.map((element, index) => (
+                                                            <SelectItem key={index} value={element?.tool_id}>{element?.tool?.name}</SelectItem>
+                                                        ))}
+                                                    </SelectContent>
+                                                </Select>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+
+
+                        <FormButton state={loading} text='Update Agent' />
                     </form>
                 </Form>
-            </div>
-        </div>
+            </Card>
     )
 }
 

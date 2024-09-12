@@ -52,7 +52,7 @@ export function DataTable<TData extends RowData, TValue>({
     });
 
     return (
-        <div className="border p-2 rounded">
+        <div className="border p-2 rounded border-gray-300">
             <div className="flex items-center justify-between py-4">
                 <h1>Select Contacts</h1>
                 <div className="flex gap-4">

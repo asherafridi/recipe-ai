@@ -48,21 +48,21 @@ const VerifyPasswordForm = () => {
 
   return (
     <div className="flex min-h-screen items-center justify-center">
-      <Card className="w-[450px] bg-secondary">
+      <Card className="w-[450px] bg-transparent shadow-none">
         <CardHeader>
-          <CardTitle className="text-center">Create New Password</CardTitle>
-          <CardDescription className="text-center"></CardDescription>
+          <CardTitle className="">Set Your New Password</CardTitle>
+          <CardDescription className="">Create a new password to securely access your account.</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit(onSubmit)} method="POST">
-            <div className="flex flex-col w-full items-center gap-2">
+            <div className="flex flex-col w-full items-center gap-2 mt-8">
               <div className="flex flex-col w-full space-y-1.5">
                 <Label htmlFor="password">Password</Label>
                 <Input
                   type="password"
                   id="password"
                   placeholder="Password..."
-                  className="outline-none"
+                  className="outline-none border border-gray-400"
                   {...register("password", { required: "Password is required" })}
                 />
                 {/* {errors.password && <span className="text-destructive">{errors.password.message}</span>} */}
@@ -73,14 +73,14 @@ const VerifyPasswordForm = () => {
                   type="password"
                   id="confirm_password"
                   placeholder="Confirm Password..."
-                  className="outline-none"
+                  className="outline-none border border-gray-400"
                   {...register("confirm_password", { required: "Confirm Password is required" })}
                 />
                 {/* {errors.confirm_password && <span className="text-destructive">{errors.confirm_password.message}</span>} */}
               </div>
 
               <div className="h-1"></div>
-              <FormButton state={buttonLoading} />
+              <FormButton state={buttonLoading} text={'Create New Password'} />
             </div>
           </form>
         </CardContent>

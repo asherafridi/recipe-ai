@@ -27,6 +27,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { useFetchNumber, useFetchVoice } from '@/hooks/agentHook'
 import { Skeleton } from '@/components/ui/skeleton';
+import { Card } from '@/components/ui/card';
 
 const Page = () => {
 
@@ -54,39 +55,36 @@ const Page = () => {
 
 
     if (numberLoader || voiceLoader) {
-        return <Skeleton className='w-full h-[400px] rounded mt-4'/>;
+        return <Skeleton className='w-full h-[400px] rounded' />;
     }
 
     return (
-        <div className='p-5 min-h-screen'>
-            <Breadcrumb title="Purchase New Outbound Number" />
-            <div className="bg-white mt-4 rounded p-4">
-                <div className='flex justify-between items-center'>
-                    <h3>Purchase and configure a new outbound phone number. ($15/mo. subscription using your stored payment method).</h3>
-                </div>
-
-                <Form {...form}>
-                    <form onSubmit={form.handleSubmit(submit)} className="mt-4 flex w-full  flex-wrap ">
-                        <FormField
-                            control={form.control}
-                            name="area_code"
-                            render={({ field }) => (
-                                <FormItem className='w-full md:w-full lg:w-full p-2'>
-                                    <FormLabel>Area Code</FormLabel>
-                                    <FormControl>
-                                        <Input placeholder="Area Code" {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                                    <FormDescription>Choose a three-digit area code for your phone number. If set as a parameter, a number will only be purchased by exact match if available.</FormDescription>
-                                </FormItem>
-                            )}
-                        />
-
-                        <FormButton state={loading} />
-                    </form>
-                </Form>
+        <Card className=" rounded p-4">
+            <div className='flex justify-center items-center'>
+                <h3>Purchase and configure a new outbound phone number. ($15/mo. subscription using your stored payment method).</h3>
             </div>
-        </div>
+
+            <Form {...form}>
+                <form onSubmit={form.handleSubmit(submit)} className="mt-4 flex w-full  flex-wrap ">
+                    <FormField
+                        control={form.control}
+                        name="area_code"
+                        render={({ field }) => (
+                            <FormItem className='w-full md:w-full lg:w-full p-2'>
+                                <FormLabel>Area Code</FormLabel>
+                                <FormControl>
+                                    <Input placeholder="Area Code" {...field} />
+                                </FormControl>
+                                <FormMessage />
+                                <FormDescription>Choose a three-digit area code for your phone number. If set as a parameter, a number will only be purchased by exact match if available.</FormDescription>
+                            </FormItem>
+                        )}
+                    />
+
+                    <FormButton state={loading} text='Purchase New Number' />
+                </form>
+            </Form>
+        </Card>
     )
 }
 

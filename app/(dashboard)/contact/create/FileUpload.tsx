@@ -63,7 +63,7 @@ export default function FileUpload() {
 
     return (
         <div>
-            <div className='border m-3 p-4'>
+            <div className='border mt-4'>
                 <h2>Upload CSV File. Download <Link href="" className='text-primary'>sample file</Link> for input download.</h2>
                 <Input type="file" accept=".csv" onChange={handleFileUpload} />
             </div>
@@ -71,7 +71,7 @@ export default function FileUpload() {
             {loading && <p>Loading...</p>}
             {error && <p>Error: {error}</p>}
             
-            <div className='border m-3 p-4'>
+            <div className='border mt-2 p-4'>
                 <ul>
                     {contacts.map((contact) => (
                         <li key={contact?.id} className={contact?.status == 'Contact Added Successfully' ? 'text-primary' : 'text-red-500'}>

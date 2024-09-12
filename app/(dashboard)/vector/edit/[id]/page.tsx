@@ -13,6 +13,7 @@ import pdfToText from 'react-pdftotext';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Textarea } from '@/components/ui/textarea';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Card } from '@/components/ui/card';
 
 
 
@@ -66,9 +67,7 @@ const Page = async ({params} : {params:{id:string}}) => {
     }
     return (
 
-        <div className='p-5 min-h-screen'>
-            <Breadcrumb title="Edit Company Information" />
-            <div className="bg-white mt-4 rounded p-4">
+            <Card className=" p-4">
                 <div className='flex justify-between items-center'>
                     <h3>Vector Store</h3>
                 </div>
@@ -132,8 +131,7 @@ const Page = async ({params} : {params:{id:string}}) => {
                         <FormButton state={loading} />
                     </form>
                 </Form>
-            </div>
-        </div>
+            </Card>
     )
 }
 

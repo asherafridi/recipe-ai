@@ -30,10 +30,10 @@ const UserAccountMenu = () => {
 
     return (
         <div className='flex items-center gap-5'>
-            <h3 className='font-medium border p-2 px-4 rounded-lg text-sm md:text-xl'>$ {balance}</h3>
+            <h3 className='font-medium border border-gray-300 p-2 px-4 rounded-lg text-sm md:text-xl'>$ {balance}</h3>
             <DropdownMenu>
                 <DropdownMenuTrigger>
-                    <Avatar>
+                    <Avatar className='border border-gray-500'>
                         <AvatarImage src={session?.data?.user?.image ? session?.data?.user?.image : undefined} />
                         <AvatarFallback>{session?.data?.user?.name?.slice(0,2).toUpperCase()}</AvatarFallback>
                     </Avatar>

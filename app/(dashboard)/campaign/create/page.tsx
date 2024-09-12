@@ -23,6 +23,7 @@ import { DataTable } from './data-table';
 import { columns } from './columns';
 import { useAllContactFetch } from '@/hooks/contactHook';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Card } from '@/components/ui/card';
 
 
 const Page = () => {
@@ -63,14 +64,12 @@ const Page = () => {
 
 
     if (loading && contactLoader) {
-        return <Skeleton className='w-full h-[400px] rounded mt-4'/>;
+        return <Skeleton className='w-full h-[400px] rounded'/>;
     }
 
 
     return (
-        <div className='p-5 min-h-screen'>
-            <Breadcrumb title="Launch Campaign" />
-            <div className="bg-white mt-4 rounded p-4 w-100">
+            <Card className=" p-4 w-100">
                 <div className='flex justify-between items-center'>
                     <h3>Launch your AI Call Campaign in 29 Seconds.</h3>
                 </div>
@@ -122,8 +121,7 @@ const Page = () => {
                         <FormButton state={buttonLoading} />
                     </form>
                 </Form>
-            </div>
-        </div>
+            </Card>
     )
 }
 

@@ -13,6 +13,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { useAllAgentFetch } from '@/hooks/agentHook';
 import { useAllContactFetch } from '@/hooks/contactHook';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Card } from '@/components/ui/card';
 
 const Page = () => {
     const { data: agents, loading: agentsLoading } = useAllAgentFetch();
@@ -33,19 +34,18 @@ const Page = () => {
         }
     };
 
+    if(agentsLoading && contactLoader){
+        return <Skeleton className='w-full h-[400px] rounded' />;
+    }
+
     return (
-        <div className='p-5 min-h-screen'>
-            <Breadcrumb title="Make Call" />
-            <div className="bg-white mt-4 rounded p-4">
+            <Card className=" p-4">
                 <div className='flex justify-between items-center'>
-                    <h3>Make a Call</h3>
+                    <h3>Send Call</h3>
                 </div>
 
-                {agentsLoading && contactLoader ? (
-                    <Skeleton className='w-full h-[400px] rounded mt-4' />
-                ) : (
                     <Form {...form}>
-                        <form onSubmit={form.handleSubmit(submit)} className="space-y-4 w-1/3 mt-4">
+                        <form onSubmit={form.handleSubmit(submit)} className="space-y-4 w-full lg:w-full mt-4">
                             <FormField
                                 control={form.control}
                                 name="agentId"
@@ -101,18 +101,16 @@ const Page = () => {
                                     <FormItem>
                                         <FormLabel>Max Duration</FormLabel>
                                         <FormControl>
-                                            <Input type='number' {...field} />
+                                            <Input type='number' {...field} min={1} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
                                 )}
                             />
-                            <FormButton state={buttonLoading} />
+                            <FormButton state={buttonLoading} text={'Send Call'} />
                         </form>
                     </Form>
-                )}
-            </div>
-        </div>
+            </Card>
     )
 };
 

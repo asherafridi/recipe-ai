@@ -18,12 +18,9 @@ const Page = ({ params }: { params: { id: string } }) => {
 
 
     return (
+        <>
 
-
-        <div className='p-5 min-h-screen'>
-            <Breadcrumb title="Call Detail" />
-
-            <div className="grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-4 mt-4">
+            <div className="grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-4">
                 <Card x-chunk="dashboard-01-chunk-0">
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                         <CardTitle className="text-sm font-medium">
@@ -116,10 +113,10 @@ const Page = ({ params }: { params: { id: string } }) => {
                     </CardTitle>
                 </CardHeader>
                 <CardContent>
-                    <ul className='p-4 bg-gray-100 rounded-lg max-h-[600px] overflow-auto'>
+                    <ul className='p-4 bg-background border border-gray-300 rounded-lg max-h-[600px] overflow-auto'>
                         {call?.transcripts.map(transcript => (
                             <li key={transcript.id} className={`mb-4 flex ${transcript.user == 'assistant' ? 'justify-end' : 'justify-start'}`}>
-                                <div className={`max-w-lg p-3 rounded-lg ${transcript.user == 'assistant' ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-900'}`}>
+                                <div className={`max-w-lg p-3 rounded-lg ${transcript.user == 'assistant' ? 'bg-green-600 text-white' : 'bg-green-900 text-white'}`}>
                                     <strong className='capitalize'>{transcript.user}:</strong> {transcript.text}
                                 </div>
                             </li>
@@ -128,7 +125,7 @@ const Page = ({ params }: { params: { id: string } }) => {
                 </CardContent>
             </Card>
 
-        </div>
+        </>
     )
 }
 

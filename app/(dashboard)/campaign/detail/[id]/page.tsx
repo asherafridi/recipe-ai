@@ -16,16 +16,14 @@ const Page = ({ params }: { params: { id: string } }) => {
 
 
     if (batchLoader) {
-        return <Skeleton className='w-full h-[400px] rounded mt-4'/>;
+        return <Skeleton className='w-full h-[400px] rounded mt-4' />;
     }
 
     console.log(batches);
 
 
     return (
-        <div className='p-5 min-h-screen'>
-            <Breadcrumb title={`${batches?.batch_params.label} - Campaign Detail`} />
-
+        <>
             <div className="grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-4 mt-4">
                 <Card x-chunk="dashboard-01-chunk-0">
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -81,25 +79,25 @@ const Page = ({ params }: { params: { id: string } }) => {
                 </Card>
             </div>
 
-            
+
             <Card className='mt-4'>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium">
-                            Base Prompt
-                        </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <p className="text-xs text-muted-foreground">
+                    <CardTitle className="text-sm font-medium">
+                        Base Prompt
+                    </CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <p className="text-xs text-muted-foreground">
                         {batches?.batch_params?.base_prompt}
-                        </p>
-                    </CardContent>
+                    </p>
+                </CardContent>
             </Card>
 
-            <div className="bg-white mt-4 rounded p-4">
+            <Card className=" mt-4 p-4">
+                <DataTable columns={columns} data={batches?.call_data} />
+            </Card>
 
-            <DataTable columns={columns} data={batches?.call_data} />
-            </div>
-        </div>
+        </>
     )
 }
 

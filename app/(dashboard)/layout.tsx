@@ -1,5 +1,5 @@
 "use client"
-import { Montserrat } from "next/font/google";
+import { Poppins as FontSans } from "next/font/google";
 import { Suspense, useEffect, useState } from "react";
 import Sidebar from "@/components/Sidebar";
 import Navbar from "@/components/Navbar";
@@ -12,7 +12,11 @@ import { setEngine } from "crypto";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 
-const fontSans = Montserrat({ subsets: ["latin"] });
+const fontSans = FontSans({
+    weight:['200','400','500'],
+    subsets: ["latin"],
+    variable: "--font-sans",
+  });
 
 export default function RootLayout({
     children,
@@ -36,9 +40,9 @@ export default function RootLayout({
         <div className={fontSans.className}>
             <div className="main flex">
                 <Sidebar sidebar={sidebar} setSidebar={setSidebar} />
-                <div className="wrapper w-full pl-0 lg:pl-[300px]">
+                <div className="wrapper w-full pl-0 lg:pl-[300px] min-h-[100vh]">
                     <Navbar  sidebar={sidebar} setSidebar={setSidebar} />
-                    <div className="p-5">
+                    <div className="min-h-[100vh] p-4">
                         {children}
                     </div>
                     <Footer />

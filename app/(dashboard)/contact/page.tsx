@@ -8,21 +8,20 @@ import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
 import { useAllContactFetch } from '@/hooks/contactHook';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Card } from '@/components/ui/card';
 
 
 
 const Page = () => {
   const {contact, contactLoader} = useAllContactFetch();
 
-  
+  if(contactLoader){
+    return <Skeleton className='w-full h-[400px] rounded mt-4'/>;
+  }
   return (
-    <div className='p-5 min-h-screen'>
-        <Breadcrumb title="Contacts" />
-        <div className="bg-white mt-4 rounded p-4">
-          {contactLoader ?  <Skeleton className='w-full h-[400px] rounded mt-4'/> : <DataTable columns={columns} data={contact}  />}
-        
-        </div>
-    </div>
+        <Card className=" rounded p-4">
+           <DataTable columns={columns} data={contact}  />
+        </Card>
   )
 }
 

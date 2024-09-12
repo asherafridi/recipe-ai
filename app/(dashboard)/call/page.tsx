@@ -7,6 +7,7 @@ import { DataTable } from './data-table';
 import { columns } from './columns';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useAllCallFetch } from '@/hooks/singleCallHook';
+import { Card } from '@/components/ui/card';
 
 const Page = () => {
   const params = useSearchParams();
@@ -26,17 +27,16 @@ const Page = () => {
   const { call, callLoader } = useAllCallFetch(queryParams);
 
   return (
-    <div className='p-5 min-h-screen'>
-      <Breadcrumb title="Calls" />
+    <>
       <Filter />
         {callLoader ? (
           <Skeleton className='w-full h-[400px] rounded mt-4'/>
         ) : (
-          <div className="bg-white mt-4 rounded p-4">
+          <Card className=" mt-4 p-4">
           <DataTable columns={columns} data={call} />
-          </div>
+          </Card>
         )}
-    </div>
+    </>
   );
 };
 

@@ -12,16 +12,17 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import FormButton from '@/components/FormButton';
 import axios from 'axios';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Card } from '@/components/ui/card';
 
-interface Result{
-    questions : any[]
-    answers : any[]
+interface Result {
+    questions: any[]
+    answers: any[]
 }
 interface FormValues {
     fields: { user: string; text: string }[];
     goal: string;
-  }
-  
+}
+
 
 const Page = ({ params }: { params: { id: string } }) => {
     const { call, callLoader } = useFetchCall(params.id);
@@ -60,13 +61,12 @@ const Page = ({ params }: { params: { id: string } }) => {
     };
 
     if (callLoader) {
-        return <Skeleton className='w-full h-[400px] rounded mt-4'/>;
+        return <Skeleton className='w-full h-[400px] rounded' />;
     }
 
     return (
-        <div className='p-5 min-h-screen'>
-            <Breadcrumb title="Analyze Call" />
-            <div className="bg-white mt-4 rounded p-4">
+        <>
+            <Card className=" p-4">
                 <p><strong>Call ID:</strong> {call?.call_id}</p>
                 <p><strong>From:</strong> {call?.from}</p>
                 <p><strong>To:</strong> {call?.to}</p>
@@ -135,17 +135,19 @@ const Page = ({ params }: { params: { id: string } }) => {
                         </div>
                     </form>
                 </Form>
-            </div>
+            </Card>
 
-            {result == null ? '' : <div className='bg-white mt-4 rounded p-4'>
-                {result?.questions.map((element, index) => (
-                    <div key={index}>
-                        <b>Question No.{index+1} : </b>{element[0]}<br />
-                        <b>Answer :</b> {result?.answers[index]}
-                    </div>
-                ))}
-            </div>}
-        </div>
+            {
+                result == null ? '' : <div className='bg-white mt-4 rounded p-4'>
+                    {result?.questions.map((element, index) => (
+                        <div key={index}>
+                            <b>Question No.{index + 1} : </b>{element[0]}<br />
+                            <b>Answer :</b> {result?.answers[index]}
+                        </div>
+                    ))}
+                </div>
+            }
+        </>
     )
 }
 

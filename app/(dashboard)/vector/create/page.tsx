@@ -9,6 +9,7 @@ import FormButton from '@/components/FormButton';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import pdfToText from 'react-pdftotext'
 import { Textarea } from '@/components/ui/textarea';
+import { Card } from '@/components/ui/card';
 
 const Page = () => {
     const form = useForm();
@@ -59,9 +60,7 @@ const Page = () => {
 
 
     return (
-        <div className='p-5 min-h-screen'>
-            <Breadcrumb title="Add Company Information" />
-            <div className="bg-white mt-4 rounded p-4">
+            <Card className=" p-4">
                 <div className='flex justify-between items-center'>
                     <h3>Vector Store</h3>
                 </div>
@@ -125,8 +124,7 @@ const Page = () => {
                         <FormButton state={loading} />
                     </form>
                 </Form>
-            </div>
-        </div>
+            </Card>
     )
 }
 

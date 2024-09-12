@@ -57,15 +57,18 @@ const Page = () => {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center">
-      <Card className="w-[450px] bg-secondary">
-        <CardHeader className="">
-          <CardTitle className="text-center">Sign Up</CardTitle>
-          <h3></h3>
-          <CardDescription className="text-center">Create AI calls campaigns under 1 minute.</CardDescription>
-        </CardHeader>
-        <CardContent className="">
-          <form onSubmit={handleSubmit(submitForm)} className="flex flex-col w-full items-center gap-2">
+    <div className="flex">
+      <div className="w-3/5 hidden lg:flex justify-center items-center">
+        <h1 className="text-5xl font-medium">Veta<span className="text-blue-800">Talk</span></h1>
+      </div>
+      <div className="w-full lg:w-2/5 min-h-[100vh] bg-white flex flex-col justify-center items-center">
+        <div className="header w-full px-12">
+          <h1 className="text-3xl font-semibold">Get started</h1>
+          <p>Create a new account</p>
+        </div>
+
+        <div className="form w-full  px-12 mt-12">
+        <form onSubmit={handleSubmit(submitForm)} className="flex flex-col w-full items-center gap-2">
             <div className="flex flex-col w-full space-y-1.5">
               <Label htmlFor="name">Full Name</Label>
               <Input type="text" id="name" placeholder="Full Name" className="outline-none" {...register("name", { required: "Full Name is required" })} />
@@ -86,11 +89,13 @@ const Page = () => {
             <div className="h-1"></div>
             <Button className="w-full gap-2 cursor-pointer" type="submit" disabled={submit}>{submit ? <CircleDashed className="w-[20px] animate-spin" /> : ''} Submit</Button>
           </form>
-        </CardContent>
-        <CardFooter className="flex justify-center">
-          <span>Already have an account? <Link href="/sign-in" className="text-primary">Login</Link></span>
-        </CardFooter>
-      </Card>
+        </div>
+
+        <div className="flex justify-center mt-12">
+          <span>Have an account? <Link href="/sign-in" className="underline">Sign In</Link></span>
+        </div>
+      </div>
+
     </div>
   )
 }

@@ -26,11 +26,12 @@ const config = {
         background: "#E8ECF8",
         foreground: "#333333",
         primary: {
-          DEFAULT: "#007bff",
+          DEFAULT: "#1e1e2c",
           foreground: "#fff",
+          hover : "#2e2e3c"
         },
         secondary: {
-          DEFAULT: "#ffffff",
+          DEFAULT: "#3b8ff3",
           foreground: "#333333",
           hover :"#E4E9F4"
         },
@@ -51,7 +52,7 @@ const config = {
           foreground: "hsl(var(--popover-foreground))",
         },
         card: {
-          DEFAULT: "hsl(var(--card))",
+          DEFAULT: "#E0E5F5",
           foreground: "hsl(var(--card-foreground))",
         },
       },
