@@ -16,7 +16,7 @@ export async function POST(req: NextRequest) {
 
         const contact = await prisma.contact.delete({
             where:{
-                id:id
+                id:+id
             }
         });
 
