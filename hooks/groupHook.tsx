@@ -3,21 +3,19 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
 
-interface Contact {
+interface Group {
     id:string;
     name:string;
-    number:string;
-    contactGroup:any;
 }
-const useAllContactFetch = () => {
-  const [contact, setContact] = useState<Contact[]>([]);
-  const [contactLoader, setContactLoader] = useState(true);
+const useAllGroupFetch = () => {
+  const [group, setContact] = useState<Group[]>([]);
+  const [groupLoader, setContactLoader] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('/api/contacts');
-        setContact(response.data.contacts);
+        const response = await axios.get('/api/contacts/groups');
+        setContact(response.data.groups);
         setContactLoader(false);
         
       } catch (error) {
@@ -29,18 +27,18 @@ const useAllContactFetch = () => {
     fetchData();
   }, ['']);
 
-  return { contact, contactLoader };
+  return { group, groupLoader };
 };
 
 
   
-const useContactDelete = async (id: string): Promise<void> => {
+const useGroupDelete = async (id: string): Promise<void> => {
     try {
-      const response = await axios.post(`/api/contacts/remove`, { id });
+      const response = await axios.post(`/api/contacts/groups/remove`, { id });
       toast.success(response?.data?.msg);
     } catch (error:any) {
       toast.error(error?.data?.error || 'An error occurred while deleting the contact.');
     }
   };
 
-  export { useContactDelete, useAllContactFetch};
+  export { useGroupDelete, useAllGroupFetch};

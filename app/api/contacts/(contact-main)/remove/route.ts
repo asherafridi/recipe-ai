@@ -20,7 +20,7 @@ export async function POST(req: NextRequest) {
             }
         });
 
-        return NextResponse.json({ msg: 'User Removed Successfully' }, { status: 200 });
+        return NextResponse.json({ msg: 'Contact Removed Successfully' }, { status: 200 });
 
     } catch (e) {
         return NextResponse.json({ error: 'Something Went Wrong' }, { status: 500 });

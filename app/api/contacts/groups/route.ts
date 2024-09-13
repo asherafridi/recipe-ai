@@ -1,5 +1,6 @@
 import { authOption } from "@/lib/auth";
 import prisma from "@/lib/db";
+import { group } from "console";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -10,11 +11,11 @@ export async function GET(req : NextRequest,res : NextResponse) {
     if(!session?.user){
         return NextResponse.json({msg:'Authentication Error'},{status:500});
     }
-    const contact = await prisma.contact.findMany({
+    const group = await prisma.contactGroup.findMany({
         where:{
             userId : +session?.user?.id
         }
     });
-    return NextResponse.json({contacts:contact},{status:200});
+    return NextResponse.json({groups:group},{status:200});
 
 }

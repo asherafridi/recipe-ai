@@ -15,6 +15,7 @@ export type Contact = {
     id: string
     name: string
     number: string
+    contactGroup : any
 }
 
 
@@ -48,6 +49,12 @@ export const columns: ColumnDef<Contact>[] = [
     {
         accessorKey: "number",
         header: "Number",
+    },
+    {
+        header: "Group",
+        cell: ({ row }) => (
+          <span>{row.original.contactGroup?.name || "No Group"}</span>
+      ),
     },
     {
       id: "actions",

@@ -26,6 +26,17 @@ model User {
   status             Boolean   @default(false)
   contacts           Contact[] // Define one-to-many relationship
   agents             Agent[]   // Define one-to-many relationship
+  groups             ContactGroup[]   // Define one-to-many relationship
+  ghlToken           String?
+  ghlCalenderId      String?
+}
+
+model ContactGroup {
+  id     Int     @id @default(autoincrement())
+  name   String
+  user   User    @relation(fields: [userId], references: [id]) // Establish relation
+  userId Int
+  contacts Contact[]
 }
 
 model Contact {
@@ -34,6 +45,8 @@ model Contact {
   number String
   user   User    @relation(fields: [userId], references: [id]) // Establish relation
   userId Int
+  contactGroup   ContactGroup    @relation(fields: [groupId], references: [id]) // Establish relation
+  groupId Int 
 }
 
 model Agent {

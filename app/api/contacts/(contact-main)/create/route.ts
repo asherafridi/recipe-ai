@@ -4,7 +4,7 @@ import { getServerSession } from 'next-auth';
 import { authOption } from '@/lib/auth';
 
 export async function POST(req: NextRequest) {
-    const { name, number } = await req.json(); // Parse the JSON string back into an object
+    const { name, number,groupId } = await req.json(); // Parse the JSON string back into an object
     const session = await getServerSession(authOption);
 
 
@@ -17,7 +17,8 @@ export async function POST(req: NextRequest) {
         const user = await prisma.contact.findFirst({
             where: {
                 number: number,
-                userId: +session?.user?.id
+                userId: +session?.user?.id,
+                groupId: +groupId
             }
         });
 
@@ -29,11 +30,12 @@ export async function POST(req: NextRequest) {
                 data: {
                     name: name,
                     number: number,
-                    userId: +session?.user?.id
+                    userId: +session?.user?.id,
+                    groupId:+groupId
                 }
             });
 
-            return NextResponse.json({ msg: 'User Created Successfully' }, { status: 200 });
+            return NextResponse.json({ msg: 'Contact Created Successfully' }, { status: 200 });
         }
     } catch (e) {
         return NextResponse.json({ error: 'Something went wrong!' }, { status: 500 });

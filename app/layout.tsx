@@ -28,7 +28,34 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Toaster position="top-right" />
+        <Toaster position="bottom-right" toastOptions={{
+          success:{
+            style:{
+              backgroundColor:'#E0E5F5',
+              border:'1px solid gray',
+              borderRadius:'2px'
+            },
+            icon: undefined,
+            iconTheme:{
+              primary:'#444',
+              secondary:'#fff'
+            }
+          },
+          error:{
+            style:{
+              backgroundColor:'#E0E5F5',
+              border:'1px solid gray',
+              borderRadius:'2px',
+              height:'40px',
+              fontSize:'12px'
+            },
+            icon: undefined,
+            iconTheme:{
+              primary:'#444',
+              secondary:'#fff'
+            }
+          }
+        }} />
         <Provider>{children}</Provider>
       </body>
     </html>

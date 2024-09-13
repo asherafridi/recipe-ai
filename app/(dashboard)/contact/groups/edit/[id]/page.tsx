@@ -14,7 +14,7 @@ import { Card } from '@/components/ui/card';
 
 const useFetchContact = (id: string, setValue: any, setPhoneNumber: any) => {
     useEffect(() => {
-        axios.post(`/api/contacts/read`, {
+        axios.post(`/api/contacts/groups/read`, {
             id: id
         })
             .then(response => {
@@ -39,27 +39,25 @@ const Page = ({ params }: { params: { id: string } }) => {
         setLoading(true);
 
         
-        const formattedPhoneNumber = phoneNumber.startsWith('+') ? phoneNumber.slice(1) : phoneNumber;
 
-        axios.post(`/api/contacts/update`, {
+        axios.post(`/api/contacts/groups/update`, {
             name: data.name,
-            number: '+'+formattedPhoneNumber, // include the phone number with the '+' symbol
             id: params.id
         }).then(response => {
             toast.success(response.data?.msg);
             setTimeout(() => {
                 setLoading(false);
-                router.push('/contact');
+                router.push('/contact/groups');
             });
         }).catch(e => {
-            toast.error(e.data?.error);
+            toast.error(e.response.data?.error);
             setLoading(false);
             console.log(e);
         });
     };
 
     return (
-            <Card className=" mt-4  p-4">
+            <Card className=" p-4">
                 <form className='w-full gap-4' onSubmit={handleSubmit(submit)}>
                     <div className='w-full3'>
                         <Label htmlFor='name'>Name</Label>
@@ -72,21 +70,7 @@ const Page = ({ params }: { params: { id: string } }) => {
                         {errors.name && <span className="text-red-500">This field is required</span>}
                     </div>
                     <div className='w-full mt-4'>
-                        <Label htmlFor='number'>Phone Number</Label>
-                        <PhoneInput
-                            country={'us'} // default country code
-                            value={phoneNumber}
-                            inputStyle={{
-                                width : '100%'
-                            }}
-                            onChange={(phone) => setPhoneNumber(phone)}
-                            inputClass="w-full mt-2" // apply custom class to match styling
-                            placeholder='+1 (555) 555-5555' // keep the '+'
-                        />
-                        {errors.number && <span className="text-red-500">This field is required</span>}
-                    </div>
-                    <div className='w-full mt-4'>
-                        <FormButton state={loading} text="Update this Contact" />
+                        <FormButton state={loading} text="Update this Group" />
                     </div>
                 </form>
             </Card>
