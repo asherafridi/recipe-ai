@@ -13,14 +13,14 @@ import { Card } from '@/components/ui/card';
 
 
 const Page = () => {
-  const {contact, contactLoader} = useAllContactFetch();
+  const {contact, contactLoader,setContact} = useAllContactFetch();
 
   if(contactLoader){
-    return <Skeleton className='w-full h-[400px] rounded mt-4'/>;
+    return <Skeleton className='w-full h-[400px] rounded'/>;
   }
   return (
         <Card className=" rounded p-4">
-           <DataTable columns={columns} data={contact}  />
+           <DataTable columns={columns(setContact,contact)} data={contact}  />
         </Card>
   )
 }

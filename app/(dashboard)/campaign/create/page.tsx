@@ -24,6 +24,7 @@ import { columns } from './columns';
 import { useAllContactFetch } from '@/hooks/contactHook';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Card } from '@/components/ui/card';
+import { useAllGroupFetch } from '@/hooks/groupHook';
 
 
 const Page = () => {
@@ -31,27 +32,21 @@ const Page = () => {
     const { contact, contactLoader } = useAllContactFetch();
     const form = useForm();
     const [buttonLoading, setButtonLoading] = useState(false);
-  const [rowSelection, setRowSelection] = React.useState({});
-    const [rowArray,setRowArray] = useState<string[]>();
-    
-    useEffect(()=>{
-        setRowArray(Object.keys(rowSelection));
-    },[rowSelection]);
+    const [rowSelection, setRowSelection] = React.useState({});
+    const [rowArray, setRowArray] = useState<string[]>();
 
-    
-  
+    const {group, groupLoader} = useAllGroupFetch();
+
+
 
     const submit = async (values: any) => {
         setButtonLoading(true);
-        const data = {
-            ...values,
-            a:rowArray
-        }
+        
         console.log(data);
-        const response = await axios.post('/api/campaign/create',data);
+        const response = await axios.post('/api/campaign/create', values);
         if (response.data) {
             console.log(response.data.msg);
-            toast.success('Data is Coming'); // Display success message
+            toast.success('Campaign Launched'); // Display success message
             setButtonLoading(false); // Reset button loading state
             form.reset(); // Reset the form
         } else {
@@ -64,64 +59,85 @@ const Page = () => {
 
 
     if (loading && contactLoader) {
-        return <Skeleton className='w-full h-[400px] rounded'/>;
+        return <Skeleton className='w-full h-[400px] rounded' />;
     }
 
 
     return (
-            <Card className=" p-4 w-100">
-                <div className='flex justify-between items-center'>
-                    <h3>Launch your AI Call Campaign in 29 Seconds.</h3>
-                </div>
+        <Card className=" p-4 w-100">
+            <div className='flex justify-between items-center'>
+                <h3>Launch your AI Call Campaign in 29 Seconds.</h3>
+            </div>
 
-                <Form {...form}>
-                    <form onSubmit={form.handleSubmit(submit)} className="space-y-4 w-full mt-4">
+            <Form {...form}>
+                <form onSubmit={form.handleSubmit(submit)} className="space-y-4 w-full mt-4">
 
-                        <FormField
-                            control={form.control}
-                            name="name"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Name</FormLabel>
+                    <FormField
+                        control={form.control}
+                        name="name"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Name</FormLabel>
+                                <FormControl>
+                                    <Input type='name' placeholder='Campaign Name' {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+
+                    <FormField
+                        control={form.control}
+                        name="agentId"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Agent</FormLabel>
+                                <Select onValueChange={field.onChange} defaultValue={field.value}>
                                     <FormControl>
-                                        <Input type='name' placeholder='Campaign Name' {...field} />
+                                        <SelectTrigger>
+                                            <SelectValue placeholder="Select Agent" />
+                                        </SelectTrigger>
                                     </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
+                                    <SelectContent>
+                                        {data.map((element, index) => (
+                                            <SelectItem key={index} value={`${element?.id}`}>{element?.name}</SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
 
-                        <FormField
-                            control={form.control}
-                            name="agentId"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Agent</FormLabel>
-                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                        <FormControl>
-                                            <SelectTrigger>
-                                                <SelectValue placeholder="Agent" />
-                                            </SelectTrigger>
-                                        </FormControl>
-                                        <SelectContent>
-                                            {data.map((element, index) => (
-                                                <SelectItem key={index} value={`${element?.id}`}>{element?.name}</SelectItem>
-                                            ))}
-                                        </SelectContent>
-                                    </Select>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
+                    <FormField
+                        control={form.control}
+                        name="groupId"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Group</FormLabel>
+                                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                    <FormControl>
+                                        <SelectTrigger>
+                                            <SelectValue placeholder="Select Group" />
+                                        </SelectTrigger>
+                                    </FormControl>
+                                    <SelectContent>
+                                        {group.map((element, index) => (
+                                            <SelectItem key={index} value={`${element?.id}`}>{element?.name}</SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
 
-                        <DataTable columns={columns} data={contact} rowSelection={rowSelection} setRowSelection={setRowSelection}  />
 
-                            
 
-                        <FormButton state={buttonLoading} />
-                    </form>
-                </Form>
-            </Card>
+                    <FormButton state={buttonLoading} />
+                </form>
+            </Form>
+        </Card>
     )
 }
 

@@ -25,7 +25,7 @@ const Page = () => {
         {/* New card with same structure as agent box */}
         <Link
           href="/agent/create"
-          className="bg-primary rounded w-full md:w-1/2 lg:w-1/4 p-3 flex items-center justify-center text-center hover:bg-primary-hover transition-colors"
+          className="bg-primary rounded w-full md:w-1/2 lg:w-1/4 py-10 p-3 flex items-center justify-center text-center hover:bg-primary-hover transition-colors"
         >
           <div className="flex flex-col items-center gap-2">
             <Plus className="w-6 h-6 text-white" />  {/* Lucide Plus icon */}

@@ -29,17 +29,19 @@ const useAllContactFetch = () => {
     fetchData();
   }, ['']);
 
-  return { contact, contactLoader };
+  return { contact, contactLoader,setContact };
 };
 
 
   
 const useContactDelete = async (id: string): Promise<void> => {
+
     try {
       const response = await axios.post(`/api/contacts/remove`, { id });
       toast.success(response?.data?.msg);
     } catch (error:any) {
-      toast.error(error?.data?.error || 'An error occurred while deleting the contact.');
+      console.log(error);
+      toast.error(error?.response?.data?.error || 'An error occurred while deleting the contact.');
     }
   };
 

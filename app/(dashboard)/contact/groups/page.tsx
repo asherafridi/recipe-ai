@@ -10,18 +10,19 @@ import { useAllContactFetch } from '@/hooks/contactHook';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Card } from '@/components/ui/card';
 import { useAllGroupFetch } from '@/hooks/groupHook';
+import { setgroups } from 'process';
 
 
 
 const Page = () => {
-  const {group, groupLoader} = useAllGroupFetch();
+  const {group, groupLoader,setGroup} = useAllGroupFetch();
 
   if(groupLoader){
     return <Skeleton className='w-full h-[400px] rounded mt-4'/>;
   }
   return (
         <Card className=" rounded p-4">
-           <DataTable columns={columns} data={group}  />
+           <DataTable columns={columns(setGroup,group)} data={group}  />
         </Card>
   )
 }

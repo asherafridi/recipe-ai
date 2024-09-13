@@ -8,14 +8,14 @@ interface Group {
     name:string;
 }
 const useAllGroupFetch = () => {
-  const [group, setContact] = useState<Group[]>([]);
+  const [group, setGroup] = useState<Group[]>([]);
   const [groupLoader, setContactLoader] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get('/api/contacts/groups');
-        setContact(response.data.groups);
+        setGroup(response.data.groups);
         setContactLoader(false);
         
       } catch (error) {
@@ -27,7 +27,7 @@ const useAllGroupFetch = () => {
     fetchData();
   }, ['']);
 
-  return { group, groupLoader };
+  return { group, groupLoader,setGroup };
 };
 
 

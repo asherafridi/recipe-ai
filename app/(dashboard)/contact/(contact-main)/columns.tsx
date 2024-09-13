@@ -4,22 +4,20 @@ import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { ColumnDef } from "@tanstack/react-table"
-import { BarChart, EllipsisVertical, MoreHorizontal } from "lucide-react"
+import { MoreHorizontal } from "lucide-react"
 import Link from "next/link"
 import { useContactDelete } from "@/hooks/contactHook"
 import { useRouter } from "next/navigation"
 
 // This type is used to define the shape of our data.
-// You can use a Zod schema here if you want.
 export type Contact = {
     id: string
     name: string
     number: string
-    contactGroup : any
+    contactGroup: any
 }
 
-
-export const columns: ColumnDef<Contact>[] = [
+export const columns = (setContacts: (contacts: Contact[]) => void, contacts: Contact[]): ColumnDef<Contact>[] => [
     {
         id: "select",
         header: ({ table }) => (
@@ -58,11 +56,11 @@ export const columns: ColumnDef<Contact>[] = [
     },
     {
       id: "actions",
-      header:"Actions",
+      header: "Actions",
       enableHiding: false,
       cell: ({ row }) => {
-        const payment = row.original
-   
+        const contact = row.original;
+
         return (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -74,17 +72,27 @@ export const columns: ColumnDef<Contact>[] = [
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem><Link href={`/contact/edit/${payment.id}`}>Edit Contact</Link></DropdownMenuItem>
-              <DropdownMenuItem onClick={()=>{
-                if(confirm('Are you sure?')){
-                    useContactDelete(payment.id);
-                    
-                }
-              }}>Delete Contact</DropdownMenuItem>
+              <DropdownMenuItem>
+                <Link href={`/contact/edit/${contact.id}`}>Edit Contact</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={async () => {
+                  if (confirm('Are you sure you want to delete this contact?')) {
+                    try {
+                      await useContactDelete(contact.id); // Delete contact
+                      setContacts(contacts.filter(c => c.id !== contact.id)); // Remove from state
+                    } catch (error) {
+                      console.error("Failed to delete contact:", error);
+                      alert("Failed to delete contact");
+                    }
+                  }
+                }}
+              >
+                Delete Contact
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-        )
+        );
       },
     }
-    
-]
+];

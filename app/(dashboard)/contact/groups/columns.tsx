@@ -9,6 +9,7 @@ import Link from "next/link"
 import { useContactDelete } from "@/hooks/contactHook"
 import { useRouter } from "next/navigation"
 import { useGroupDelete } from "@/hooks/groupHook"
+import toast from "react-hot-toast"
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -18,7 +19,7 @@ export type Group = {
 }
 
 
-export const columns: ColumnDef<Group>[] = [
+export const columns = (setGroups: (contacts: Group[]) => void, groups: Group[]): ColumnDef<Group>[] => [
     {
         id: "select",
         header: ({ table }) => (
@@ -64,12 +65,20 @@ export const columns: ColumnDef<Group>[] = [
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem><Link href={`/contact/groups/edit/${payment.id}`}>Edit Group</Link></DropdownMenuItem>
-              <DropdownMenuItem onClick={()=>{
+              <DropdownMenuItem onClick={async()=> {
                 if(confirm('This will delete all your group contacts. Are you sure?')){
-                    useGroupDelete(payment.id);
+                    
+                    try {
+                      await useGroupDelete(payment.id); // Delete contact
+                      setGroups(groups.filter(c => c.id !== payment.id)); // Remove from state
+                    } catch (error) {
+                      console.error("Failed to delete contact:", error);
+                      toast.error('Faild to remove the group.');
+                    }
+                  }
                     
                 }
-              }}>Delete Contact</DropdownMenuItem>
+              }>Delete Contact</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         )

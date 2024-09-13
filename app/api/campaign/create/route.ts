@@ -7,7 +7,7 @@ import { record } from 'zod';
 import { json } from 'stream/consumers';
 
 export async function POST(req: NextRequest) {
-    const { a,agentId,name } = await req.json();
+    const { name,agentId,groupId } = await req.json();
     const session = await getServerSession(authOption);
 
     if (!session?.user?.id) {
@@ -19,10 +19,7 @@ export async function POST(req: NextRequest) {
 
         const contacts = await prisma.contact.findMany({
             where: {
-                number: {
-                    in: a,
-                },
-                userId: +session.user.id
+                groupId : +groupId
             }
         }).then(users => {
             return users.map(user => ({
@@ -45,13 +42,18 @@ export async function POST(req: NextRequest) {
                 'Content-Type': 'application/json'
             },
             data: {
-                base_prompt: `${agent?.prompt}`,
                 call_data: contacts,
                 label: `${name}`,
-                test_mode: true,
-                from : `${agent?.numberId}`,
-                record : true,
-                tools : tools
+                base_prompt: agent?.prompt,                     
+                voice: agent?.voice,                     
+                first_sentence: agent?.firstSentence,    
+                wait_for_greeting: true,
+                interruption_threshold: 50,
+                record: true,
+                answered_by_enabled: true,
+                from: agent?.numberId,                
+                temperature: 0.7,
+                tools: tools,                           
             }
         };
 
@@ -61,7 +63,8 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ msg: 'Campaign Launched...' }, { status: 200 });
 
     } catch (e) {
-        return NextResponse.json({ error: e }, { status: 500 });
+        console.log(e);
+        return NextResponse.json({ msg:'Something Went Wrong!',error: e }, { status: 500 });
     }
 }
 

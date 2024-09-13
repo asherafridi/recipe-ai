@@ -21,7 +21,8 @@ export async function GET(req : NextRequest,res : NextResponse) {
                 }
             },
             name :true,
-            number:true
+            number:true,
+            id: true
         }
     });
     return NextResponse.json({contacts:contact},{status:200});

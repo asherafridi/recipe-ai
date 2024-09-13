@@ -13,16 +13,15 @@ export async function POST(req: NextRequest) {
     }
 
     try {
-
         const contact = await prisma.contact.deleteMany({
             where:{
-                groupId : id
+                groupId : +id
             }
         });
 
         const group = await prisma.contactGroup.delete({
             where:{
-                id:id
+                id:+id
             }
         });
 

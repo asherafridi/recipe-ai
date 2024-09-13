@@ -24,7 +24,7 @@ console.log(JSON.stringify(vectorIds));
                 name: name,
                 numberId: numberId,
                 voice:voice,
-                agentType: "Inbound",
+                agentType: "Outbound",
                 prompt:prompt,
                 userId: +session?.user?.id,
                 firstSentence : first_sentence,
