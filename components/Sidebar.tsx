@@ -26,6 +26,7 @@ const Sidebar = ({ sidebar, setSidebar }: { sidebar: any; setSidebar: any }) => 
     { href: "/dashboard", icon: <LayoutDashboard />, text: "Dashboard", key: "dashboard" },
     { href: "/number", icon: <Phone />, text: "Phone Numbers", key: "number" },
     { href: "/agent", icon: <Headphones />, text: "Agents", key: "agent" },
+    { href: "/inbound-agent", icon: <PhoneIncoming />, text: "Inbound Agent", key: "inbound-agent" },
     {
       href: "/contact",
       icon: <Users />,

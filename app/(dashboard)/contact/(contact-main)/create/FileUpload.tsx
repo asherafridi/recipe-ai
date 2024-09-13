@@ -120,6 +120,7 @@ export default function FileUpload() {
                         className='mt-4 mmb-4'
                         {...register('file', { required: true })}
                     />
+                    <div className='mt-3'></div>
                     <FormButton state={loading} text='Upload & Submit'  />
                 </form>
             </div>
