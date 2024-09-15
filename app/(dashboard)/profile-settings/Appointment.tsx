@@ -13,10 +13,12 @@ import toast from 'react-hot-toast';
 interface User {
     ghlToken: string;
     ghlCalendar: string;
+    name: string;
+    email: string;
 }
 
 const Appointment = () => {
-    const form = useForm({
+    const { control, handleSubmit, reset } = useForm<User>({
         defaultValues: {
             name: '',
             email: ''
@@ -26,13 +28,14 @@ const Appointment = () => {
     const [loading, setLoading] = useState(false);
     const [user, setUser] = useState<User | null>(null);
 
+    // Fetch the user profile when the component loads
     useEffect(() => {
         setLoading(true);
         axios.get('/api/user/profile')
             .then(response => {
-                setUser(response.data.user);
-                console.log(response.data.user);
-                form.reset(response.data.user); // Populate the form with fetched data
+                const fetchedUser = response.data.user;
+                setUser(fetchedUser);
+                reset(fetchedUser); // Populate the form with fetched data
             })
             .catch(error => {
                 toast.error('Something Went Wrong!');
@@ -41,8 +44,9 @@ const Appointment = () => {
             .finally(() => {
                 setLoading(false);
             });
-    }, []);
+    }, [reset]);
 
+    // Handle form submission
     const submit = async (data: User) => {
         setLoading(true);
         try {
@@ -56,16 +60,17 @@ const Appointment = () => {
         }
     };
 
+    // Show skeleton loading state if no user data is fetched yet
     if (!user) {
         return <Skeleton className='w-full h-16' />;
     }
 
     return (
         <Card className='p-4'>
-            <Form {...form}>
-                <form onSubmit={form.handleSubmit(submit)} className="mt-4 flex w-full flex-wrap">
+            <Form>
+                <form onSubmit={handleSubmit(submit)} className="mt-4 flex w-full flex-wrap">
                     <FormField
-                        control={form.control}
+                        control={control}
                         name="name"
                         render={({ field }) => (
                             <FormItem className='w-full md:w-1/2 lg:w-1/2 p-2'>
@@ -78,7 +83,7 @@ const Appointment = () => {
                         )}
                     />
                     <FormField
-                        control={form.control}
+                        control={control}
                         name="email"
                         render={({ field }) => (
                             <FormItem className='w-full md:w-1/2 lg:w-1/2 p-2'>
