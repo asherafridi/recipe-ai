@@ -5,7 +5,7 @@ import { authOption } from '@/lib/auth';
 import axios from 'axios';
 
 export async function POST(req: NextRequest) {
-    const { agentId, contactId,duration } = await req.json();
+    const { agentId, number } = await req.json();
     const session = await getServerSession(authOption);
 
     if (!session?.user?.id) {
@@ -19,11 +19,6 @@ export async function POST(req: NextRequest) {
                 id: +agentId
             }
         });
-        const contact = await prisma.contact.findFirst({
-            where: {
-                id: +contactId
-            }
-        });
         const tools = agent?.tools ? JSON.parse(agent.tools) : null;
         console.log(tools);
         
@@ -34,14 +29,14 @@ export async function POST(req: NextRequest) {
                 'Content-Type': 'application/json'
             },
             data: {
-                phone_number: contact?.number,           
+                phone_number: number,           
                 task: agent?.prompt,                     
                 voice: agent?.voice,                     
                 first_sentence: agent?.firstSentence,    
                 wait_for_greeting: true,
                 interruption_threshold: 50,
                 record: true,
-                max_duration: +duration,
+                max_duration: ''+agent?.maxDuration,
                 answered_by_enabled: true,
                 from: agent?.numberId,                
                 temperature: 0.7,
@@ -55,6 +50,7 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ msg: 'Calling...' }, { status: 200 });
 
     } catch (e) {
+        console.log(e);
         return NextResponse.json({ error: e,msg:'Something Went Wrong!' }, { status: 500 });
     }
 }

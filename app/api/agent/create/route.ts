@@ -27,7 +27,7 @@ export async function POST(req: NextRequest) {
                 userId: +session?.user?.id,
                 firstSentence: first_sentence,
                 language: language,
-                maxDuration: max_duration,
+                maxDuration: +max_duration,
                 model: model,
                 transferNumber: transfer_number,
                 waitForGreeting: `${wait_for_greeting}`,

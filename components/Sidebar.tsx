@@ -12,6 +12,7 @@ import {
   PenTool,
   ChevronDown,
   ChevronUp,
+  CalendarClock,
 } from "lucide-react";
 import { usePathname } from "next/navigation";
 
@@ -24,6 +25,13 @@ const Sidebar = ({ sidebar, setSidebar }: { sidebar: any; setSidebar: any }) => 
   // Define the menu items and their submenus
   const menuItems = [
     { href: "/dashboard", icon: <LayoutDashboard />, text: "Dashboard", key: "dashboard" },
+    {
+      href: "/appointment", icon: <CalendarClock />, text: "Appointment", key: "appointment",
+      submenu: [
+        { href: "/appointment/gohighlevel", text: "GoHighLevel", key: "goHighLevel-appointment" },
+        { href: "/appointment/veta", text: "Veta Appointments", key: "appointments" },
+      ],
+    },
     { href: "/number", icon: <Phone />, text: "Phone Numbers", key: "number" },
     { href: "/agent", icon: <Headphones />, text: "Agents", key: "agent" },
     { href: "/inbound-agent", icon: <PhoneIncoming />, text: "Inbound Agent", key: "inbound-agent" },
@@ -59,9 +67,8 @@ const Sidebar = ({ sidebar, setSidebar }: { sidebar: any; setSidebar: any }) => 
     <div>
       {/* Sidebar */}
       <div
-        className={`sidebar w-[300px] min-h-screen bg-background border-r border-gray-300 text-accent-foreground lg:fixed shadow-sm lg:block ${
-          sidebar ? "block" : "hidden"
-        }`}
+        className={`sidebar w-[300px] min-h-screen bg-background border-r border-gray-300 text-accent-foreground lg:fixed shadow-sm lg:block ${sidebar ? "block" : "hidden"
+          }`}
       >
         <div className="hidden lg:block p-3">
           <h1 className="text-2xl font-semibold">VetaTalk</h1>
@@ -74,10 +81,9 @@ const Sidebar = ({ sidebar, setSidebar }: { sidebar: any; setSidebar: any }) => 
                 {/* Main Menu Item */}
                 <li>
                   <Link
-                  href={submenu ? '#' : href}
-                    className={`flex p-4 py-3 text-secondary-foreground gap-4 cursor-pointer hover:bg-secondary-hover ${
-                      pathname.includes(href) ? "active" : ""
-                    }`}
+                    href={submenu ? '#' : href}
+                    className={`flex p-4 py-3 text-secondary-foreground gap-4 cursor-pointer hover:bg-secondary-hover ${pathname.includes(href) ? "active" : ""
+                      }`}
                     onClick={() => (submenu ? toggleSubmenu(key) : setSidebar(false))}
                   >
                     {icon}
