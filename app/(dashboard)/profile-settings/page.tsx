@@ -5,10 +5,11 @@ import Breadcrumb from '@/components/Breadcrumb';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useAllCallFetch } from '@/hooks/singleCallHook';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import {  Lock, UserRound } from 'lucide-react';
+import {  CalendarClock, Lock, UserRound } from 'lucide-react';
 import Account from './Account';
 import Password from './Password';
 import { Card } from '@/components/ui/card';
+import Appointment from './Appointment';
 
 
 const Page = () => {
@@ -20,9 +21,11 @@ const Page = () => {
                     <TabsList className='flex justify-center gap-4 bg-card border-gray-300 border py-2'>
                         <TabsTrigger value="account" className='flex gap-4 text-lg'><UserRound />Account</TabsTrigger>
                         <TabsTrigger value="password" className='flex gap-4 text-lg'><Lock />Password</TabsTrigger>
+                        <TabsTrigger value="appointments" className='flex gap-4 text-lg'><CalendarClock />Go High Level</TabsTrigger>
                     </TabsList>
                     <TabsContent value="account"><Account /></TabsContent>
                     <TabsContent value="password"><Password /></TabsContent>
+                    <TabsContent value="appointments"><Appointment /></TabsContent>
                 </Tabs>
 
             </Card>

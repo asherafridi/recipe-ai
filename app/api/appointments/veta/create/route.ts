@@ -2,12 +2,14 @@ import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/db';
 
 export async function POST(req: NextRequest) {
-    const { name, phone_number, email, startTime, endTime, user_id } = await req.json(); // Parse the JSON string back into an object
+    const { name, phone_number, email, startTime, user_id } = await req.json(); // Parse the JSON string back into an object
 
     try {
-        // Parse the startTime and endTime into Date objects if they are strings
+        // Parse the startTime into a Date object
         const start = new Date(startTime);
-        const end = new Date(endTime);
+        
+        // Calculate the end time as 30 minutes after the start time
+        const end = new Date(start.getTime() + 30 * 60 * 1000); // Add 30 minutes in milliseconds
 
         // Check if the slot is already booked
         const existingAppointment = await prisma.appointments.findFirst({
@@ -34,7 +36,7 @@ export async function POST(req: NextRequest) {
                 phone_number: phone_number,
                 email: email,
                 startTime: start,
-                endTime: end,
+                endTime: end, // Set the end time to 30 minutes after the start time
                 userId: user_id,
                 status: 'BOOKED',
             },
