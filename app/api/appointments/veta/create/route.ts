@@ -2,14 +2,14 @@ import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/db';
 
 export async function POST(req: NextRequest) {
-    const { name, phone_number, email, startTime, user_id } = await req.json(); // Parse the JSON string back into an object
-
     try {
-        // Parse the startTime into a Date object
-        const start = new Date(startTime);
+        const { name, phone_number, email, date, time, user_id } = await req.json(); // Parse the JSON string from request
+
+        // Combine `date` and `time` to create the start time
+        const startTime = new Date(`${date}T${time}`);
         
-        // Calculate the end time as 30 minutes after the start time
-        const end = new Date(start.getTime() + 30 * 60 * 1000); // Add 30 minutes in milliseconds
+        // Calculate the end time (30 minutes after the start time)
+        const endTime = new Date(startTime.getTime() + 30 * 60 * 1000); // 30 minutes in milliseconds
 
         // Check if the slot is already booked
         const existingAppointment = await prisma.appointments.findFirst({
@@ -18,30 +18,32 @@ export async function POST(req: NextRequest) {
                 status: 'BOOKED',
                 OR: [
                     {
-                        startTime: { lte: end },
-                        endTime: { gte: start },
+                        startTime: { lte: endTime },
+                        endTime: { gte: startTime },
                     },
                 ],
             },
         });
 
+        // If the time slot is already booked, return a conflict response
         if (existingAppointment) {
             return NextResponse.json({ error: 'Time slot is already booked' }, { status: 409 });
         }
 
-        // If no conflicts, proceed to create the new appointment
+        // Create a new appointment if no conflicts exist
         const appointment = await prisma.appointments.create({
             data: {
-                name: name,
-                phone_number: phone_number,
-                email: email,
-                startTime: start,
-                endTime: end, // Set the end time to 30 minutes after the start time
+                name,
+                phone_number,
+                email,
+                startTime,
+                endTime,
                 userId: user_id,
                 status: 'BOOKED',
             },
         });
 
+        // Respond with success message
         return NextResponse.json({ msg: 'Appointment Created Successfully' }, { status: 200 });
 
     } catch (e) {

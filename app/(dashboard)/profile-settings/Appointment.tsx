@@ -15,7 +15,7 @@ interface User {
     email: string;
 }
 
-const Account = () => {
+const Appointment = () => {
     const form = useForm({
         defaultValues: {
             name: '',
@@ -101,4 +101,4 @@ const Account = () => {
     );
 };
 
-export default Account;
+export default Appointment;
