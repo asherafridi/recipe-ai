@@ -30,6 +30,8 @@ const Page = () => {
             appointmentStatus: appointment.status,
             isFullDay: appointment.isFullDay,
             timezone: appointment.timezone,
+            startTime: appointment.startTime,
+            endTime: appointment.endTime,
           },
           start: appointment.startTime,
           end: appointment.endTime,
@@ -51,6 +53,7 @@ const Page = () => {
           datesSet={handleDatesSet}
           events={appointments}
           eventContent={renderEventContent}
+          timeZone='UTC'
         />
       </Card>
     </>
