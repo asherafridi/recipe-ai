@@ -7,6 +7,7 @@ export async function POST(req: NextRequest) {
 
         // Combine `date` and `time` to create the start time
         const startTime = new Date(`${date}T${time}Z`);
+        console.log(startTime);
         
         // Calculate the end time (30 minutes after the start time)
         const endTime = new Date(startTime.getTime() + 30 * 60 * 1000); // 30 minutes in milliseconds
