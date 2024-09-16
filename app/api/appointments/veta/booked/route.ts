@@ -37,8 +37,8 @@ export async function GET(req: NextRequest) {
         });
 
         // Define working hours (if needed)
-        const workStart = new Date(`${startDate}T09:00:00`); // 9 AM start
-        const workEnd = new Date(`${endDate}T17:00:00`);     // 5 PM end
+        const workStart = new Date(`${startDate}T09:00:00Z`); // 9 AM start
+        const workEnd = new Date(`${endDate}T17:00:00Z`);     // 5 PM end
 
         return NextResponse.json({ appointments }, { status: 200 });
     } catch (error: any) {

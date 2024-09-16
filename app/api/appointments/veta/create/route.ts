@@ -6,7 +6,7 @@ export async function POST(req: NextRequest) {
         const { name, phone_number, email, date, time, user_id } = await req.json(); // Parse the JSON string from request
 
         // Combine `date` and `time` to create the start time
-        const startTime = new Date(`${date}T${time}`);
+        const startTime = new Date(`${date}T${time}Z`);
         
         // Calculate the end time (30 minutes after the start time)
         const endTime = new Date(startTime.getTime() + 30 * 60 * 1000); // 30 minutes in milliseconds

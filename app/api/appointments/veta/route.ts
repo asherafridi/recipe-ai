@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/db"; // Ensure you have proper import for Prisma
+import { use } from "react";
 
 export async function GET(req: NextRequest) {
     const user_id = req.nextUrl.searchParams.get('user_id');
@@ -13,10 +14,21 @@ export async function GET(req: NextRequest) {
         if (!date) {
             return NextResponse.json({ error: 'Date not provided' }, { status: 400 });
         }
+        const user = await prisma.user.findFirst({
+            where:{
+                id:+user_id
+            }
+        });
+        if(!user){
+            return NextResponse.json({ error: 'User not Found' }, { status: 400 });
+        }
+
+        const timezone = user.timezone;
 
         // Define working hours (e.g., 9 AM to 5 PM)
-        const workStart = new Date(`${date}T09:00:00`);
-        const workEnd = new Date(`${date}T17:00:00`);
+        const workStart = new Date(`${date}T09:00:00Z`);
+        const workEnd = new Date(`${date}T17:00:00Z`);
+
         const currentTime = new Date(); // Get current time
 
         // Fetch booked appointments for the user on the given date
@@ -47,45 +59,62 @@ export async function GET(req: NextRequest) {
     }
 }
 
+function getAvailableSlots(
+  workStart: Date,
+  workEnd: Date,
+  appointments: { startTime: Date; endTime: Date }[],
+  slotDurationMinutes: number,
+  currentTime: Date
+) {
+  let availableSlots = [];
 
-function getAvailableSlots(workStart: Date, workEnd: Date, appointments: { startTime: Date, endTime: Date }[], slotDurationMinutes: number, currentTime: Date) {
-    let availableSlots = [];
-    let currentSlotStart = workStart;
+  // If the current time is after the working hours, no slots are available
+  if (currentTime > workEnd) {
+    return [];
+  }
 
-    // If the current time is after the working hours, no slots are available
-    if (currentTime > workEnd) {
-        return [];
-    }
+  // Helper function to round up time to the next slot boundary
+  function roundToNextSlot(time: Date, slotDuration: number) {
+    let ms = time.getTime();
+    let rounded = Math.ceil(ms / (slotDuration * 60000)) * (slotDuration * 60000);
+    return new Date(rounded);
+  }
 
-    // Move currentSlotStart to the current time if the date is today
-    if (currentSlotStart.toDateString() === currentTime.toDateString() && currentTime > currentSlotStart) {
-        currentSlotStart = currentTime;
-    }
+  // Adjust currentSlotStart
+  let currentSlotStart = workStart;
 
-    // Iterate through the booked appointments to find gaps
-    for (let appointment of appointments) {
-        if (currentSlotStart < appointment.startTime) {
-            // There is a gap between the current time and the next appointment
-            let slotEnd = appointment.startTime;
-            while (currentSlotStart < slotEnd && currentSlotStart < workEnd) {
-                let nextSlotTime = new Date(currentSlotStart.getTime() + slotDurationMinutes * 60000);
-                if (nextSlotTime <= slotEnd) {
-                    availableSlots.push({ startTime: currentSlotStart, endTime: nextSlotTime });
-                }
-                currentSlotStart = nextSlotTime;
-            }
-        }
-        currentSlotStart = new Date(Math.max(currentSlotStart.getTime(), appointment.endTime.getTime())); // Move past the booked appointment
-    }
+  // Move currentSlotStart to current time if today, but round it to the next slot boundary
+  if (currentSlotStart.toDateString() === currentTime.toDateString() && currentTime > currentSlotStart) {
+    currentSlotStart = roundToNextSlot(currentTime, slotDurationMinutes);
+  } else {
+    currentSlotStart = roundToNextSlot(currentSlotStart, slotDurationMinutes);
+  }
 
-    // Handle any remaining time after the last booked appointment
-    while (currentSlotStart < workEnd) {
+  // Iterate through the booked appointments to find gaps
+  for (let appointment of appointments) {
+    if (currentSlotStart < appointment.startTime) {
+      // There is a gap between the current time and the next appointment
+      let slotEnd = appointment.startTime;
+      while (currentSlotStart < slotEnd && currentSlotStart < workEnd) {
         let nextSlotTime = new Date(currentSlotStart.getTime() + slotDurationMinutes * 60000);
-        if (nextSlotTime <= workEnd) {
-            availableSlots.push({ startTime: currentSlotStart, endTime: nextSlotTime });
+        if (nextSlotTime <= slotEnd) {
+          availableSlots.push({ startTime: currentSlotStart, endTime: nextSlotTime });
         }
         currentSlotStart = nextSlotTime;
+      }
     }
+    currentSlotStart = new Date(Math.max(currentSlotStart.getTime(), appointment.endTime.getTime())); // Move past the booked appointment
+  }
 
-    return availableSlots;
+  // Handle any remaining time after the last booked appointment
+  while (currentSlotStart < workEnd) {
+    let nextSlotTime = new Date(currentSlotStart.getTime() + slotDurationMinutes * 60000);
+    if (nextSlotTime <= workEnd) {
+      availableSlots.push({ startTime: currentSlotStart, endTime: nextSlotTime });
+    }
+    currentSlotStart = nextSlotTime;
+  }
+
+  return availableSlots;
 }
+
