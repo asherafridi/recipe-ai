@@ -74,7 +74,10 @@ const Page = () => {
           backgroundPosition: 'center',
         }}
       >
-        <h1 className="text-5xl font-medium">Veta<span className="text-blue-800">Talk</span></h1>
+        <div className="flex justify-center flex-col items-center">
+          <img src="/logo.png" width={200}/>
+        {/* <h1 className="text-lg  text-gray-500">Are you still hiring human?</h1> */}
+        </div>
       </div>
       <div className="w-full lg:w-2/5 min-h-[100vh] bg-white flex flex-col justify-center items-center">
         <div className="header w-full px-12">

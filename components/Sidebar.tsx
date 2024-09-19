@@ -70,9 +70,9 @@ const Sidebar = ({ sidebar, setSidebar }: { sidebar: any; setSidebar: any }) => 
         className={`sidebar w-[300px] min-h-screen bg-background border-r border-gray-300 text-accent-foreground lg:fixed shadow-sm lg:block ${sidebar ? "block" : "hidden"
           }`}
       >
-        <div className="hidden lg:block p-3">
-          <h1 className="text-2xl font-semibold">VetaTalk</h1>
-          <p>AI Calling Assistant</p>
+        <div className="hidden  p-3  lg:flex pt-10 justify-center">
+          <img src="/logo.png" width={80}/>
+          {/* <p>AI Calling Assistant</p> */}
         </div>
         <div className="mt-16">
           <ul className="grid gap-2 menu">

@@ -190,7 +190,7 @@ export default function Dashboard() {
 
         <div className="flex gap-2 flex-col lg:flex-row">
           {/* Pie Chart for Successful and Unsuccessful Calls */}
-          <Card className="w-full lg:w-1/2 flex flex-col items-center">
+          <Card className="w-full lg:w-full flex flex-col items-center">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-xl font-medium">Call Success Rate</CardTitle>
             </CardHeader>
@@ -202,7 +202,7 @@ export default function Dashboard() {
 
           {/* Pie Chart for Calls Received by Human vs. Others */}
 
-          <Card className="w-full lg:w-1/2 flex flex-col items-center">
+          {/* <Card className="w-full lg:w-1/2 flex flex-col items-center">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-xl font-medium">Calls Received by Human</CardTitle>
             </CardHeader>
@@ -210,7 +210,7 @@ export default function Dashboard() {
 
               <Pie data={humanPieChartData} />
             </CardContent>
-          </Card>
+          </Card> */}
 
         </div>
         

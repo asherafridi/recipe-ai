@@ -28,16 +28,17 @@ model User {
   groups            ContactGroup[] // Define one-to-many relationship
   ghlToken          String?
   ghlCalenderId     String?
-  timezone          String       @default("UTC")  
+  timezone          String         @default("UTC")
   appointments      Appointments[] // Define one-to-many relationship
 }
 
 model Appointments {
   id           Int      @id @default(autoincrement())
-  name         String
+  name         String?
   email        String
-  phone_number String
+  phone_number String?
   status       String
+  meeting_link String?
   startTime    DateTime
   endTime      DateTime
   user         User     @relation(fields: [userId], references: [id]) // Relation to User
