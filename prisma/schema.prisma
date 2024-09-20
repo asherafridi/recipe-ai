@@ -28,7 +28,6 @@ model User {
   groups            ContactGroup[] // Define one-to-many relationship
   ghlToken          String?
   ghlCalenderId     String?
-  timezone          String         @default("UTC")
   appointments      Appointments[] // Define one-to-many relationship
 }
 
