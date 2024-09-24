@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/db';
-import mailService from '@/lib/mailService';
+import mailService, { smtpConfig } from '@/lib/mailService';
 import axios from 'axios';
+import MailService from '@/lib/mailService';
 
 export async function POST(req: NextRequest) {
     try {
@@ -30,8 +31,8 @@ export async function POST(req: NextRequest) {
                 status: 'BOOKED',
                 OR: [
                     {
-                        startTime: { lte: endTime },
-                        endTime: { gte: startTime },
+                        startTime: { lte: startTime },
+                        endTime: { gte: endTime },
                     },
                 ],
             },
@@ -69,6 +70,18 @@ export async function POST(req: NextRequest) {
             },
         });
 
+        let smtp;
+
+        // Check if user.smtp is a valid object
+        if (user.smtp) {
+            smtp = JSON.parse(user.smtp); // Use the object directly
+        } else {
+            // Fallback to smtpConfig if user.smtp is invalid
+            smtp = smtpConfig;
+        }
+        
+        const mailService = new MailService(smtp);
+
         try {
             // Send email notifications to both the user and the organizer
             await mailService.sendMeetingEmail(email, appointment);
@@ -85,3 +98,7 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ error: 'Something went wrong!',e: error }, { status: 500 });
     }
 }
+function JSONParse(smtp: string | null) {
+    throw new Error('Function not implemented.');
+}
+

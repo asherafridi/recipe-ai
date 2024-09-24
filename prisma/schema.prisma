@@ -28,6 +28,7 @@ model User {
   groups            ContactGroup[] // Define one-to-many relationship
   ghlToken          String?
   ghlCalenderId     String?
+  smtp              String?
   appointments      Appointments[] // Define one-to-many relationship
 }
 

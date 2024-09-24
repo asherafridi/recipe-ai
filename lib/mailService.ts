@@ -4,19 +4,22 @@ import nodemailer, { Transporter } from 'nodemailer';
 class MailService {
   private transporter: Transporter;
 
-  constructor() {
+  constructor(smtp: { host?: string; port?: number; user?: string; pass?: string }) {
+    const { host, port, user, pass } = smtp;
+  
     this.transporter = nodemailer.createTransport({
-      service: 'gmail', // You can use other services or SMTP configurations
+      host: host || process.env.MAIL_HOST as string,  // Fallback to MAIL_HOST env variable
+      port: port || parseInt(process.env.MAIL_PORT as string, 10),   // Secure if port is 465, otherwise false
       auth: {
-        user: process.env.MAIL_USER as string,
-        pass: process.env.MAIL_PASS as string,
+        user: user || process.env.MAIL_USER as string,  // Fallback to MAIL_USER env variable
+        pass: pass || process.env.MAIL_PASS as string,  // Fallback to MAIL_PASS env variable
       },
     });
   }
 
   async sendMail(to: string, subject: string, htmlContent: string): Promise<any> {
     const mailOptions = {
-      from: process.env.MAIL_USER as string,
+      from : 'Appointment Confirmation',
       to,
       subject,
       html: htmlContent,
@@ -182,4 +185,15 @@ class MailService {
   }
 }
 
-export default new MailService();
+
+const smtpConfig = {
+  host: process.env.MAIL_HOST as string,
+  port: parseInt(process.env.MAIL_PORT as string, 10),
+  user: process.env.MAIL_USER as string,
+  pass: process.env.MAIL_PASS as string,
+};
+
+
+export default MailService;
+
+export {smtpConfig};
