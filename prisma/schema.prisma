@@ -15,21 +15,23 @@ datasource db {
 }
 
 model User {
-  id                Int            @id @default(autoincrement())
-  email             String         @unique
-  name              String?
-  password          String
-  subaccount_id     String?
-  subaccount_key    String?
-  verificationToken String?
-  status            Boolean        @default(false)
-  contacts          Contact[] // Define one-to-many relationship
-  agents            Agent[] // Define one-to-many relationship
-  groups            ContactGroup[] // Define one-to-many relationship
-  ghlToken          String?
-  ghlCalenderId     String?
-  smtp              String?
-  appointments      Appointments[] // Define one-to-many relationship
+  id                       Int            @id @default(autoincrement())
+  email                    String         @unique
+  name                     String?
+  password                 String
+  subaccount_id            String?
+  subaccount_key           String?
+  verificationToken        String?
+  status                   Boolean        @default(false)
+  contacts                 Contact[] // Define one-to-many relationship
+  agents                   Agent[] // Define one-to-many relationship
+  groups                   ContactGroup[] // Define one-to-many relationship
+  ghlToken                 String?
+  ghlCalenderId            String?
+  smtp                     String?
+  smtpType                 String         @default("nodemailer")
+  appointmentEmailTemplate String?
+  appointments             Appointments[] // Define one-to-many relationship
 }
 
 model Appointments {

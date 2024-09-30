@@ -3,6 +3,7 @@ import prisma from '@/lib/db';
 import mailService, { smtpConfig } from '@/lib/mailService';
 import axios from 'axios';
 import MailService from '@/lib/mailService';
+import { appointmentMailSender } from '@/lib/mailphp';
 
 export async function POST(req: NextRequest) {
     try {
@@ -11,7 +12,7 @@ export async function POST(req: NextRequest) {
         // Combine `date` and `time` to create the start time
         const startTime = new Date(`${date}T${time}Z`);
         console.log(startTime);
-        
+
         // Calculate the end time (30 minutes after the start time)
         const endTime = new Date(startTime.getTime() + 30 * 60 * 1000); // 30 minutes in milliseconds
 
@@ -44,14 +45,14 @@ export async function POST(req: NextRequest) {
         }
 
         // Create a Zoom meeting link
-        const meetingLinkResponse = await axios.post(process.env.APP_HOSTNAME+'/api/appointments/meeting/zoom', {
+        const meetingLinkResponse = await axios.post(process.env.APP_HOSTNAME + '/api/appointments/meeting/zoom', {
             name: name + ' Meeting',
             start_time: startTime.toISOString(),
             duration: 30, // in minutes
         });
-
         const meetingLink = meetingLinkResponse?.data?.join_url;
         console.log(meetingLink);
+
         if (!meetingLink) {
             return NextResponse.json({ error: 'Failed to generate meeting link' }, { status: 500 });
         }
@@ -79,13 +80,22 @@ export async function POST(req: NextRequest) {
             // Fallback to smtpConfig if user.smtp is invalid
             smtp = smtpConfig;
         }
-        
-        const mailService = new MailService(smtp);
+
 
         try {
-            // Send email notifications to both the user and the organizer
-            await mailService.sendMeetingEmail(email, appointment);
-            await mailService.sendMeetingEmail(user.email, appointment);
+
+            if (user.smtpType == "nodemailer") {
+
+                const mailService = new MailService(smtp);
+                await mailService.sendMeetingEmail(email, appointment, user.appointmentEmailTemplate || '', user.name || 'ashir');
+                await mailService.sendMeetingEmail(user.email, appointment, user.appointmentEmailTemplate || '', user.name || 'ashir');
+            } else {
+                await appointmentMailSender(email, appointment, user.appointmentEmailTemplate || '', user.name || 'ashir', smtp);
+                await appointmentMailSender(user.email, appointment, user.appointmentEmailTemplate || '', user.name || 'ashir', smtp);
+            }
+
+
+
         } catch (emailError) {
             console.error('Error sending email:', emailError);
         }
@@ -95,7 +105,7 @@ export async function POST(req: NextRequest) {
 
     } catch (error) {
         console.error('Error creating appointment:', error);
-        return NextResponse.json({ error: 'Something went wrong!',e: error }, { status: 500 });
+        return NextResponse.json({ error: 'Something went wrong!', e: error }, { status: 500 });
     }
 }
 function JSONParse(smtp: string | null) {

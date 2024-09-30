@@ -1,15 +1,18 @@
 // lib/mailService.ts
 import nodemailer, { Transporter } from 'nodemailer';
+import { string } from 'zod';
 
 class MailService {
   private transporter: Transporter;
+  private from : string;
 
-  constructor(smtp: { host?: string; port?: number; user?: string; pass?: string }) {
+  constructor(smtp: { host?: string; port: number; user?: string; pass?: string }) {
     const { host, port, user, pass } = smtp;
-  
+    this.from = user || process.env.MAIL_USER as string;
     this.transporter = nodemailer.createTransport({
       host: host || process.env.MAIL_HOST as string,  // Fallback to MAIL_HOST env variable
-      port: port || parseInt(process.env.MAIL_PORT as string, 10),   // Secure if port is 465, otherwise false
+      port: port,
+      secure: true,
       auth: {
         user: user || process.env.MAIL_USER as string,  // Fallback to MAIL_USER env variable
         pass: pass || process.env.MAIL_PASS as string,  // Fallback to MAIL_PASS env variable
@@ -19,10 +22,10 @@ class MailService {
 
   async sendMail(to: string, subject: string, htmlContent: string): Promise<any> {
     const mailOptions = {
-      from : 'Appointment Confirmation',
+      from: this.from,
       to,
       subject,
-      html: htmlContent,
+      text: htmlContent,
     };
 
     try {
@@ -65,122 +68,17 @@ class MailService {
   }
 
 
-  async sendMeetingEmail(to: string, appointment: any): Promise<any> {
+  async sendMeetingEmail(to: string, appointment: any,emailTemplate : string,sender :string): Promise<any> {
     const subject = 'Appointment Confirmed';
-    const htmlContent = `<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Appointment Confirmation</title>
-  <style>
-    body {
-      font-family: 'Helvetica Neue', Arial, sans-serif;
-      background-color: #f4f4f4;
-      color: #333;
-      line-height: 1.6;
-      margin: 0;
-      padding: 0;
-    }
-    .container {
-      max-width: 600px;
-      margin: 30px auto;
-      background-color: #fff;
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-    h1 {
-      color: #2c3e50;
-      font-size: 26px;
-      margin-bottom: 25px;
-      text-align: center;
-      border-bottom: 2px solid #3498db;
-      padding-bottom: 15px;
-    }
-    p {
-      margin-bottom: 15px;
-      font-size: 16px;
-      color: #555;
-    }
-    strong {
-      color: #fff;
-    }
-    .appointment-details {
-      background-color: #f9f9f9;
-      padding: 20px;
-      border-radius: 8px;
-      margin-top: 25px;
-      border-left: 5px solid #3498db;
-    }
-    .appointment-details p {
-      margin: 8px 0;
-      font-size: 16px;
-      line-height: 1.8;
-    }
-    a {
-      color: #fff;
-      text-decoration: none;
-      background-color: #3498db;
-      padding: 5px 10px;
-      border-radius: 5px;
-      display: inline-block;
-    }
-    .footer {
-      margin-top: 30px;
-      text-align: center;
-      color: #7f8c8d;
-      font-size: 14px;
-      border-top: 1px solid #e1e1e1;
-      padding-top: 20px;
-    }
-      .btn{
-      color : #fff;
-      }
-    .btn:hover {
-      background-color: #2980b9;
-    }
-    .reschedule {
-      margin-top: 20px;
-      text-align: center;
-      font-size: 16px;
-    }
-    .reschedule a {
-      color: #3498db;
-      text-decoration: underline;
-    }
-    .company-logo img {
-      max-width: 200px;
-      margin-top: 10px;
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <h1>Your Appointment is Confirmed!</h1>
-    <p>Thank you for choosing to schedule an appointment with us! We're thrilled to connect with you soon and ensure a productive and insightful meeting. Below are the key details of your appointment:</p>
-    
-    <div class="appointment-details">
-      <p>We’re all set to meet with you, <strong>${appointment.name}</strong>! If we need to reach you beforehand, we’ll use the phone number <strong>${appointment.phone_number}</strong> or your email <b>${appointment.email}</b>, so please keep an eye out.</p>
-      <p>When it’s time for the meeting, simply click the link below to join:</p>
-      <a href="${appointment.meeting_link}" class="btn">Join the Meeting</a>
-      <p>We’ll kick things off at <strong>${appointment.startTime}</strong> and wrap up by <strong>${appointment.endTime}</strong></p>
-    </div>
+    const htmlContent = emailTemplate
+    .replace('{{name}}', appointment.name)
+    .replace('{{phone_number}}', appointment.phone_number)
+    .replace('{{email}}', appointment.email)
+    .replace('{{meeting_link}}', appointment.meeting_link)
+    .replace('{{start_time}}', appointment.startTime)
+    .replace('{{end_time}}', appointment.endTime)
+    .replace('{{sender_name}}', sender); 
 
-    <div class="reschedule">
-        <p>We recommend joining the meeting a few minutes early to ensure everything runs smoothly. If you need to make any changes or have any questions, just reply to this email, and we'll be happy to assist.</p>
-        <p>We're looking forward to connecting with you soon!</p>
-    </div>
-    
-    <div class="footer">
-      <p>Best regards,<br><strong>Suneel</strong></p>
-      <div class="company-logo">
-        <img src="https://raw.githubusercontent.com/vetasuneel/ideapad_cdn_2/main/idea_pad.png" alt="Your Company Logo">
-      </div>
-    </div>
-  </div>
-</body>
-</html>
-    `;
     return this.sendMail(to, subject, htmlContent);
   }
 }
@@ -196,4 +94,4 @@ const smtpConfig = {
 
 export default MailService;
 
-export {smtpConfig};
+export { smtpConfig };
