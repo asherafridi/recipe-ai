@@ -9,54 +9,47 @@ export async function GET(req: NextRequest) {
             return NextResponse.json({ error: 'User not Found' }, { status: 400 });
         }
 
-        const user = await prisma.user.findFirst({
-            where: {
-                id: +user_id,
-            },
-        });
+        // Get the current UTC time
+        const currentTime = new Date();
 
-        if (!user) {
-            return NextResponse.json({ error: 'User not Found' }, { status: 400 });
-        }
-
-        const currentTime = new Date(); // Get current time in UTC
-
-        // Loop through the next 7 days
-        const availableSlotsFor7Days = [];
-
+        // Fetch appointments for the next 7 days in parallel
+        const fetchAppointmentsPromises = [];
         for (let i = 0; i < 7; i++) {
             const date = new Date(Date.UTC(currentTime.getUTCFullYear(), currentTime.getUTCMonth(), currentTime.getUTCDate() + i));
+            const startOfDay = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), 0, 0, 0));
+            const endOfDay = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), 23, 59, 59));
 
-            // Define working hours in UTC (e.g., 9 AM to 5 PM UTC)
-            const workStart = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), 9, 0, 0)); // 9 AM UTC start
-            const workEnd = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), 17, 0, 0)); // 5 PM UTC end
-
-            // Fetch booked appointments for the user on the current date
-            const appointments = await prisma.appointments.findMany({
-                where: {
-                    userId: +user_id,
-                    startTime: {
-                        gte: new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), 0, 0, 0)), // Start of the current day in UTC
+            fetchAppointmentsPromises.push(
+                prisma.appointments.findMany({
+                    where: {
+                        userId: +user_id,
+                        startTime: { gte: startOfDay },
+                        endTime: { lte: endOfDay },
+                        status: 'BOOKED',
                     },
-                    endTime: {
-                        lte: new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), 23, 59, 59)), // End of the current day in UTC
-                    },
-                    status: 'BOOKED',
-                },
-                orderBy: {
-                    startTime: 'asc',
-                },
-            });
+                    orderBy: { startTime: 'asc' },
+                })
+            );
+        }
 
-            // Calculate available 30-minute slots for the current day
+        // Await all the promises in parallel
+        const appointmentsFor7Days = await Promise.all(fetchAppointmentsPromises);
+
+        const availableSlotsFor7Days = appointmentsFor7Days.map((appointments, dayOffset) => {
+            const date = new Date(Date.UTC(currentTime.getUTCFullYear(), currentTime.getUTCMonth(), currentTime.getUTCDate() + dayOffset));
+
+            // Define working hours in UTC
+            const workStart = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), 9, 0, 0));
+            const workEnd = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), 17, 0, 0));
+
+            // Calculate available 30-minute slots
             const availableSlots = getAvailableSlots(workStart, workEnd, appointments, 30, currentTime);
 
-            // Append the slots for this day to the final result
-            availableSlotsFor7Days.push({
+            return {
                 date: workStart.toUTCString().slice(0, 16), // Format to display date only
                 slots: availableSlots,
-            });
-        }
+            };
+        });
 
         return NextResponse.json({ availableSlotsFor7Days }, { status: 200 });
     } catch (error: any) {
@@ -65,6 +58,7 @@ export async function GET(req: NextRequest) {
     }
 }
 
+// Optimized slot calculation function
 function getAvailableSlots(
     workStart: Date,
     workEnd: Date,
@@ -72,54 +66,48 @@ function getAvailableSlots(
     slotDurationMinutes: number,
     currentTime: Date
 ) {
-    let availableSlots = [];
+    const availableSlots = [];
 
-    // If the current time is after the working hours, no slots are available
-    if (currentTime > workEnd) {
-        return [];
-    }
+    // Round the current time to the next available slot if it's within working hours
+    let currentSlotStart = new Date(Math.max(currentTime.getTime(), workStart.getTime()));
+    currentSlotStart = roundToNextSlot(currentSlotStart, slotDurationMinutes);
 
-    // Helper function to round up time to the next slot boundary in UTC
-    function roundToNextSlot(time: Date, slotDuration: number) {
-        let ms = time.getTime();
-        let rounded = Math.ceil(ms / (slotDuration * 60000)) * (slotDuration * 60000);
-        return new Date(rounded);
-    }
-
-    // Adjust currentSlotStart
-    let currentSlotStart = workStart;
-
-    // Move currentSlotStart to current time if today, but round it to the next slot boundary
-    if (currentSlotStart.toDateString() === currentTime.toDateString() && currentTime > currentSlotStart) {
-        currentSlotStart = roundToNextSlot(currentTime, slotDurationMinutes);
-    } else {
-        currentSlotStart = roundToNextSlot(currentSlotStart, slotDurationMinutes);
-    }
-
-    // Iterate through the booked appointments to find gaps
-    for (let appointment of appointments) {
-        if (currentSlotStart < appointment.startTime) {
-            // There is a gap between the current time and the next appointment
-            let slotEnd = appointment.startTime;
-            while (currentSlotStart < slotEnd && currentSlotStart < workEnd) {
-                let nextSlotTime = new Date(currentSlotStart.getTime() + slotDurationMinutes * 60000);
-                if (nextSlotTime <= slotEnd) {
-                    availableSlots.push({ startTime: currentSlotStart.toUTCString(), endTime: nextSlotTime.toUTCString() });
-                }
-                currentSlotStart = nextSlotTime;
+    // Iterate through appointments to find available gaps
+    for (const appointment of appointments) {
+        // Add available slots before the appointment starts
+        while (currentSlotStart < appointment.startTime && currentSlotStart < workEnd) {
+            const nextSlotTime = new Date(currentSlotStart.getTime() + slotDurationMinutes * 60000);
+            if (nextSlotTime <= appointment.startTime && nextSlotTime <= workEnd) {
+                availableSlots.push({
+                    startTime: currentSlotStart.toUTCString(),
+                    endTime: nextSlotTime.toUTCString(),
+                });
             }
+            currentSlotStart = nextSlotTime;
         }
-        currentSlotStart = new Date(Math.max(currentSlotStart.getTime(), appointment.endTime.getTime())); // Move past the booked appointment
+
+        // Move currentSlotStart past the end of the current appointment
+        currentSlotStart = new Date(Math.max(currentSlotStart.getTime(), appointment.endTime.getTime()));
     }
 
-    // Handle any remaining time after the last booked appointment
+    // Add remaining available slots after the last appointment
     while (currentSlotStart < workEnd) {
-        let nextSlotTime = new Date(currentSlotStart.getTime() + slotDurationMinutes * 60000);
+        const nextSlotTime = new Date(currentSlotStart.getTime() + slotDurationMinutes * 60000);
         if (nextSlotTime <= workEnd) {
-            availableSlots.push({ startTime: currentSlotStart.toUTCString(), endTime: nextSlotTime.toUTCString() });
+            availableSlots.push({
+                startTime: currentSlotStart.toUTCString(),
+                endTime: nextSlotTime.toUTCString(),
+            });
         }
         currentSlotStart = nextSlotTime;
     }
 
     return availableSlots;
+}
+
+// Rounds up time to the nearest slot boundary in UTC
+function roundToNextSlot(time: Date, slotDuration: number) {
+    const ms = time.getTime();
+    const rounded = Math.ceil(ms / (slotDuration * 60000)) * (slotDuration * 60000);
+    return new Date(rounded);
 }

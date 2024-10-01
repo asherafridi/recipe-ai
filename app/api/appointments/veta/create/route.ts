@@ -50,11 +50,11 @@ export async function POST(req: NextRequest) {
             start_time: startTime.toISOString(),
             duration: 30, // in minutes
         });
-        const meetingLink = meetingLinkResponse?.data?.join_url;
+        let meetingLink = meetingLinkResponse?.data?.join_url;
         console.log(meetingLink);
 
         if (!meetingLink) {
-            return NextResponse.json({ error: 'Failed to generate meeting link' }, { status: 500 });
+            meetingLink  = 'Meeting Link Not Generated';
         }
 
         // Create a new appointment if no conflicts exist
