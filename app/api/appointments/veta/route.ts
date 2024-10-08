@@ -35,7 +35,8 @@ export async function GET(req: NextRequest) {
         // Await all the promises in parallel
         const appointmentsFor7Days = await Promise.all(fetchAppointmentsPromises);
 
-        const availableSlotsFor7Days = appointmentsFor7Days.map((appointments, dayOffset) => {
+        // Collect all slots from the 7 days into a single array
+        const availableSlots = appointmentsFor7Days.flatMap((appointments, dayOffset) => {
             const date = new Date(Date.UTC(currentTime.getUTCFullYear(), currentTime.getUTCMonth(), currentTime.getUTCDate() + dayOffset));
 
             // Define working hours in UTC
@@ -43,15 +44,11 @@ export async function GET(req: NextRequest) {
             const workEnd = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), 17, 0, 0));
 
             // Calculate available 30-minute slots
-            const availableSlots = getAvailableSlots(workStart, workEnd, appointments, 30, currentTime);
-
-            return {
-                date: workStart.toUTCString().slice(0, 16), // Format to display date only
-                slots: availableSlots,
-            };
+            return getAvailableSlots(workStart, workEnd, appointments, 30, currentTime);
         });
 
-        return NextResponse.json({ availableSlotsFor7Days }, { status: 200 });
+        // Return the slots wrapped in an object
+        return NextResponse.json({ slots: availableSlots }, { status: 200 });
     } catch (error: any) {
         console.error('Error fetching available slots:', error);
         return NextResponse.json({ error: error.message || 'An error occurred' }, { status: 500 });
