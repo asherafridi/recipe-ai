@@ -14,7 +14,7 @@ export async function GET(req: NextRequest) {
 
         // Fetch appointments for the next 7 days in parallel
         const fetchAppointmentsPromises = [];
-        for (let i = 0; i < 7; i++) {
+        for (let i = 0; i < 3; i++) {
             const date = new Date(Date.UTC(currentTime.getUTCFullYear(), currentTime.getUTCMonth(), currentTime.getUTCDate() + i));
             const startOfDay = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), 0, 0, 0));
             const endOfDay = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), 23, 59, 59));
