@@ -10,7 +10,7 @@ export async function GET(req : NextRequest,res : NextResponse) {
     if(!session?.user){
         return NextResponse.json({msg:'Authentication Error'},{status:500});
     }
-    const contact = await prisma.agent.findMany({
+    const contact = await prisma.favourite.findMany({
         where:{
             userId : +session?.user?.id
         }
