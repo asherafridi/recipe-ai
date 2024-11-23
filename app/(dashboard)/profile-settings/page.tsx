@@ -5,11 +5,10 @@ import {  CalendarClock, Lock, UserRound } from 'lucide-react';
 import Account from './Account';
 import Password from './Password';
 import { Card } from '@/components/ui/card';
-import Appointment from './Appointment';
 
 
 const Page = () => {
-
+//  ashir afridi
 
     return (
             <Card className=" p-4 ">
