@@ -12,13 +12,11 @@ declare module "next-auth" {
         id: string;
         name: string | null;
         email: string | null;
-        key_token: string | null;
       }
 
     interface Session {
         user: {
             id: string,
-            key_token: string,
         } & DefaultSession["user"]
     }
 }
@@ -63,7 +61,6 @@ export const authOption: AuthOptions = {
                     id: `${existingUser.id}`,
                     name: existingUser.name,
                     email: existingUser.email,
-                    key_token: existingUser?.subaccount_key
                 };
             },
         })
@@ -72,13 +69,11 @@ export const authOption: AuthOptions = {
         async jwt({ token, user }) {
             if (user) {
                 token.id = user.id;
-                token.key_token = user.key_token;
             }
             return token;
         },
         async session({ session, token }) {
             session.user.id = `${token.id}`;
-            session.user.key_token = `${token.key_token}`;
             return session;
         }
     },
