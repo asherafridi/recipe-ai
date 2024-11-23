@@ -36,7 +36,7 @@ const Page = () => {
   const session = useSession();
 
   if (session.status == 'authenticated') {
-    router.push('/dashboard');
+    router.push('/home');
   }
 
   const submitHandler: SubmitHandler<FormData> = async (data) => {
