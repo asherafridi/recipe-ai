@@ -29,9 +29,9 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="flex min-h-screen w-full justify-between gap-4">
+    <div className="flex min-h-screen w-full flex-col lg:flex-row justify-between gap-4">
       {/* Left Side */}
-      <div className="w-1/2" >
+      <div className="w-full lg:w-1/2" >
         <div style={styles.uploadBox}>
 
           {selectedImage ? (
@@ -72,7 +72,7 @@ export default function Dashboard() {
       </div>
 
       {/* Right Side */}
-      <div className="w-1/2 min-h-[500px] border border-gray-300 rounded-lg p-2 flex items-center justify-center">
+      <div className="w-full lg:w-1/2 min-h-[500px] border border-gray-300 rounded-lg p-2 flex items-center justify-center">
       {uploading ? <span className="animate-pulse">Thinking what it is...</span> : ''}
        
         

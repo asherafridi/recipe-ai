@@ -3,7 +3,6 @@ import prisma from "./db";
 import { isSamePass } from "./hash";
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { AuthOptions } from "next-auth";
-import GoogleProvider from "next-auth/providers/google";
 
 import NextAuth, { DefaultSession } from "next-auth"
 
