@@ -1,9 +1,5 @@
 "use client"
 import React from 'react';
-import { useSearchParams } from 'next/navigation';
-import Breadcrumb from '@/components/Breadcrumb';
-import { Skeleton } from '@/components/ui/skeleton';
-import { useAllCallFetch } from '@/hooks/singleCallHook';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import {  CalendarClock, Lock, UserRound } from 'lucide-react';
 import Account from './Account';
