@@ -14,13 +14,13 @@ export async function POST(req: NextRequest) {
 
     try {
 
-        const contact = await prisma.agent.delete({
+        const contact = await prisma.favourite.delete({
             where:{
                 id:id
             }
         });
 
-        return NextResponse.json({ msg: 'Agent Removed Successfully' }, { status: 200 });
+        return NextResponse.json({ msg: 'Recipe Removed Successfully' }, { status: 200 });
 
     } catch (e) {
         return NextResponse.json({ error: 'Something Went Wrong' }, { status: 500 });
