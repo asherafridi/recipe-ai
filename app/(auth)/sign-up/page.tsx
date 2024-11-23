@@ -13,7 +13,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import Link from "next/link"
-import { CircleDashed, Quote } from "lucide-react"
+import { ChefHat, CircleDashed, Quote } from "lucide-react"
 import toast, { Toaster } from "react-hot-toast"
 import { UserRegisterSchema } from "@/components/schema/user"
 import axios from "axios"
@@ -59,7 +59,9 @@ const Page = () => {
   return (
     <div className="flex">
       <div className="w-full lg:w-2/6 min-h-[100vh] bg-white flex flex-col justify-between ">
-        <div className="logo p-4 px-12 text-xl font-bold">seostyle-ai</div>
+
+        <div className="logo p-4 px-12 text-xl font-bold flex items-center"><ChefHat className="h-6 w-6" />
+          <span className="ml-2 text-lg font-bold">RecipeAI</span></div>
         <div className="w-full">
           <div className="header w-full px-12">
             <h1 className="text-3xl font-semibold">Get started</h1>
@@ -102,8 +104,8 @@ const Page = () => {
       >
         <div className=" w-[500px]">
           <span className="text-5xl relative top-[-500px ] text-gray-400 z-0"><Quote size={"96px"} /></span>
-          <h1 className="text-2xl z-10  text-gray-900 font-medium">Enhance your website's SEO effortlessly with our AI-powered tool. In just a few clicks, optimize your content, boost keyword rankings, and improve site performance.</h1>
-
+          <h1 className="text-2xl z-10  text-gray-900 font-medium">
+          Create delicious recipes effortlessly with our AI-powered tool. Snap a picture, get personalized recipes, and turn ingredients into culinary masterpieces in seconds.</h1>
         </div>
       </div>
     </div>

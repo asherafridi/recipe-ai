@@ -17,7 +17,12 @@ import {
     TableRow,
 } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { DropdownMenu } from "@/components/ui/dropdown-menu"
+import { RefreshCcw, Upload } from "lucide-react"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
+import { useState } from "react"
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
@@ -39,9 +44,8 @@ export function DataTable<TData, TValue>({
     return (
         <>
             <div className="flex items-center justify-between py-4">
-                <h1>All Groups</h1>
+                <h1>Favourite Recipes</h1>
                 <div className="flex gap-4">
-                    <Link href="/contact/groups/create"><Button>Create new Group</Button></Link>
                 </div>
             </div>
             <div className="rounded-md border">

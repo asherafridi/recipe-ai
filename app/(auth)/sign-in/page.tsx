@@ -16,7 +16,7 @@ import { Label } from "@/components/ui/label"
 import Link from "next/link"
 import { signIn, useSession } from "next-auth/react"
 import toast from "react-hot-toast"
-import { CircleDashed, Quote } from "lucide-react"
+import { ChefHat, CircleDashed, Quote } from "lucide-react"
 import { UserLoginSchema } from "@/components/schema/user"
 
 interface FormData {
@@ -58,7 +58,7 @@ const Page = () => {
       } else {
         toast.success('Login Successful');
         setTimeout(() => {
-          router.push('/dashboard');
+          router.push('/home');
         }, 500);
       }
     }
@@ -68,7 +68,8 @@ const Page = () => {
     <div className="flex">
       <div className="w-full lg:w-2/6 min-h-[100vh] bg-white flex flex-col justify-between">
 
-        <div className="logo p-4 px-12 text-xl font-bold">seostyle-ai</div>
+        <div className="logo p-4 px-12 text-xl font-bold flex items-center"><ChefHat className="h-6 w-6" />
+          <span className="ml-2 text-lg font-bold">RecipeAI</span></div>
         <div className="w-full">
           <div className="header w-full px-12">
             <h1 className="text-3xl font-semibold">Welcome Back!</h1>
@@ -127,7 +128,8 @@ const Page = () => {
       >
         <div className=" w-[500px]">
           <span className="text-5xl relative top-[-500px ] text-gray-400 z-0"><Quote size={"96px"} /></span>
-          <h1 className="text-2xl z-10  text-gray-900 font-medium">Enhance your website's SEO effortlessly with our AI-powered tool. In just a few clicks, optimize your content, boost keyword rankings, and improve site performance.</h1>
+          <h1 className="text-2xl z-10  text-gray-900 font-medium">
+          Create delicious recipes effortlessly with our AI-powered tool. Snap a picture, get personalized recipes, and turn ingredients into culinary masterpieces in seconds.</h1>
 
         </div>
       </div>

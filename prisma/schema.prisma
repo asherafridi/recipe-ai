@@ -11,16 +11,22 @@ generator client {
 datasource db {
   provider  = "postgresql"
   url       = env("POSTGRESS_URI")
-  directUrl = env("POSTGRESS_DIRECT_URI")
 }
 
+
 model User {
-  id                      Int     @id @default(autoincrement())
-  email                   String  @unique
-  name                    String?
-  password                String
-  status                  Boolean @default(false)
-  analytics_refresh_token String?
-  analytics_access_token  String?
-  property_id             String?
+  id         Int         @id @default(autoincrement())
+  email      String      @unique
+  name       String?
+  password   String
+  status     Boolean     @default(false)
+  favourites Favourite[] // One-to-many relationship with Favourite
+}
+
+model Favourite {
+  id      Int    @id @default(autoincrement())
+  name    String?
+  recipe  String?
+  userId  Int    // Foreign key to User
+  user    User   @relation(fields: [userId], references: [id]) // Relationship to User
 }
