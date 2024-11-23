@@ -1,21 +1,18 @@
 "use client"
-import Breadcrumb from '@/components/Breadcrumb'
 import React, { useEffect, useState } from 'react'
 import { DataTable } from './data-table';
-import axios from 'axios';
 import { columns } from './columns';
-import toast from 'react-hot-toast';
 
 
 import { Skeleton } from '@/components/ui/skeleton';
 import { Card } from '@/components/ui/card';
-import { useAllKeywordsFetch } from '@/hooks/keywordsHook';
+import { useAllFavouritesFetch } from '@/hooks/favouritesHook';
 
 
 
 const Page = () => {
 
-  const {keywords,keywordLoader} = useAllKeywordsFetch();
+  const {keywords,keywordLoader} = useAllFavouritesFetch();
 
   if (keywordLoader) {
     return <Skeleton className='w-full h-[400px] rounded mt-4' />;

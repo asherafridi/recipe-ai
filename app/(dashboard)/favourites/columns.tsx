@@ -6,9 +6,8 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
 import { ColumnDef } from "@tanstack/react-table"
 import { BarChart, EllipsisVertical, MoreHorizontal } from "lucide-react"
 import Link from "next/link"
-import { useContactDelete } from "@/hooks/contactHook"
 import { useRouter } from "next/navigation"
-import { useVectorDelete } from "@/hooks/analyticsHook"
+// import { useFavouriteDelete } from "@/hooks/favouritesHook"
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -18,7 +17,7 @@ export type Keyword = {
 }
 
 
-export const columns: ColumnDef<Keyword>[] = [
+export const columns: ColumnDef<any>[] = [
     {
         accessorKey: "name",
         header: "Name",
@@ -49,7 +48,7 @@ export const columns: ColumnDef<Keyword>[] = [
               <DropdownMenuItem><Link href={`/vector/edit/${payment.vector_id}`}>Edit Vector Store</Link></DropdownMenuItem>
               <DropdownMenuItem onClick={()=>{
                 if(confirm('Are you sure?')){
-                    useVectorDelete(payment.vector_id);
+                    // useFavouriteDelete(payment.vector_id);
                     
                 }
               }}>Delete Vector Store</DropdownMenuItem>
