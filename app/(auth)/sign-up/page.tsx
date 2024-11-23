@@ -13,7 +13,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import Link from "next/link"
-import { CircleDashed } from "lucide-react"
+import { CircleDashed, Quote } from "lucide-react"
 import toast, { Toaster } from "react-hot-toast"
 import { UserRegisterSchema } from "@/components/schema/user"
 import axios from "axios"
@@ -27,11 +27,11 @@ const Page = () => {
   const [submit, setSubmit] = useState(false);
 
   const session = useSession();
-  if(session.status === 'authenticated'){
+  if (session.status === 'authenticated') {
     router.push('/dashboard');
   }
 
-  const submitForm = async (data:any) => {
+  const submitForm = async (data: any) => {
     setSubmit(true);
 
     try {
@@ -49,7 +49,7 @@ const Page = () => {
         router.push('/sign-in');
       }, 2000);
 
-    } catch (e:any) {
+    } catch (e: any) {
       toast.error(e?.response.data.error);
       console.log(e?.response.data.error);
       setSubmit(false);
@@ -58,54 +58,54 @@ const Page = () => {
 
   return (
     <div className="flex">
+      <div className="w-full lg:w-2/6 min-h-[100vh] bg-white flex flex-col justify-between ">
+        <div className="logo p-4 px-12 text-xl font-bold">seostyle-ai</div>
+        <div className="w-full">
+          <div className="header w-full px-12">
+            <h1 className="text-3xl font-semibold">Get started</h1>
+            <p>Create a new account</p>
+          </div>
+
+          <div className="form w-full  px-12 mt-12">
+            <form onSubmit={handleSubmit(submitForm)} className="flex flex-col w-full items-center gap-2">
+              <div className="flex flex-col w-full space-y-1.5">
+                <Label htmlFor="name">Full Name</Label>
+                <Input type="text" id="name" placeholder="Full Name" className="outline-none" {...register("name", { required: "Full Name is required" })} />
+                {/* {errors.name && <span className="text-destructive">{errors?.name.message}</span>} */}
+              </div>
+              <div className="h-1"></div>
+              <div className="flex flex-col w-full space-y-1.5">
+                <Label htmlFor="email">Email</Label>
+                <Input type="email" id="email" placeholder="Email" className="outline-none" {...register("email", { required: "Email is required" })} />
+                {/* {errors.email && <span className="text-destructive">{errors?.email.message}</span>} */}
+              </div>
+              <div className="h-1"></div>
+              <div className="flex flex-col w-full space-y-1.5">
+                <Label htmlFor="password">Password</Label>
+                <Input type="password" id="password" placeholder="Password" className="outline-none" {...register("password", { required: "Password is required", minLength: { value: 8, message: "Password must be at least 8 characters" } })} />
+                {/* {errors.password && <span className="text-destructive">{errors?.password.message}</span>} */}
+              </div>
+              <div className="h-1"></div>
+              <Button className="w-full gap-2 cursor-pointer" type="submit" disabled={submit}>{submit ? <CircleDashed className="w-[20px] animate-spin" /> : ''} Submit</Button>
+            </form>
+          </div>
+
+          <div className="flex justify-center mt-12">
+            <span>Have an account? <Link href="/sign-in" className="underline">Sign In</Link></span>
+          </div>
+
+        </div>
+        <div></div>
+      </div>
       <div
-        className="w-3/5 hidden lg:flex justify-center items-center"
-        style={{
-          backgroundImage: `url(/background.jpg)`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-        }}
+        className="w-4/6 hidden lg:flex justify-center items-center"
       >
-        <div className="flex justify-center flex-col items-center">
-          <img src="/logo.png" width={200}/>
-        {/* <h1 className="text-lg  text-gray-500">Are you still hiring human?</h1> */}
+        <div className=" w-[500px]">
+          <span className="text-5xl relative top-[-500px ] text-gray-400 z-0"><Quote size={"96px"} /></span>
+          <h1 className="text-2xl z-10  text-gray-900 font-medium">Enhance your website's SEO effortlessly with our AI-powered tool. In just a few clicks, optimize your content, boost keyword rankings, and improve site performance.</h1>
+
         </div>
       </div>
-      <div className="w-full lg:w-2/5 min-h-[100vh] bg-white flex flex-col justify-center items-center">
-        <div className="header w-full px-12">
-          <h1 className="text-3xl font-semibold">Get started</h1>
-          <p>Create a new account</p>
-        </div>
-
-        <div className="form w-full  px-12 mt-12">
-        <form onSubmit={handleSubmit(submitForm)} className="flex flex-col w-full items-center gap-2">
-            <div className="flex flex-col w-full space-y-1.5">
-              <Label htmlFor="name">Full Name</Label>
-              <Input type="text" id="name" placeholder="Full Name" className="outline-none" {...register("name", { required: "Full Name is required" })} />
-              {/* {errors.name && <span className="text-destructive">{errors?.name.message}</span>} */}
-            </div>
-            <div className="h-1"></div>
-            <div className="flex flex-col w-full space-y-1.5">
-              <Label htmlFor="email">Email</Label>
-              <Input type="email" id="email" placeholder="Email" className="outline-none" {...register("email", { required: "Email is required" })} />
-              {/* {errors.email && <span className="text-destructive">{errors?.email.message}</span>} */}
-            </div>
-            <div className="h-1"></div>
-            <div className="flex flex-col w-full space-y-1.5">
-              <Label htmlFor="password">Password</Label>
-              <Input type="password" id="password" placeholder="Password" className="outline-none" {...register("password", { required: "Password is required", minLength: { value: 8, message: "Password must be at least 8 characters" } })} />
-              {/* {errors.password && <span className="text-destructive">{errors?.password.message}</span>} */}
-            </div>
-            <div className="h-1"></div>
-            <Button className="w-full gap-2 cursor-pointer" type="submit" disabled={submit}>{submit ? <CircleDashed className="w-[20px] animate-spin" /> : ''} Submit</Button>
-          </form>
-        </div>
-
-        <div className="flex justify-center mt-12">
-          <span>Have an account? <Link href="/sign-in" className="underline">Sign In</Link></span>
-        </div>
-      </div>
-
     </div>
   )
 }

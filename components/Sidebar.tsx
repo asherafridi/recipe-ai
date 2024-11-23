@@ -2,17 +2,14 @@
 import Link from "next/link";
 import React, { useState } from "react";
 import {
-  LayoutDashboard,
-  Phone,
-  Headphones,
-  PhoneIncoming,
-  Users,
-  PhoneOutgoing,
-  Webhook,
-  PenTool,
   ChevronDown,
   ChevronUp,
-  CalendarClock,
+  Home,
+  LineChart,
+  Key,
+  CodeXml,
+  Text,
+  Settings,
 } from "lucide-react";
 import { usePathname } from "next/navigation";
 
@@ -24,35 +21,18 @@ const Sidebar = ({ sidebar, setSidebar }: { sidebar: any; setSidebar: any }) => 
 
   // Define the menu items and their submenus
   const menuItems = [
-    { href: "/dashboard", icon: <LayoutDashboard />, text: "Dashboard", key: "dashboard" },
+    { href: "/dashboard", icon: <Home />, text: "Home", key: "dashboard" },
     {
-      href: "/appointment", icon: <CalendarClock />, text: "Appointment", key: "appointment",
+      href: "/analytics", icon: <LineChart />, text: "Analytics", key: "appointment",
+    },
+    { href: "/keywords", icon: <Key />, text: "Keywords", key: "number" },
+    { href: "/code-changes", icon: <CodeXml />, text: "Code Changes", key: "agent",
       submenu: [
-        { href: "/appointment/gohighlevel", text: "GoHighLevel", key: "goHighLevel-appointment" },
-        { href: "/appointment/veta", text: "Veta Appointments", key: "appointments" },
-      ],
-    },
-    { href: "/number", icon: <Phone />, text: "Phone Numbers", key: "number" },
-    { href: "/agent", icon: <Headphones />, text: "Agents", key: "agent" },
-    { href: "/inbound-agent", icon: <PhoneIncoming />, text: "Inbound Agent", key: "inbound-agent" },
-    {
-      href: "/contact",
-      icon: <Users />,
-      text: "Contacts",
-      key: "contact",
-      submenu: [
-        { href: "/contact", text: "All Contacts", key: "contact-all" },
-        { href: "/contact/groups", text: "Groups", key: "contact-groups" },
-      ],
-    },
-    { href: "/call", icon: <PhoneOutgoing />, text: "Calls", key: "call" },
-    {
-      href: "/campaign",
-      icon: <Webhook />,
-      text: "Campaigns",
-      key: "campaign",
-    },
-    { href: "/vector", icon: <PenTool />, text: "Information", key: "vector" },
+        { href: "/code-changes/code-preview", text: "Code Preview", key: "goHighLevel-appointment" },
+        { href: "/code-changes/page-insights", text: "Page Insights", key: "appointments" },
+      ], },
+    { href: "/blog-posts", icon: <Text />, text: "Blog Posts", key: "inbound-agent" },
+    { href: "/settings", icon: <Settings />, text: "Settings", key: "call" },
   ];
 
   // Function to toggle submenu open/close
@@ -70,8 +50,8 @@ const Sidebar = ({ sidebar, setSidebar }: { sidebar: any; setSidebar: any }) => 
         className={`sidebar w-[300px] min-h-screen bg-background border-r border-gray-300 text-accent-foreground lg:fixed shadow-sm lg:block ${sidebar ? "block" : "hidden"
           }`}
       >
-        <div className="hidden  p-3  lg:flex pt-10 justify-center">
-          <img src="/logo.png" width={80}/>
+        <div className="hidden lg:flex ">
+          <h1 className="logo p-4 px-12 text-xl font-bold">seostyle-ai</h1>
           {/* <p>AI Calling Assistant</p> */}
         </div>
         <div className="mt-16">

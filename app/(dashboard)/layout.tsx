@@ -1,5 +1,5 @@
 "use client"
-import { Poppins as FontSans } from "next/font/google";
+import { Poppins } from "next/font/google";
 import { Suspense, useEffect, useState } from "react";
 import Sidebar from "@/components/Sidebar";
 import Navbar from "@/components/Navbar";
@@ -12,11 +12,11 @@ import { setEngine } from "crypto";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 
-const fontSans = FontSans({
-    weight:['200','400','500'],
-    subsets: ["latin"],
-    variable: "--font-sans",
-  });
+
+
+const inter = Poppins({ subsets: ["latin-ext"], weight:["400","500","600"] });
+
+
 
 export default function RootLayout({
     children,
@@ -37,7 +37,7 @@ export default function RootLayout({
 
 
     return (
-        <div className={fontSans.className}>
+        <div className={inter.className}>
             <div className="main flex">
                 <Sidebar sidebar={sidebar} setSidebar={setSidebar} />
                 <div className="wrapper w-full pl-0 lg:pl-[300px] min-h-[100vh]">

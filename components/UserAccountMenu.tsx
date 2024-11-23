@@ -16,21 +16,14 @@ import axios from 'axios';
 
 const UserAccountMenu = () => {
     const router = useRouter();
-    const [balance,setBalance] = useState(0.00);
     const logout = ()=>{
         signOut();
         router.push('/sign-in');
     }
   const session = useSession();
-    useEffect(()=>{
-        axios.get('/api/user/balance').then(response=>{
-            setBalance(response?.data.balance);
-        })
-    },[])
 
     return (
         <div className='flex items-center gap-5'>
-            <h3 className='font-medium border border-gray-300 p-2 px-4 rounded-lg text-sm md:text-xl'>$ {balance}</h3>
             <DropdownMenu>
                 <DropdownMenuTrigger>
                     <Avatar className='border border-gray-500'>

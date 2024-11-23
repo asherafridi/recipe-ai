@@ -12,7 +12,7 @@ const Navbar = ({ sidebar, setSidebar }: { sidebar: any, setSidebar: any }) => {
         <div className='flex gap-4  lg:hidden'>
           <LayoutGrid className='' onClick={
             () => setSidebar(!sidebar)} />
-          <Link href="/dashboard" className='text-lg'>LexaTalk</Link>
+          <Link href="/dashboard" className='text-lg'>seostyle-ai</Link>
         </div>
         <Breadcrumb />
       </div>

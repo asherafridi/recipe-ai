@@ -42,7 +42,7 @@ const Page = () => {
 
   return (
     <div className="flex min-h-screen items-center justify-center">
-      <Card className="w-[450px] bg-transparent shadow-none">
+      <Card className="w-[450px]  shadow-none p-4">
         <CardHeader>
           <CardTitle className="">Reset Your Password</CardTitle>
           <CardDescription className="">Type in your email and we'll send you a link to reset your password.</CardDescription>

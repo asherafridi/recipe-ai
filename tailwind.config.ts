@@ -26,7 +26,7 @@ const config = {
         background: "#E8ECF8",
         foreground: "#333333",
         primary: {
-          DEFAULT: "#956FD6",
+          DEFAULT: "#272727",
           foreground: "#fff",
           hover : "#2e2e3c"
         },
